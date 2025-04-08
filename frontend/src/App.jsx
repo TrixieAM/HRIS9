@@ -88,6 +88,7 @@ import PDS2 from './components/PDS2';
 import PDS3 from './components/PDS3';
 import PDS4 from './components/PDS4';
 import { PictureAsPdfOutlined } from '@mui/icons-material';
+import ForgotPassword from './components/ForgotPAssword';
 
 
 
@@ -152,7 +153,7 @@ function App() {
       >
         <AppBar
           position="fixed"
-          sx={{ zIndex: 1201, bgcolor:'#6d2323', height: '60px' }} // adjust HEADER
+          sx={{ zIndex: 1201, bgcolor:'#6d2323', height: '60px' }}// adjust HEADER
         >
           <Toolbar>
             {settings.logo_url && (
@@ -188,7 +189,7 @@ function App() {
           component="main"
           sx={{
             flexGrow: 1,
-            bgcolor: '#ffffff',
+            bgcolor: 'transparent',  // etong kupal nato ang naglalagay ng white background
             p: 10,
             marginLeft: `${drawerWidth}px`,
             fontFamily: 'Poppins, sans-serif',
@@ -198,6 +199,7 @@ function App() {
           <Routes>
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<Login />} />
+            <Route path='/forgot-password' element={<ForgotPassword />}/>
             <Route
               path="/home"
               element={
@@ -656,7 +658,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
+            
 
             <Route path="/unauthorized" element={<Unauthorized />} />
           </Routes>

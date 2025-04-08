@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Alert, TextField, Button, Container, Link } from "@mui/material";
+import { Alert, TextField, Button, Container, Link, Box } from "@mui/material";
+import earistLogo from "../assets/earistLogo.jpg";
+
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -78,17 +80,37 @@ const Login = () => {
   return (
     <Container
       sx={{
-        display: "flex",
-        alignItems: "center",
-        width: "25rem",
-        minHeight: "70vh",
-        margin: "auto",
-        marginTop: "2%",
-        justifyContent: "center",
+        width: "90%", // Make the container take full viewport width
+        height: "90%", // Make the container take full viewport height
+        backgroundColor: '#ffffff', // Optional: A light grey background for the outer area
+        display: 'flex',
+        justifyContent: 'center', // Center horizontally
+        alignItems: 'center', // Center vertically
+        marginLeft:'-18%',
+        marginBottom:'25px',
+        paddingBottom:'40px',
       }}
     >
       <form className="Form" onSubmit={handleLogin} >
-        <h1>Login</h1>
+      <Box
+  sx={{
+    backgroundColor: "#A31D1D",
+    borderRadius: 4,
+    padding: 3,
+    marginTop:'-81px',
+    justifyContent: "center",
+    width: 'calc(80% + 25%)', // assuming Paper padding is 32px on each side
+    marginLeft: '-33px',
+    marginBottom: '30px',
+  }}
+>   
+  <img
+    src={earistLogo}
+    alt="E.A.R.I.S.T Logo"
+    style={{ height: 100, borderRadius: "50%", backgroundColor: "white", paddingTop: "2px", paddingBottom:'2.50px', paddingLeft:'2.50px', paddingRight:'3px' }}
+  />
+</Box>
+        <h2>Login to your Account</h2>
         {errMessage && (
           <Alert sx={{ textAlign: "center" }} severity="error">
             {errMessage}
@@ -97,13 +119,18 @@ const Login = () => {
 
         <TextField name="email" label="Email" sx={{ margin: "5% 0", width: "100%" }} autoComplete="email" onChange={handleChanges} />
         <TextField name="password" label="Password" sx={{ marginBottom: "5%", width: "100%" }} type="password" autoComplete="current-password" onChange={handleChanges} />
-        <p><b>Forgot Password?</b></p>
-        <Button type="submit" variant="contained" sx={{ width: "100%", bgcolor: '#6c0b19'}}>
+        <p>
+          <Link
+            onClick={() => navigate("/forgot-password")}
+            sx={{ cursor: "pointer", color: "black", fontSize: "12px", textDecoration: "none" }}
+          >
+            Forgot your Password? Click Here
+          </Link>
+        </p>
+        <Button type="submit" variant="contained" sx={{ width: "100%", bgcolor: '#A31D1D'}}>
           Login
         </Button>
-        <h5>
-          Did not have an account? <Link href="Register">Sign Up</Link>
-        </h5>
+        
       </form>
     </Container>
   );
