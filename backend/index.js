@@ -101,14 +101,19 @@ app.post("/login", (req, res) => {
       {
         id: user.id,
         username: user.username,
-        employeeNumber: user.employeeNumber,
+       employeeNumber: user.employeeNumber,
         email: user.email,
         role: user.role,
       },
       "secret",
       { expiresIn: "1h" }
     );
-    res.status(200).send({ token, user: { username: user.username, employeeNumber: user.employeeNumber, email: user.email, role: user.role } });
+    res.status(200).send({ 
+      token, 
+      email: user.email, 
+      role: user.role, 
+      employeeNumber: user.employeeNumber 
+    });
   });
 });
 
@@ -1486,27 +1491,79 @@ app.get('/vocational/vocational-table/:employeeNumber', (req, res) => {
   });
 });
 
-app.get('/childrenRoute/children-table/:employeeNumber', (req, res) => {
-  const { employeeNumber } = req.params;
-  const query = 'SELECT * FROM children_table WHERE person_id = ?';
 
-  db.query(query, [employeeNumber], (err, result) => {
-    if (err) {
-      console.error('Database error:', err);
-      return res.status(500).send('Internal Server Error');
-    }
-    
-    if (result.length === 0) {
-      return res.status(404).send('Employee not found');
-    }
+for (let i = 1; i <= 12; i++) {
+  app.get(`/childrenRoute/children-table${i}/:employeeNumber`, (req, res) => {
+    const { employeeNumber } = req.params;
+    const query = `SELECT * FROM children_table WHERE person_id = ? AND incValue=${i}`;
 
-    res.status(200).send(result[0]); // Send first matched result
+    db.query(query, [employeeNumber], (err, result) => {
+      if (err) {
+        console.error('Database error:', err);
+        return res.status(500).send('Internal Server Error');
+      }
+
+      if (result.length === 0) {
+        return res.status(404).send('Employee not found');
+      }
+
+      res.status(200).send(result[0]); // Send first matched result
+    });
   });
-});
+}
+
+for (let i = 1; i <= 7; i++) {
+  app.get(`/eligibilityRoute/eligibility${i}/:employeeNumber`, (req, res) => {
+    const { employeeNumber } = req.params;
+    const query = `SELECT * FROM eligibility_table WHERE person_id = ? AND incValue = ?`;
+
+    db.query(query, [employeeNumber, i], (err, result) => {
+      if (err) {
+        console.error('Database error:', err);
+        return res.status(500).send('Internal Server Error');
+      }
+
+      // Always respond with 200. If nothing found, send null
+      res.status(200).send(result.length > 0 ? result[0] : null);
+    });
+  });
+}
+
+for (let i = 1; i <= 26; i++) {
+  app.get(`/WorkExperienceRoute/work-experience-table${i}/:employeeNumber`, (req, res) => {
+    const { employeeNumber } = req.params;
+    const query = `SELECT * FROM work_experience_table WHERE person_id = ? AND incValue = ?`;
+
+    db.query(query, [employeeNumber, i], (err, result) => {
+      if (err) {
+        console.error('Database error:', err);
+        return res.status(500).send('Internal Server Error');
+      }
+
+      // Always respond with 200. If nothing found, send null
+      res.status(200).send(result.length > 0 ? result[0] : null);
+    });
+  });
+}
 
 
 
+for (let i = 1; i <= 7; i++) {
+  app.get(`/VoluntaryRoute/voluntary-work${i}/:employeeNumber`, (req, res) => {
+    const { employeeNumber } = req.params;
+    const query = `SELECT * FROM voluntary_work_table WHERE person_id = ? AND incValue = ?`;
 
+    db.query(query, [employeeNumber, i], (err, result) => {
+      if (err) {
+        console.error('Database error:', err);
+        return res.status(500).send('Internal Server Error');
+      }
+
+      // Always respond with 200. If nothing found, send null
+      res.status(200).send(result.length > 0 ? result[0] : null);
+    });
+  });
+}
 
 
 app.listen(5000, () => {

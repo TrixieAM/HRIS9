@@ -1,23 +1,28 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Alert, TextField, Button, Container, Link, Box } from "@mui/material";
-import earistLogo from "../assets/earistLogo.jpg";
-
+import {
+  Alert,
+  TextField,
+  Button,
+  Container,
+  Link,
+  Box,
+} from "@mui/material";
+import logo from "../assets/logo.PNG";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    // employeeNumber: '',
     email: "",
     password: "",
   });
-  // const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
+
+  const [errMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-  const [errMessage, setErrorMessage] = useState();
 
   const handleChanges = (e) => {
     const { name, value } = e.target;
-    setFormData((formData) => ({
-      ...formData,
+    setFormData((prevData) => ({
+      ...prevData,
       [name]: value,
     }));
   };
@@ -36,34 +41,49 @@ const Login = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
+
       console.log("Login response status:", response.status);
+
       if (response.ok) {
         const data = await response.json();
         console.log("Login response data:", data);
 
         if (data.token) {
           localStorage.setItem("token", data.token);
+
           const decoded = JSON.parse(atob(data.token.split(".")[1]));
           console.log("Decoded JWT:", decoded);
 
-          // setIsLoggedIn(true); // Set the user as logged in
-          if (decoded.role === "superadmin") {
+          // Store required info in localStorage
+          localStorage.setItem("email", decoded.email || data.email || "");
+          localStorage.setItem("role", decoded.role || data.role || "");
+          localStorage.setItem(
+            "employeeNumber",
+            decoded.employeeNumber || data.employeeNumber || ""
+          );
+
+          // Sanity log
+          console.log("Saved to localStorage:", {
+            email: localStorage.getItem("email"),
+            role: localStorage.getItem("role"),
+            employeeNumber: localStorage.getItem("employeeNumber"),
+          });
+
+          // Navigate based on role
+          const role = decoded.role || data.role;
+          if (role === "superadmin" || role === "administrator") {
             navigate("/home");
-          } else if (decoded.role === "administrator") {
-            navigate("/home");
-          } else if (decoded.role === "staff") {
+          } else if (role === "staff") {
             navigate("/pdsfile");
           } else {
             setErrorMessage("Unauthorized role");
           }
         } else {
-          setError("No token received from the server.");
-          console.error("No token received");
+          setErrorMessage("No token received from the server.");
         }
       } else {
-        const data = await response.json();
-        setError(data.error || "Invalid credentials");
-        console.error("Login failed:", data.error);
+        const errorData = await response.json();
+        setErrorMessage(errorData.error || "Invalid credentials");
       }
     } catch (error) {
       console.error("Login failed:", error);
@@ -71,66 +91,89 @@ const Login = () => {
     }
   };
 
-  // useEffect(() => {
-  //     if (isLoggedIn) {
-  //         // Handle the navigation if needed after successful login
-  //     }
-  // }, [isLoggedIn]);
-
   return (
     <Container
       sx={{
-        width: "90%", // Make the container take full viewport width
-        height: "90%", // Make the container take full viewport height
-        backgroundColor: '#ffffff', // Optional: A light grey background for the outer area
-        display: 'flex',
-        justifyContent: 'center', // Center horizontally
-        alignItems: 'center', // Center vertically
-        marginLeft:'-18%',
-        marginBottom:'25px',
-        paddingBottom:'40px',
+        width: "90%",
+        height: "90%",
+        backgroundColor: "#ffffff",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        marginLeft: "-18%",
+        marginBottom: "25px",
+        paddingBottom: "40px",
       }}
     >
-      <form className="Form" onSubmit={handleLogin} >
-      <Box
-  sx={{
-    backgroundColor: "#A31D1D",
-    borderRadius: 4,
-    padding: 3,
-    marginTop:'-81px',
-    justifyContent: "center",
-    width: 'calc(80% + 25%)', // assuming Paper padding is 32px on each side
-    marginLeft: '-33px',
-    marginBottom: '30px',
-  }}
->   
-  <img
-    src={earistLogo}
-    alt="E.A.R.I.S.T Logo"
-    style={{ height: 100, borderRadius: "50%", backgroundColor: "white", paddingTop: "2px", paddingBottom:'2.50px', paddingLeft:'2.50px', paddingRight:'3px' }}
-  />
-</Box>
+      <form className="Form" onSubmit={handleLogin}>
+        <Box
+          sx={{
+            backgroundColor: "#A31D1D",
+            borderRadius: 4,
+            padding: 3,
+            marginTop: "-81px",
+            justifyContent: "center",
+            width: "calc(80% + 25%)",
+            marginLeft: "-33px",
+            marginBottom: "30px",
+          }}
+        >
+          <img
+            src={logo}
+            alt="E.A.R.I.S.T Logo"
+            style={{
+              height: 80,
+              borderRadius: "50%",
+              backgroundColor: "white",
+              padding: "2px 3px",
+            }}
+          />
+        </Box>
         <h2>Login to your Account</h2>
+
         {errMessage && (
           <Alert sx={{ textAlign: "center" }} severity="error">
             {errMessage}
           </Alert>
         )}
 
-        <TextField name="email" label="Email" sx={{ margin: "5% 0", width: "100%" }} autoComplete="email" onChange={handleChanges} />
-        <TextField name="password" label="Password" sx={{ marginBottom: "5%", width: "100%" }} type="password" autoComplete="current-password" onChange={handleChanges} />
+        <TextField
+          name="email"
+          label="Email"
+          sx={{ margin: "5% 0", width: "100%" }}
+          autoComplete="email"
+          onChange={handleChanges}
+        />
+        <TextField
+          name="password"
+          label="Password"
+          type="password"
+          sx={{ marginBottom: "5%", width: "100%" }}
+          autoComplete="current-password"
+          onChange={handleChanges}
+        />
+
         <p>
           <Link
             onClick={() => navigate("/forgot-password")}
-            sx={{ cursor: "pointer", color: "black", fontSize: "12px", textDecoration: "none" }}
+            sx={{
+              cursor: "pointer",
+              color: "black",
+              fontSize: "12px",
+              textDecoration: "none",
+            }}
           >
             Forgot your Password? Click Here
           </Link>
         </p>
-        <Button type="submit" variant="contained" sx={{ width: "100%", bgcolor: '#A31D1D'}}>
+
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{ width: "100%", bgcolor: "#A31D1D", marginBottom: "-15%" }}
+        >
           Login
         </Button>
-        
       </form>
     </Container>
   );

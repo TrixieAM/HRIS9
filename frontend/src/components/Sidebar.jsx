@@ -33,8 +33,11 @@ import {
   Summarize as SummarizeIcon,
 } from '@mui/icons-material';
 
-
-
+import PortraitIcon from '@mui/icons-material/Portrait';
+import ContactPageIcon from '@mui/icons-material/ContactPage';
+import AddHomeWorkIcon from '@mui/icons-material/AddHomeWork';
+import TableViewIcon from '@mui/icons-material/TableView';
+import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 const drawerWidth = 250;
 
 
@@ -88,25 +91,42 @@ const Sidebar = ({
           '& .MuiDrawer-paper': {
             width: '17%',
             boxSizing: 'border-box',
-            backgroundColor: '#FEF9E1',
+            backgroundColor: '#white',
           },
         }}
       >
       <Toolbar />
       <List>
-            <ListItem 
-              button 
-              component={Link} 
-              to= '/home' 
-               sx={{ color: 'black', bgcolor: selectedItem === 'home' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'home' ? 'white' : 'inherit',
-                  }}
-              onClick={() => handleItemClick('home')} >
-              <ListItemIcon >
-                <House sx={{ fontSize: 29, marginLeft: '-6%', }} />
-              </ListItemIcon>
-              <ListItemText 
-              primary="Home" sx={{marginLeft: '-25px'}} />
-            </ListItem>
+      <ListItem 
+  button 
+  component={Link} 
+  to='/home' 
+  sx={{ 
+    color: selectedItem === 'home' ? 'white' : 'black',
+    bgcolor: selectedItem === 'home' ? '#6c0b19' : 'inherit', 
+    '&:hover': { 
+      bgcolor: '#6c0b19', 
+      color: 'white',
+      '& .MuiListItemIcon-root, & .MuiSvgIcon-root': {
+        color: 'white',
+      }
+    },
+    '& .MuiListItemIcon-root, & .MuiSvgIcon-root': {
+      color: selectedItem === 'home' ? 'white' : 'black',
+    }
+  }}
+  onClick={() => handleItemClick('home')}
+>
+  <ListItemIcon>
+    <House sx={{ fontSize: 29, marginLeft: '-6%' }} />
+  </ListItemIcon>
+  <ListItemText 
+    primary="Home" 
+    sx={{ marginLeft: '-25px' }} 
+  />
+</ListItem>
+
+
 
 
         {userRole !== 'staff' && (
@@ -120,7 +140,7 @@ const Sidebar = ({
                 <DashboardIcon />
               </ListItemIcon>
               <ListItemText primary="Dashboards" sx={{marginLeft: '-25px'}} />
-              <ListItemIcon sx={{ marginLeft: '10rem' }}>
+              <ListItemIcon sx={{ marginLeft: '10rem', color: 'black' }}>
                 {open ? <ExpandLess /> : <ExpandMore />}
               </ListItemIcon>
             </ListItem>
@@ -136,8 +156,11 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('personalinfo')} 
                 >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
-                    <ChildFriendlyRounded />
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'personalinfo' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
+                    <PortraitIcon />
                   </ListItemIcon>
                   <ListItemText primary="Personal Information" sx={{marginLeft: '-10px'}}/>
                 </ListItem>
@@ -151,7 +174,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('children')} 
                 >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'children' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <ChildFriendlyRounded />
                   </ListItemIcon>
                   <ListItemText primary="Children Information" sx={{marginLeft: '-10px'}}/>
@@ -166,7 +192,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('college')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'college' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <School />
                   </ListItemIcon>
                   <ListItemText primary="College Information" sx={{marginLeft: '-10px'}} />
@@ -181,8 +210,11 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('other-information')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
-                    <ChildFriendlyRounded />
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'other-information' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
+                    <ContactPageIcon />
                   </ListItemIcon>
                   <ListItemText primary="Other Information" sx={{marginLeft: '-10px'}}/>
                 </ListItem>
@@ -196,8 +228,11 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('workexperience')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
-                    <ChildFriendlyRounded />
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'work-experience' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
+                    <AddHomeWorkIcon />
                   </ListItemIcon>
                   <ListItemText primary="Work Experience" sx={{marginLeft: '-10px'}}/>
                 </ListItem>
@@ -211,7 +246,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('vocational')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'vocational' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <Streetview />
                   </ListItemIcon>
                   <ListItemText primary="Vocational" sx={{marginLeft: '-10px'}}/>
@@ -226,7 +264,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('learningdev')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'learningdev' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <PsychologyIcon />
                   </ListItemIcon>
                   <ListItemText primary="Learning and Development" sx={{marginLeft: '-10px'}}/>
@@ -241,7 +282,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('voluntarywork')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                     color: selectedItem === 'voluntarywork' ? 'white' : 'inherit',
+                     '&:hover': { color: 'white' }
+                   }}>
                     <SportsKabaddi />
                   </ListItemIcon>
                   <ListItemText primary="Voluntary Work" sx={{marginLeft: '-10px'}}/>
@@ -256,7 +300,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('eligibility')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                     color: selectedItem === 'eligibility' ? 'white' : 'inherit',
+                     '&:hover': { color: 'white' }
+                   }}>
                     <BadgeRounded />
                   </ListItemIcon>
                   <ListItemText primary="Eligibility" sx={{marginLeft: '-10px'}}/>
@@ -273,10 +320,10 @@ const Sidebar = ({
           sx={{ color: 'black', cursor: 'pointer' }}
         >
           <ListItemIcon>
-            <DashboardIcon />
+            <TableViewIcon />
           </ListItemIcon>
           <ListItemText primary="Records" sx={{marginLeft: '-25px'}}/>
-          <ListItemIcon sx={{ marginLeft: '10rem' }}>
+          <ListItemIcon sx={{ marginLeft: '10rem', color:'black' }}>
             {open2 ? <ExpandLess /> : <ExpandMore />}
           </ListItemIcon>
         </ListItem>
@@ -294,7 +341,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('view_attendance')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                     color: selectedItem === 'view_attendance' ? 'white' : 'inherit',
+                     '&:hover': { color: 'white' }
+                   }}>
                     <BadgeRounded />
                   </ListItemIcon>
                   <ListItemText primary="View Attendance" sx={{marginLeft: '-10px'}}/>
@@ -312,7 +362,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('search_attendance')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                     color: selectedItem === 'search_attendance' ? 'white' : 'inherit',
+                     '&:hover': { color: 'white' }
+                   }}>
                     <BadgeRounded />
                   </ListItemIcon>
                   <ListItemText primary="Search Attendance" sx={{marginLeft: '-10px'}}/>
@@ -332,7 +385,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('daily_time_record')} 
                   >
-              <ListItemIcon sx={{ marginRight: '-1rem' }}>
+              <ListItemIcon sx={{ marginRight: '-1rem',
+                 color: selectedItem === 'daily_time_record' ? 'white' : 'inherit',
+                 '&:hover': { color: 'white' }
+               }}>
                 <BadgeRounded />
               </ListItemIcon>
               <ListItemText primary="Daily Time Record" sx={{marginLeft: '-10px'}}/>
@@ -353,7 +409,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('daily_time_record_faculty')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                     color: selectedItem === 'daily_time_record_faculty' ? 'white' : 'inherit',
+                     '&:hover': { color: 'white' }
+                   }}>
                     <BadgeRounded />
                   </ListItemIcon>
                   <ListItemText primary="Daily Faculty Time Record" sx={{marginLeft: '-10px'}}/>
@@ -371,7 +430,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('attendance_form')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                     color: selectedItem === 'attendance_form' ? 'white' : 'inherit',
+                     '&:hover': { color: 'white' }
+                   }}>
                     <BadgeRounded />
                   </ListItemIcon>
                   <ListItemText primary="Attendance Form"sx={{marginLeft: '-10px'}} />
@@ -389,7 +451,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('attendance_module')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                     color: selectedItem === 'attendance_module' ? 'white' : 'inherit',
+                     '&:hover': { color: 'white' }
+                   }}>
                     <BadgeRounded />
                   </ListItemIcon>
                   <ListItemText primary="Attendance Module Non-teaching Staff" sx={{marginLeft: '-10px'}}/>
@@ -407,7 +472,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('attendance_module_faculty')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                     color: selectedItem === 'attendance_module_faculty' ? 'white' : 'inherit',
+                     '&:hover': { color: 'white' }
+                   }}>
                     <BadgeRounded />
                   </ListItemIcon>
                   <ListItemText primary="Attendance Module Faculty (30hrs)" sx={{marginLeft: '-10px'}}/>
@@ -425,7 +493,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('attendance_module_faculty_40hrs')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                     color: selectedItem === 'attendance_module_faculty_40hrs' ? 'white' : 'inherit',
+                     '&:hover': { color: 'white' }
+                   }}>
                     <BadgeRounded />
                   </ListItemIcon>
                   <ListItemText primary="Attendance Module Faculty (Designated)" sx={{marginLeft: '-10px'}}/>
@@ -443,7 +514,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('attendance_summary')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                     color: selectedItem === 'attendance_summary' ? 'white' : 'inherit',
+                     '&:hover': { color: 'white' }
+                   }}>
                     <BadgeRounded />
                   </ListItemIcon>
                   <ListItemText primary="Attendance Summary" sx={{marginLeft: '-10px'}}/>
@@ -461,7 +535,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('official_time')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'official_time' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <BadgeRounded />
                   </ListItemIcon>
                   <ListItemText primary="Official Time Form" sx={{marginLeft: '-10px'}}/>
@@ -480,7 +557,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('pds1')} 
                   >
-            <ListItemIcon sx={{ marginRight: '-1rem' }}>
+            <ListItemIcon sx={{ marginRight: '-1rem',
+               color: selectedItem === 'pds1' ? 'white' : 'inherit',
+               '&:hover': { color: 'white' }
+             }}>
               <FileCopy />
             </ListItemIcon>
             <ListItemText primary="PDS1" sx={{marginLeft: '-10px'}}/>
@@ -495,7 +575,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('pds2')} 
                   >
-            <ListItemIcon sx={{ marginRight: '-1rem' }}>
+            <ListItemIcon sx={{ marginRight: '-1rem',
+              color: selectedItem === 'pds2' ? 'white' : 'inherit',
+              '&:hover': { color: 'white' }
+             }}>
               <FileCopy />
             </ListItemIcon>
             <ListItemText primary="PDS2" sx={{marginLeft: '-10px'}}/>
@@ -510,7 +593,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('pds3')} 
                   >
-            <ListItemIcon sx={{ marginRight: '-1rem' }}>
+            <ListItemIcon sx={{ marginRight: '-1rem',
+               color: selectedItem === 'pds3' ? 'white' : 'inherit',
+               '&:hover': { color: 'white' }
+             }}>
               <FileCopy />
             </ListItemIcon>
             <ListItemText primary="PDS3" sx={{marginLeft: '-10px'}}/>
@@ -526,10 +612,12 @@ const Sidebar = ({
               sx={{ color: 'black', cursor: 'pointer' }}
             >
               <ListItemIcon>
-                <DashboardIcon />
+                <RequestQuoteIcon />
               </ListItemIcon>
               <ListItemText primary="Payroll Management" sx={{ marginLeft: '-25px' }} />
-              <ListItemIcon sx={{ marginLeft: '10rem' }}>
+              <ListItemIcon sx={{ marginLeft: '10rem',
+                
+               }}>
                 {open3 ? <ExpandLess /> : <ExpandMore />}
               </ListItemIcon>
             </ListItem>
@@ -544,7 +632,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('payroll-table')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                     color: selectedItem === 'payroll-table' ? 'white' : 'inherit',
+                     '&:hover': { color: 'white' }
+                   }}>
                     <PointOfSaleIcon />
                   </ListItemIcon>
                   <ListItemText primary="Payroll" sx={{ marginLeft: '-10px' }} />
@@ -558,7 +649,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('remittance-table')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'remittance-table' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <PointOfSaleIcon />
                   </ListItemIcon>
                   <ListItemText primary="Remittances" sx={{ marginLeft: '-10px' }} />
@@ -572,7 +666,11 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('item-table')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'item-table' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+
+                   }}>
                     <CategoryIcon />
                   </ListItemIcon>
                   <ListItemText primary="Item Table" sx={{ marginLeft: '-10px' }} />
@@ -586,7 +684,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('salary-grade')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'salary-grade' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' } 
+                  }}>
                     <CurrencyExchangeIcon />
                   </ListItemIcon>
                   <ListItemText primary="Salary Grade Table" sx={{ marginLeft: '-10px' }} />
@@ -600,7 +701,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('salary-grade-status')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'salary-grade-status' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <CurrencyExchangeIcon />
                   </ListItemIcon>
                   <ListItemText primary="Salary Grade Status" sx={{ marginLeft: '-10px' }} />
@@ -614,7 +718,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('department-table')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'department-table' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <StoreIcon />
                   </ListItemIcon>
                   <ListItemText primary="Department" sx={{ marginLeft: '-10px' }} />
@@ -628,7 +735,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('department-assignment')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'department-assignment' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <AddBusinessIcon />
                   </ListItemIcon>
                   <ListItemText primary="Department Assignment" sx={{ marginLeft: '-10px' }} />
@@ -642,7 +752,11 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('leave-table')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'leave-table' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+
+                   }}>
                     <SummarizeIcon />
                   </ListItemIcon>
                   <ListItemText primary="Leave" sx={{ marginLeft: '-10px' }} />
@@ -656,7 +770,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('leave-assignment')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'leave-assignment' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <SummarizeIcon />
                   </ListItemIcon>
                   <ListItemText primary="Leave Assignment" sx={{ marginLeft: '-10px' }} />
@@ -670,7 +787,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('holiday-suspension')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'holiday-suspension' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <AnnouncementIcon />
                   </ListItemIcon>
                   <ListItemText primary="Holiday and Suspension" sx={{ marginLeft: '-10px' }} />
@@ -707,7 +827,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('assessment-clearance')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'assessment-clearance' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <SummarizeIcon />
                   </ListItemIcon>
                   <ListItemText primary="Assessment Clearance" sx={{ marginLeft: '-10px' }} />
@@ -721,7 +844,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('clearance')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'clearance' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <SummarizeIcon />
                   </ListItemIcon>
                   <ListItemText primary="Clearance" sx={{ marginLeft: '-10px' }} />
@@ -735,7 +861,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('faculty-clearance')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'faculty-clearance' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <SummarizeIcon />
                   </ListItemIcon>
                   <ListItemText primary="Faculty Clearance" sx={{ marginLeft: '-10px' }} />
@@ -749,7 +878,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('hrms-request-forms')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'hrms-request-forms' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <SummarizeIcon />
                   </ListItemIcon>
                   <ListItemText primary="HRMS Request Form" sx={{ marginLeft: '-10px' }} />
@@ -763,7 +895,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('individual-faculty-loading')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'individual-faculty-loading' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <SummarizeIcon />
                   </ListItemIcon>
                   <ListItemText primary="Individual Faculty Loading" sx={{ marginLeft: '-10px' }} />
@@ -777,7 +912,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('in-service-training')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'in-service-training' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <SummarizeIcon />
                   </ListItemIcon>
                   <ListItemText primary="In Service Training" sx={{ marginLeft: '-10px' }} />
@@ -791,7 +929,11 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('leave-card')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'leave-card' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+
+                   }}>
                     <SummarizeIcon />
                   </ListItemIcon>
                   <ListItemText primary="Employee's Leave Card" sx={{ marginLeft: '-10px' }} />
@@ -805,7 +947,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('locator-slip')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'locator-slip' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <SummarizeIcon />
                   </ListItemIcon>
                   <ListItemText primary="Locator's Slip" sx={{ marginLeft: '-10px' }} />
@@ -819,7 +964,11 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('permission-to-teach')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'permission-to-teach' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+
+                   }}>
                     <SummarizeIcon />
                   </ListItemIcon>
                   <ListItemText primary="Permission To Teach" sx={{ marginLeft: '-10px' }} />
@@ -833,7 +982,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('request-for-id')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'request-for-id' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <SummarizeIcon />
                   </ListItemIcon>
                   <ListItemText primary="Request For ID" sx={{ marginLeft: '-10px' }} />
@@ -847,7 +999,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('saln-front')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                  color: selectedItem === 'saln-front' ? 'white' : 'inherit',
+                  '&:hover': { color: 'white' }
+                   }}>
                     <SummarizeIcon />
                   </ListItemIcon>
                   <ListItemText primary="S.A.L.N" sx={{ marginLeft: '-10px' }} />
@@ -861,7 +1016,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('scholarship-agreement')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'scholarship-agreement' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <SummarizeIcon />
                   </ListItemIcon>
                   <ListItemText primary="Scholarship Agreement" sx={{ marginLeft: '-10px' }} />
@@ -875,7 +1033,10 @@ const Sidebar = ({
                   }}
                   onClick={() => handleItemClick('subject')} 
                   >
-                  <ListItemIcon sx={{ marginRight: '-1rem' }}>
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'subject' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
                     <SummarizeIcon />
                   </ListItemIcon>
                   <ListItemText primary="Subject Still to be Taken" sx={{ marginLeft: '-10px' }} />

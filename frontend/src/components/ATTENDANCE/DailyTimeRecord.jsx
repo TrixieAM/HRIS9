@@ -133,11 +133,11 @@ const DailyTimeRecord = () => {
         <h1 style={{marginTop: '-1%'}} className='no-print'>Daily Time Record</h1>
       <div className="search-container no-print textfield-container" >
         
-        <TextField sx={{ width: "200px", marginleft: "10px" }} m disabled value={personID} variant="outlined" />
+        <TextField sx={{ width: "200px", marginleft: "10px", backgroundColor:'white' }} m disabled value={personID} variant="outlined" />
 
-        <TextField sx={{ width: "200px", marginleft: "10px" }} fullWidth label="Start Date" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} variant="outlined" InputLabelProps={{ shrink: true }} />
+        <TextField sx={{ width: "200px", marginleft: "10px", backgroundColor:'white' }} fullWidth label="Start Date" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} variant="outlined" InputLabelProps={{ shrink: true }} />
 
-        <TextField sx={{ width: "200px", marginleft: "10px" }} label="End Date" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} variant="outlined" InputLabelProps={{ shrink: true }} />
+        <TextField sx={{ width: "200px", marginleft: "10px", backgroundColor:'white' }} label="End Date" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} variant="outlined" InputLabelProps={{ shrink: true }} />
 
         <Button
           sx={{
@@ -155,7 +155,7 @@ const DailyTimeRecord = () => {
         </Button>
       </div>
       <br />
-      <div className="table-container" style={{marginBottom: '3%'}}>
+      <div className="table-container" style={{marginBottom: '3%', backgroundColor:'white'}}>
         <div className="table-wrapper">
           <div style={{ display: "flex", justifyContent: "space-between" }} className="table-side-by-side">
             <table
