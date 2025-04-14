@@ -10,7 +10,7 @@ import {
   TableRow,
   TextField,
   Container,
-  Paper, // Import Paper for shadowbox
+  Paper,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -19,17 +19,15 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import AddIcon from '@mui/icons-material/Add';
 
 const VoluntaryWork = () => {
-  const [data, setData] = useState([]); // To hold items data
-  const [newItem, setNewItem] = useState(''); // To hold input for new item
-  const [newItem2, setNewItem2] = useState(''); // To hold input for new date from
-  const [newItem3, setNewItem3] = useState(''); // To hold input for new date to
-  const [newItem4, setNewItem4] = useState(''); // To hold input for new number of hours
-  const [newItem5, setNewItem5] = useState(''); // To hold input for new number of works
-  const [newItem6, setNewItem6] = useState(''); // person_id
+  const [data, setData] = useState([]);
+  const [newItem, setNewItem] = useState('');
+  const [newItem2, setNewItem2] = useState('');
+  const [newItem3, setNewItem3] = useState('');
+  const [newItem4, setNewItem4] = useState('');
+  const [newItem5, setNewItem5] = useState('');
+  const [newItem6, setNewItem6] = useState('');
+  const [editItem, setEditItem] = useState(null);
 
-  const [editItem, setEditItem] = useState(null); // To hold item being edited
-
-  // Fetch all items on component mount
   useEffect(() => {
     fetchItems();
   }, []);
@@ -41,7 +39,6 @@ const VoluntaryWork = () => {
     setData(response.data);
   };
 
-  // Add new item
   const addItem = async () => {
     if (
       newItem.trim() === '' ||
@@ -69,14 +66,13 @@ const VoluntaryWork = () => {
     fetchItems();
   };
 
-  // Update item
   const updateItem = async () => {
     if (
       !editItem ||
       editItem.nameAndAddress.trim() === '' ||
       editItem.dateFrom.trim() === '' ||
       editItem.dateTo.trim() === '' ||
-      String(editItem.numberOfHours).trim() === '' || // Convert to string before trimming
+      String(editItem.numberOfHours).trim() === '' ||
       String(editItem.natureOfWork).trim() === '' ||
       String(editItem.person_id).trim() === ''
     )
@@ -88,7 +84,7 @@ const VoluntaryWork = () => {
         nameAndAddress: editItem.nameAndAddress,
         dateFrom: editItem.dateFrom,
         dateTo: editItem.dateTo,
-        numberOfHours: String(editItem.numberOfHours), // Ensure it's a string
+        numberOfHours: String(editItem.numberOfHours),
         natureOfWork: String(editItem.natureOfWork),
         person_id: editItem.person_id,
       }
@@ -98,7 +94,6 @@ const VoluntaryWork = () => {
     fetchItems();
   };
 
-  // Delete item
   const deleteItem = async (id) => {
     await axios.delete(
       `http://localhost:5000/VoluntaryRoute/voluntary-work/${id}`
@@ -108,17 +103,30 @@ const VoluntaryWork = () => {
 
   return (
     <Container>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <h1 style={{ width: '90%' }}>Voluntary Work</h1>
+      {/* Styled Header */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          backgroundColor: '#6D2323',
+          padding: '16px',
+          borderRadius: '8px',
+          marginBottom: '16px',
+        }}
+      >
+        <h1 style={{ width: '100%', color: '#FEF9E1', margin: 0 }}>
+          Voluntary Work
+        </h1>
       </div>
+
       {/* Add New Item Form Box */}
       <Paper elevation={3} sx={{ padding: 2, marginBottom: 3 }}>
         <Box display="flex" flexDirection="column" alignItems="flex-start" sx={{ marginBottom: 2 }}>
-          <Box display="flex" alignItems="center" sx={{ marginBottom: 2 }}>
+          <Box display="flex" alignItems="center" sx={{ marginBottom: 2, flexWrap: 'wrap' }}>
             <TextField
               label="Name and Address"
               value={newItem}
-              sx={{ marginRight: 2 }}
+              sx={{ marginRight: 1 }}
               onChange={(e) => setNewItem(e.target.value)}
             />
             <TextField
@@ -126,7 +134,7 @@ const VoluntaryWork = () => {
               InputLabelProps={{ shrink: true }}
               type="date"
               value={newItem2}
-              sx={{ marginRight: 2 }}
+              sx={{ marginRight: 1 }}
               onChange={(e) => setNewItem2(e.target.value)}
             />
             <TextField
@@ -134,19 +142,19 @@ const VoluntaryWork = () => {
               InputLabelProps={{ shrink: true }}
               type="date"
               value={newItem3}
-              sx={{ marginRight: 2 }}
+              sx={{ marginRight: 1 }}
               onChange={(e) => setNewItem3(e.target.value)}
             />
             <TextField
               label="Number of Hours"
               value={newItem4}
-              sx={{ marginRight: 2 }}
+              sx={{ marginRight: 1 }}
               onChange={(e) => setNewItem4(e.target.value)}
             />
             <TextField
               label="Nature of Works"
               value={newItem5}
-              sx={{ marginRight: 2 }}
+              sx={{ marginRight: 1 }}
               onChange={(e) => setNewItem5(e.target.value)}
             />
             <TextField
@@ -188,25 +196,18 @@ const VoluntaryWork = () => {
               <TableRow key={item.id}>
                 <TableCell>{item.id}</TableCell>
                 <TableCell>
-                  {/* Editable field */}
                   {editItem && editItem.id === item.id ? (
                     <TextField
                       value={editItem.nameAndAddress}
                       onChange={(e) =>
-                        setEditItem({
-                          ...editItem,
-                          nameAndAddress: e.target.value,
-                        })
+                        setEditItem({ ...editItem, nameAndAddress: e.target.value })
                       }
                     />
                   ) : (
                     item.nameAndAddress
                   )}
                 </TableCell>
-
-                {/* cell for the last name */}
                 <TableCell>
-                  {/* Editable field */}
                   {editItem && editItem.id === item.id ? (
                     <TextField
                       value={editItem.dateFrom}
@@ -218,10 +219,7 @@ const VoluntaryWork = () => {
                     item.dateFrom
                   )}
                 </TableCell>
-
-                {/* cell for the dateTo */}
                 <TableCell>
-                  {/* Editable field */}
                   {editItem && editItem.id === item.id ? (
                     <TextField
                       value={editItem.dateTo}
@@ -233,28 +231,22 @@ const VoluntaryWork = () => {
                     item.dateTo
                   )}
                 </TableCell>
-
-                {/* cell for the numberOfHours */}
                 <TableCell>
                   {editItem && editItem.id === item.id ? (
                     <TextField
-                      value={String(editItem.numberOfHours)} // Ensure value is a string
+                      value={String(editItem.numberOfHours)}
                       onChange={(e) =>
-                        setEditItem({
-                          ...editItem,
-                          numberOfHours: e.target.value,
-                        })
+                        setEditItem({ ...editItem, numberOfHours: e.target.value })
                       }
                     />
                   ) : (
                     item.numberOfHours
                   )}
                 </TableCell>
-
                 <TableCell>
                   {editItem && editItem.id === item.id ? (
                     <TextField
-                      value={String(editItem.natureOfWork)} // Ensure value is a string
+                      value={String(editItem.natureOfWork)}
                       onChange={(e) =>
                         setEditItem({ ...editItem, natureOfWork: e.target.value })
                       }
@@ -263,11 +255,10 @@ const VoluntaryWork = () => {
                     item.natureOfWork
                   )}
                 </TableCell>
-
                 <TableCell>
                   {editItem && editItem.id === item.id ? (
                     <TextField
-                      value={String(editItem.person_id)} // Ensure value is a string
+                      value={String(editItem.person_id)}
                       onChange={(e) =>
                         setEditItem({ ...editItem, person_id: e.target.value })
                       }
@@ -276,9 +267,7 @@ const VoluntaryWork = () => {
                     item.person_id
                   )}
                 </TableCell>
-
                 <TableCell>
-                  {/* Show Save/Cancel if editing */}
                   {editItem && editItem.id === item.id ? (
                     <>
                       <Button

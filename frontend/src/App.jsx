@@ -88,7 +88,7 @@ import PDS2 from './components/PDS2';
 import PDS3 from './components/PDS3';
 import PDS4 from './components/PDS4';
 import { PictureAsPdfOutlined } from '@mui/icons-material';
-import ForgotPassword from './components/ForgotPAssword';
+import ForgotPassword from './components/ForgotPassword';
 
 
 
@@ -106,6 +106,7 @@ function App() {
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
   const [open4, setOpen4] = useState(false);
+  const [open5, setOpen5] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const location = useLocation();
 
@@ -114,6 +115,7 @@ function App() {
   const handleClickAttendance = () => setOpen2(!open2);
   const handleClickPayroll = () => setOpen3(!open3);
   const handleClickForms = () => setOpen4(!open4);
+  const handleClickPDSFiles = () => setOpen5(!open5);
 
   const handleItemClick = (item) => {setSelectedItem(item);};
 
@@ -170,7 +172,7 @@ function App() {
         </AppBar>
 
 
-        {!['/', '/login', '/Register'].includes(location.pathname) && (
+        {!['/', '/login', '/Register', '/forgot-password'].includes(location.pathname) && (
           <Sidebar
             open={open}
             handleClick={handleClick}
@@ -180,6 +182,8 @@ function App() {
             handleClickPayroll={handleClickPayroll}
             open4={open4}
             handleClickForms={handleClickForms}
+            open5={open5}
+            handleClickPDSFiles={handleClickPDSFiles}
           />
         )}
 

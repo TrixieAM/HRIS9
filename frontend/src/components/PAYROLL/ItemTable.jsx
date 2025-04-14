@@ -2,16 +2,17 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Button,
+  Box,
+  TextField,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  TextField,
+  TableContainer,
+  Paper,
   Container,
   Typography,
-  Grid,
-  Paper,
 } from "@mui/material";
 
 const ItemTable = () => {
@@ -30,189 +31,188 @@ const ItemTable = () => {
 
   const fetchItems = async () => {
     const response = await axios.get("http://localhost:5000/api/item-table");
-    const formattedData = response.data.map(item => ({
-      ...item,
-      created_at: new Date(item.created_at).toLocaleString(), // Fix invalid date
-    }));
-    setItems(formattedData);
+    setItems(response.data);
   };
 
-  const addItem = async () => {
-    await axios.post("http://localhost:5000/api/item-table", newItem);
-    setNewItem({ item_description: "", employeeID: "", item_code: "", salary_grade: "" });
-    fetchItems();
+  const handleChange = (e) => {
+    setNewItem({
+      ...newItem,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const updateItem = async (id) => {
-    const recordToUpdate = items.find((record) => record.id === id);
-    await axios.put(`http://localhost:5000/api/item-table/${id}`, recordToUpdate);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (editItemId) {
+        await axios.put(
+          `http://localhost:5000/api/item-table/${editItemId}`,
+          newItem
+        );
+      } else {
+        await axios.post("http://localhost:5000/api/item-table", newItem);
+      }
+      setEditItemId(null);
+      fetchItems();
+      resetForm();
+    } catch (error) {
+      console.error("Error submitting item data", error);
+    }
+  };
+
+  const handleEdit = (item) => {
+    setNewItem(item);
+    setEditItemId(item.id);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/item-table/${id}`);
+      fetchItems();
+    } catch (error) {
+      console.error("Error deleting item", error);
+    }
+  };
+
+  const handleCancel = () => {
+    resetForm();
     setEditItemId(null);
-    fetchItems();
   };
 
-  const deleteItem = async (id) => {
-    await axios.delete(`http://localhost:5000/api/item-table/${id}`);
-    fetchItems();
+  const resetForm = () => {
+    setNewItem({
+      item_description: "",
+      employeeID: "",
+      item_code: "",
+      salary_grade: "",
+    });
   };
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
+      {/* Header */}
+      <Typography
+        variant="h4"
+        sx={{
+          fontWeight: "bold",
+          backgroundColor: "#6D2323", // Maroon color
+          color: "#FEF9E1", // Cream color
+          padding: "12px 16px",
+          borderRadius: "8px",
+          marginBottom: "16px",
+        }}
+      >
         Item Table Management
       </Typography>
 
-      {/* Add New Item */}
-      <Paper elevation={2} style={{ padding: "16px", marginBottom: "24px" }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+      {/* Form Box for Item (white background) */}
+      <Paper
+        elevation={3}
+        sx={{
+          padding: 3,
+          backgroundColor: "#ffffff", // White background
+          borderRadius: "8px",
+          marginBottom: "24px",
+        }}
+      >
+        <Box display="flex" flexWrap="wrap" sx={{ marginBottom: 3, gap: 2 }}>
+          {Object.keys(newItem).map((key) => (
             <TextField
-              label="Item Description"
-              value={newItem.item_description}
-              onChange={(e) => setNewItem({ ...newItem, item_description: e.target.value })}
-              fullWidth
+              key={key}
+              label={key.replace(/([A-Z])/g, " $1").trim()}
+              name={key}
+              value={newItem[key]}
+              onChange={handleChange}
+              sx={{
+                width: "23%",
+                color: "#000000", // Black text for the input
+              }}
             />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Employee ID"
-              value={newItem.employeeID}
-              onChange={(e) => setNewItem({ ...newItem, employeeID: e.target.value })}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Item Code"
-              value={newItem.item_code}
-              onChange={(e) => setNewItem({ ...newItem, item_code: e.target.value })}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Salary Grade"
-              value={newItem.salary_grade}
-              onChange={(e) => setNewItem({ ...newItem, salary_grade: e.target.value })}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Button onClick={addItem} variant="contained" color="primary">
-              Add Item
+          ))}
+          <Button
+            onClick={handleSubmit}
+            variant="contained"
+            sx={{
+              backgroundColor: "#6D2323", // Maroon for Add/Update
+              "&:hover": {
+                backgroundColor: "#9C2A2A", // Darker maroon for hover
+              },
+              height: "55px",
+            }}
+          >
+            {editItemId ? "Update" : "Add"}
+          </Button>
+          {editItemId && (
+            <Button
+              onClick={handleCancel}
+              variant="contained"
+              color="error"
+              sx={{
+                height: "55px",
+              }}
+            >
+              Cancel
             </Button>
-          </Grid>
-        </Grid>
+          )}
+        </Box>
       </Paper>
 
-      {/* Item Table */}
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Item Description</TableCell>
-            <TableCell>Employee ID</TableCell>
-            <TableCell>Item Code</TableCell>
-            <TableCell>Salary Grade</TableCell>
-            <TableCell>Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {items.map((record) => (
-            <TableRow key={record.id}>
-              <TableCell>{record.id}</TableCell>
-              <TableCell>
-                {editItemId === record.id ? (
-                  <TextField
-                    value={record.item_description}
-                    onChange={(e) => {
-                      const updatedRecord = { ...record, item_description: e.target.value };
-                      setItems((prevData) =>
-                        prevData.map((rec) => (rec.id === record.id ? updatedRecord : rec))
-                      );
-                    }}
-                    size="small"
-                    variant="outlined"
-                  />
-                ) : (
-                  record.item_description
-                )}
-              </TableCell>
-              <TableCell>
-                {editItemId === record.id ? (
-                  <TextField
-                    value={record.employeeID}
-                    onChange={(e) => {
-                      const updatedRecord = { ...record, employeeID: e.target.value };
-                      setItems((prevData) =>
-                        prevData.map((rec) => (rec.id === record.id ? updatedRecord : rec))
-                      );
-                    }}
-                    size="small"
-                    variant="outlined"
-                  />
-                ) : (
-                  record.employeeID
-                )}
-              </TableCell>
-              <TableCell>
-                {editItemId === record.id ? (
-                  <TextField
-                    value={record.item_code}
-                    onChange={(e) => {
-                      const updatedRecord = { ...record, item_code: e.target.value };
-                      setItems((prevData) =>
-                        prevData.map((rec) => (rec.id === record.id ? updatedRecord : rec))
-                      );
-                    }}
-                    size="small"
-                    variant="outlined"
-                  />
-                ) : (
-                  record.item_code
-                )}
-              </TableCell>
-              <TableCell>
-                {editItemId === record.id ? (
-                  <TextField
-                    value={record.salary_grade}
-                    onChange={(e) => {
-                      const updatedRecord = { ...record, salary_grade: e.target.value };
-                      setItems((prevData) =>
-                        prevData.map((rec) => (rec.id === record.id ? updatedRecord : rec))
-                      );
-                    }}
-                    size="small"
-                    variant="outlined"
-                  />
-                ) : (
-                  record.salary_grade
-                )}
-              </TableCell>
-              <TableCell>
-                {editItemId === record.id ? (
-                  <>
-                    <Button onClick={() => updateItem(record.id)} variant="contained" color="primary">
-                      Update
-                    </Button>
-                    <Button onClick={() => setEditItemId(null)} variant="contained" color="error">
-                      Cancel
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Button onClick={() => setEditItemId(record.id)} variant="contained" color="primary">
-                      Edit
-                    </Button>
-                    <Button onClick={() => deleteItem(record.id)} variant="contained" color="error">
-                      Delete
-                    </Button>
-                  </>
-                )}
-              </TableCell>
+      {/* Data Table */}
+      <TableContainer component={Paper} sx={{ maxHeight: 500, overflow: "auto" }}>
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow style={{ backgroundColor: "#6D2323" }}>
+              <TableCell style={{ color: "#000000", fontWeight: "bold" }}>ID</TableCell>
+              <TableCell style={{ color: "#000000", fontWeight: "bold" }}>Item Description</TableCell>
+              <TableCell style={{ color: "#000000", fontWeight: "bold" }}>Employee ID</TableCell>
+              <TableCell style={{ color: "#000000", fontWeight: "bold" }}>Item Code</TableCell>
+              <TableCell style={{ color: "#000000", fontWeight: "bold" }}>Salary Grade</TableCell>
+              <TableCell style={{ color: "#000000", fontWeight: "bold" }}>Actions</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {items.map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>{item.id}</TableCell>
+                <TableCell>{item.item_description}</TableCell>
+                <TableCell>{item.employeeID}</TableCell>
+                <TableCell>{item.item_code}</TableCell>
+                <TableCell>{item.salary_grade}</TableCell>
+                <TableCell>
+                  <Button
+                    onClick={() => handleEdit(item)}
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "#6D2323", // Maroon for Edit
+                      color: "#FEF9E1", // Cream color text
+                      "&:hover": {
+                        backgroundColor: "#9C2A2A", // Darker maroon hover
+                      },
+                      marginRight: "8px",
+                    }}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    onClick={() => handleDelete(item.id)}
+                    variant="contained"
+                    color="error"
+                    sx={{
+                      backgroundColor: "#000000", // Black for Delete
+                      color: "#ffffff", // White text
+                      "&:hover": {
+                        backgroundColor: "#333333", // Darker black hover
+                      },
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Container>
   );
 };

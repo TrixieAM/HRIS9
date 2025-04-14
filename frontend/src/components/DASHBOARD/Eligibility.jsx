@@ -21,9 +21,8 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import AddIcon from '@mui/icons-material/Add';
 import UploadIcon from '@mui/icons-material/Upload';
 
-
 const Eligibility = () => {
-  const [data, setData] = useState([]); // To hold eligibility data
+  const [data, setData] = useState([]);
   const [newEligibility, setNewEligibility] = useState({
     eligibilityName: '',
     eligibilityRating: '',
@@ -32,15 +31,12 @@ const Eligibility = () => {
     licenseNumber: '',
     DateOfValidity: '',
     person_id: '',
-  }); // To hold input for new eligibility
-  const [editEligibility, setEditEligibility] = useState(null); // To hold eligibility being edited
+  });
+  const [editEligibility, setEditEligibility] = useState(null);
 
-
-  // Fetch all eligibility records on component mount
   useEffect(() => {
     fetchEligibility();
   }, []);
-
 
   const fetchEligibility = async () => {
     try {
@@ -53,8 +49,6 @@ const Eligibility = () => {
     }
   };
 
-
-  // Add new eligibility
   const addEligibility = async () => {
     try {
       if (
@@ -89,8 +83,6 @@ const Eligibility = () => {
     }
   };
 
-
-  // Update eligibility
   const updateEligibility = async () => {
     if (!editEligibility) return;
     try {
@@ -98,13 +90,13 @@ const Eligibility = () => {
         `http://localhost:5000/eligibilityRoute/eligibility/${editEligibility.id}`,
         editEligibility
       );
-      setEditEligibility(null); // Clear edit mode after saving
-      fetchEligibility(); // Refresh the data
+      setEditEligibility(null);
+      fetchEligibility();
     } catch (error) {
       console.error('Error updating eligibility:', error);
     }
   };
-  // Delete eligibility
+
   const deleteEligibility = async (id) => {
     try {
       await axios.delete(
@@ -116,19 +108,22 @@ const Eligibility = () => {
     }
   };
 
-
-
-
   return (
     <Container>
       <Typography
         variant="h4"
         gutterBottom
-        style={{ fontWeight: 'bold', marginTop: '20px' }}
+        style={{
+          fontWeight: 'bold',
+          marginTop: '20px',
+          backgroundColor: '#6D2323',
+          color: '#FEF9E1',
+          padding: '12px 16px',
+          borderRadius: '8px',
+        }}
       >
         Eligibility
       </Typography>
-
 
       {/* Add New Eligibility */}
       <Paper elevation={3} style={{ padding: '16px', marginBottom: '20px' }}>
@@ -162,34 +157,36 @@ const Eligibility = () => {
                 onClick={addEligibility}
                 variant="contained"
                 color="primary"
-                style={{ backgroundColor: '#6D2323', color: '#FEF9E1', width: '1130px', marginTop: '35px', marginLeft: '-5px' }}
-
+                style={{
+                  backgroundColor: '#6D2323',
+                  color: '#FEF9E1',
+                  width: '1130px',
+                  marginTop: '35px',
+                  marginLeft: '-5px',
+                }}
                 startIcon={<AddIcon />}
               >
                 Add
               </Button>
-
             </Box>
-
           </Grid>
         </Grid>
       </Paper>
-
 
       {/* Eligibility Table */}
       <Paper elevation={3} style={{ padding: '16px' }}>
         <Table>
           <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Eligibility Name</TableCell>
-              <TableCell>Rating</TableCell>
-              <TableCell>Date of Exam</TableCell>
-              <TableCell>Place of Exam</TableCell>
-              <TableCell>License Number</TableCell>
-              <TableCell>Date of Validity</TableCell>
-              <TableCell>Person ID</TableCell>
-              <TableCell>Actions</TableCell>
+            <TableRow style={{ backgroundColor: '#6D2323' }}>
+              <TableCell style={{ color: '#FEF9E1', fontWeight: 'bold' }}>ID</TableCell>
+              <TableCell style={{ color: '#FEF9E1', fontWeight: 'bold' }}>Eligibility Name</TableCell>
+              <TableCell style={{ color: '#FEF9E1', fontWeight: 'bold' }}>Rating</TableCell>
+              <TableCell style={{ color: '#FEF9E1', fontWeight: 'bold' }}>Date of Exam</TableCell>
+              <TableCell style={{ color: '#FEF9E1', fontWeight: 'bold' }}>Place of Exam</TableCell>
+              <TableCell style={{ color: '#FEF9E1', fontWeight: 'bold' }}>License Number</TableCell>
+              <TableCell style={{ color: '#FEF9E1', fontWeight: 'bold' }}>Date of Validity</TableCell>
+              <TableCell style={{ color: '#FEF9E1', fontWeight: 'bold' }}>Person ID</TableCell>
+              <TableCell style={{ color: '#FEF9E1', fontWeight: 'bold' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -200,8 +197,7 @@ const Eligibility = () => {
                   .slice(1, -1)
                   .map((key) => (
                     <TableCell key={key}>
-                      {editEligibility &&
-                      editEligibility.id === eligibility.id ? (
+                      {editEligibility && editEligibility.id === eligibility.id ? (
                         <TextField
                           value={editEligibility[key]}
                           onChange={(e) =>
@@ -211,9 +207,7 @@ const Eligibility = () => {
                             })
                           }
                           type={key.includes('Date') ? 'date' : 'text'}
-                          InputLabelProps={
-                            key.includes('Date') ? { shrink: true } : {}
-                          }
+                          InputLabelProps={key.includes('Date') ? { shrink: true } : {}}
                           fullWidth
                         />
                       ) : (
@@ -298,8 +292,4 @@ const Eligibility = () => {
   );
 };
 
-
 export default Eligibility;
-
-
-

@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Alert, TextField, Button, Container, Link, Box } from "@mui/material";
+import {
+  Alert,
+  TextField,
+  Button,
+  Container,
+  Link,
+  Box,
+  Paper,
+  Typography,
+} from "@mui/material";
 import earistLogo from "../assets/earistLogo.jpg";
 
 const ForgotPassword = () => {
@@ -36,7 +45,6 @@ const ForgotPassword = () => {
       });
 
       if (response.ok) {
-        // Handle success (e.g., show success message)
         alert("Reset link sent to your email.");
         navigate("/");
       } else {
@@ -51,80 +59,97 @@ const ForgotPassword = () => {
 
   return (
     <Container
+      maxWidth="sm"
       sx={{
-        width: "90%",
-        height: "90%",
-        backgroundColor: "#ffffff",
         display: "flex",
-        justifyContent: "center",
         alignItems: "center",
-        marginLeft: "-18%",
-        marginBottom: "25px",
-        paddingBottom: "40px",
+        justifyContent: "center",
+        height: "100vh",
       }}
     >
-      <form className="Form" onSubmit={handleSubmit}>
-        <Box
-          sx={{
-            backgroundColor: "#A31D1D",
-            borderRadius: 4,
-            padding: 3,
-            marginTop: "-81px",
-            justifyContent: "center",
-            width: "calc(80% + 25%)",
-            marginLeft: "-33px",
-            marginBottom: "30px",
-          }}
-        >
-          <img
-            src={earistLogo}
-            alt="E.A.R.I.S.T Logo"
-            style={{
-              height: 100,
-              borderRadius: "50%",
-              backgroundColor: "white",
-              paddingTop: "2px",
-              paddingBottom: "2.5px",
-              paddingLeft: "2.5px",
-              paddingRight: "3px",
+      <Paper
+        elevation={3}
+        sx={{
+          padding: 4,
+          width: "68%",
+          borderRadius: 2,
+          textAlign: "center",
+          marginLeft: "-40%",
+          marginTop: "-115%"
+        }}
+      >
+        <Box sx={{ mb: 2 }}>
+          <Box
+            sx={{
+              backgroundColor: "#A31D1D",
+              borderTopLeftRadius: 8,
+              borderTopRightRadius: 8,
+              paddingY: 2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              marginX: "-32px",
+              marginTop: "-32px",
             }}
-          />
+          >
+            <img
+              src={earistLogo}
+              alt="E.A.R.I.S.T Logo"
+              style={{
+                height: 90,
+                borderRadius: "50%",
+                backgroundColor: "white",
+                padding: "4px",
+              }}
+            />
+          </Box>
         </Box>
 
-        <h2>Forgot Password</h2>
+        <Typography variant="h6" gutterBottom>
+          <b>Reset Password</b>
+        </Typography>
 
         {errMessage && (
-          <Alert sx={{ textAlign: "center" }} severity="error">
+          <Alert sx={{ mb: 2 }} severity="error">
             {errMessage}
           </Alert>
         )}
 
-        <TextField
-          name="name"
-          label="Name"
-          sx={{ margin: "5% 0", width: "100%" }}
-          onChange={handleChanges}
-        />
-        <TextField
-          name="email"
-          label="Email"
-          type="email"
-          sx={{ marginBottom: "5%", width: "100%" }}
-          autoComplete="email"
-          onChange={handleChanges}
-        />
+        <form onSubmit={handleSubmit}>
+          <TextField
+            name="name"
+            label="Name"
+            fullWidth
+            sx={{ mb: 2 }}
+            onChange={handleChanges}
+          />
+          <TextField
+            name="email"
+            label="Email"
+            type="email"
+            fullWidth
+            sx={{ mb: 3 }}
+            autoComplete="email"
+            onChange={handleChanges}
+          />
 
-        <Button type="submit" variant="contained" sx={{ width: "100%", bgcolor: "#A31D1D" }}>
-          Send Reset Link
-        </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{ bgcolor: "#A31D1D" }}
+          >
+            Send Reset Link
+          </Button>
+        </form>
 
-        <p style={{ marginTop: "20px", color: 'black', fontSize: "13px" }}>
+        <Typography variant="body2" sx={{ mt: 2 }}>
           Remember your password?{" "}
           <Link href="/" underline="hover">
-            Login
+            <b>Login</b>
           </Link>
-        </p>
-      </form>
+        </Typography>
+      </Paper>
     </Container>
   );
 };

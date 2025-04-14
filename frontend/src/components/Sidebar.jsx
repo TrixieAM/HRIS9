@@ -65,6 +65,8 @@ const Sidebar = ({
   handleClickPayroll,
   open4,
   handleClickForms,
+  open5,
+  handleClickPDSFiles,
 
 }) => {
   const userRole = getUserRole();
@@ -548,12 +550,30 @@ const Sidebar = ({
           </>
         )}
 
-        <List>
+{userRole !== 'staff' && (
+          <>
+        
+        <ListItem
+              button
+              onClick={handleClickPDSFiles}
+              sx={{ color: 'black', cursor: 'pointer' }}
+            >
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText primary="PDS Files" sx={{marginLeft: '-25px'}} />
+              <ListItemIcon sx={{ marginLeft: '10rem', color: 'black' }}>
+                {open5 ? <ExpandLess /> : <ExpandMore />}
+              </ListItemIcon>
+            </ListItem>
+
+            <Collapse in={open5} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding sx={{ pl: 4 }}>
           <ListItem 
                   button 
                   component={Link} 
                   to= '/pds1' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'pds1' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'pdsfile' ? 'white' : 'inherit',
+                  sx={{ color: 'black', bgcolor: selectedItem === 'pds1' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'pds1' ? 'white' : 'inherit',
                   }}
                   onClick={() => handleItemClick('pds1')} 
                   >
@@ -566,12 +586,15 @@ const Sidebar = ({
             <ListItemText primary="PDS1" sx={{marginLeft: '-10px'}}/>
           </ListItem>
         </List>
-        <List>
+        </Collapse>
+
+        <Collapse in={open5} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding sx={{ pl: 4 }}>
           <ListItem 
                   button 
                   component={Link} 
                   to= '/pds2' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'pds2' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'pdsfile' ? 'white' : 'inherit',
+                  sx={{ color: 'black', bgcolor: selectedItem === 'pds2' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'pds2' ? 'white' : 'inherit',
                   }}
                   onClick={() => handleItemClick('pds2')} 
                   >
@@ -584,12 +607,15 @@ const Sidebar = ({
             <ListItemText primary="PDS2" sx={{marginLeft: '-10px'}}/>
           </ListItem>
         </List>
-        <List>
+        </Collapse>
+        
+        <Collapse in={open5} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding sx={{ pl: 4 }}>
           <ListItem 
                   button 
                   component={Link} 
                   to= '/pds3' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'pds3' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'pdsfile' ? 'white' : 'inherit',
+                  sx={{ color: 'black', bgcolor: selectedItem === 'pds3' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'pds3' ? 'white' : 'inherit',
                   }}
                   onClick={() => handleItemClick('pds3')} 
                   >
@@ -602,6 +628,9 @@ const Sidebar = ({
             <ListItemText primary="PDS3" sx={{marginLeft: '-10px'}}/>
           </ListItem>
         </List>
+        </Collapse>
+        </>
+        )}
 
 
         {userRole !== 'staff' && (

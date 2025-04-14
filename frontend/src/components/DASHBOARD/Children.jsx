@@ -49,8 +49,20 @@ const Children = () => {
   };
 
   return (
-    <Container style={{ marginTop: '20px', backgroundColor: 'FEFE9E1' }}>
-      <h1>Children Dashboard</h1>
+    <Container style={{ marginTop: '20px', backgroundColor: '#FEF9E1' }}>
+      {/* Red Header Section */}
+      <div
+        style={{
+          backgroundColor: '#6D2323',
+          color: '#FEF9E1',
+          padding: '20px',
+          borderRadius: '8px',
+          marginBottom: '20px'
+        }}
+      >
+        <h1 style={{ margin: 0 }}>Children Information</h1>
+        <h3 style={{ margin: 0 }}>Add Children</h3>
+      </div>
 
       {/* Add New Child Form Box */}
       <div
@@ -62,14 +74,11 @@ const Children = () => {
           marginBottom: '20px'
         }}
       >
-        <h3>Add New Child</h3>
         <TextField
           label="First Name"
           value={newChild.childrenFirstName}
           onChange={(e) => setNewChild({ ...newChild, childrenFirstName: e.target.value })}
-          style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px'
-            
-           }}
+          style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }}
         />
         <TextField
           label="Middle Name"
@@ -81,7 +90,7 @@ const Children = () => {
           label="Last Name"
           value={newChild.childrenLastName}
           onChange={(e) => setNewChild({ ...newChild, childrenLastName: e.target.value })}
-          style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px'  }}
+          style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }}
         />
         <TextField
           label="Name Extension"
@@ -116,128 +125,103 @@ const Children = () => {
             });
           }}
           variant="contained"
-          style={{ backgroundColor: '#6D2323', color: '#FEF9E1', width: '1020px', marginTop: '35px', marginLeft: '-10px' }}
+          style={{
+            backgroundColor: '#6D2323',
+            color: '#FEF9E1',
+            width: '1020px',
+            marginTop: '35px',
+            marginLeft: '-10px'
+          }}
           startIcon={<AddIcon />}
         >
           Add
         </Button>
       </div>
 
-      {/* Children Table */}
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>First Name</TableCell>
-            <TableCell>Middle Name</TableCell>
-            <TableCell>Last Name</TableCell>
-            <TableCell>Name Extension</TableCell>
-            <TableCell>Date of Birth</TableCell>
-            <TableCell>Person ID</TableCell>
-            <TableCell>Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {children.map((child) => (
-            <TableRow key={child.id}>
-              <TableCell>{child.id}</TableCell>
-              {editingChildId === child.id ? (
-                <>
-                  <TableCell>
-                    <TextField
-                      value={editChildData.childrenFirstName}
-                      onChange={(e) => setEditChildData({ ...editChildData, childrenFirstName: e.target.value })}
-                      
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      value={editChildData.childrenMiddleName}
-                      onChange={(e) => setEditChildData({ ...editChildData, childrenMiddleName: e.target.value })}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      value={editChildData.childrenLastName}
-                      onChange={(e) => setEditChildData({ ...editChildData, childrenLastName: e.target.value })}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      value={editChildData.childrenNameExtension}
-                      onChange={(e) => setEditChildData({ ...editChildData, childrenNameExtension: e.target.value })}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      type="text"
-                      value={editChildData.dateOfBirth}
-                      onChange={(e) => setEditChildData({ ...editChildData, dateOfBirth: e.target.value })}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      value={editChildData.person_id}
-                      onChange={(e) => setEditChildData({ ...editChildData, person_id: e.target.value })}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      onClick={updateChild}
-                      variant="contained"
-                      style={{ backgroundColor: '#6D2323',
-                        color: '#FEF9E1',
-                        width: '100px',
-                        height: '40px',
-                        marginBottom: '5px', }}
-                      startIcon={<SaveIcon />}
-                    >
-                      Update
-                    </Button>
-                    <Button
-                      onClick={() => setEditingChildId(null)}
-                      variant="contained"
-                      style={{ backgroundColor: 'black',
-                        color: 'white',
-                        width: '100px',
-                        height: '40px',
-                        marginBottom: '5px',
-                        marginLeft: '10px', }}
-                      startIcon={<CancelIcon />}
-                    >
-                      Cancel
-                    </Button>
-                  </TableCell>
-                </>
-              ) : (
-                <>
-                  <TableCell>{child.childrenFirstName}</TableCell>
-                  <TableCell>{child.childrenMiddleName}</TableCell>
-                  <TableCell>{child.childrenLastName}</TableCell>
-                  <TableCell>{child.childrenNameExtension}</TableCell>
-                  <TableCell>{child.dateOfBirth?.split('T')[0]}</TableCell>
-                  <TableCell>{child.person_id}</TableCell>
-                  <TableCell>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      {/* Children Table Styled Like Personal Info */}
+      <div
+        style={{
+          backgroundColor: 'white',
+          padding: '20px',
+          borderRadius: '8px',
+          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+          marginBottom: '20px'
+        }}
+      >
+        <h3 style={{ marginBottom: '20px' }}>Children List</h3>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell>First Name</TableCell>
+              <TableCell>Middle Name</TableCell>
+              <TableCell>Last Name</TableCell>
+              <TableCell>Name Extension</TableCell>
+              <TableCell>Date of Birth</TableCell>
+              <TableCell>Person ID</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {children.map((child) => (
+              <TableRow key={child.id}>
+                {editingChildId === child.id ? (
+                  <>
+                    <TableCell>{child.id}</TableCell>
+                    <TableCell>
+                      <TextField
+                        value={editChildData.childrenFirstName}
+                        onChange={(e) => setEditChildData({ ...editChildData, childrenFirstName: e.target.value })}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <TextField
+                        value={editChildData.childrenMiddleName}
+                        onChange={(e) => setEditChildData({ ...editChildData, childrenMiddleName: e.target.value })}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <TextField
+                        value={editChildData.childrenLastName}
+                        onChange={(e) => setEditChildData({ ...editChildData, childrenLastName: e.target.value })}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <TextField
+                        value={editChildData.childrenNameExtension}
+                        onChange={(e) => setEditChildData({ ...editChildData, childrenNameExtension: e.target.value })}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <TextField
+                        type="text"
+                        value={editChildData.dateOfBirth}
+                        onChange={(e) => setEditChildData({ ...editChildData, dateOfBirth: e.target.value })}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <TextField
+                        value={editChildData.person_id}
+                        onChange={(e) => setEditChildData({ ...editChildData, person_id: e.target.value })}
+                      />
+                    </TableCell>
+                    <TableCell>
                       <Button
-                        onClick={() => {
-                          setEditChildData(child);
-                          setEditingChildId(child.id);
-                        }}
+                        onClick={updateChild}
                         variant="contained"
                         style={{
                           backgroundColor: '#6D2323',
                           color: '#FEF9E1',
                           width: '100px',
                           height: '40px',
-                          marginBottom: '5px',
+                          marginBottom: '5px'
                         }}
-                        startIcon={<EditIcon />}
+                        startIcon={<SaveIcon />}
                       >
-                        Edit
+                        Update
                       </Button>
                       <Button
-                        onClick={() => deleteChild(child.id)}
+                        onClick={() => setEditingChildId(null)}
                         variant="contained"
                         style={{
                           backgroundColor: 'black',
@@ -245,19 +229,65 @@ const Children = () => {
                           width: '100px',
                           height: '40px',
                           marginBottom: '5px',
+                          marginLeft: '10px'
                         }}
-                        startIcon={<DeleteIcon />}
+                        startIcon={<CancelIcon />}
                       >
-                        Delete
+                        Cancel
                       </Button>
-                    </div>
-                  </TableCell>
-                </>
-              )}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+                    </TableCell>
+                  </>
+                ) : (
+                  <>
+                    <TableCell>{child.id}</TableCell>
+                    <TableCell>{child.childrenFirstName}</TableCell>
+                    <TableCell>{child.childrenMiddleName}</TableCell>
+                    <TableCell>{child.childrenLastName}</TableCell>
+                    <TableCell>{child.childrenNameExtension}</TableCell>
+                    <TableCell>{child.dateOfBirth?.split('T')[0]}</TableCell>
+                    <TableCell>{child.person_id}</TableCell>
+                    <TableCell>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <Button
+                          onClick={() => {
+                            setEditChildData(child);
+                            setEditingChildId(child.id);
+                          }}
+                          variant="contained"
+                          style={{
+                            backgroundColor: '#6D2323',
+                            color: '#FEF9E1',
+                            width: '100px',
+                            height: '40px',
+                            marginBottom: '5px'
+                          }}
+                          startIcon={<EditIcon />}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          onClick={() => deleteChild(child.id)}
+                          variant="contained"
+                          style={{
+                            backgroundColor: 'black',
+                            color: 'white',
+                            width: '100px',
+                            height: '40px',
+                            marginBottom: '5px'
+                          }}
+                          startIcon={<DeleteIcon />}
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </>
+                )}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </Container>
   );
 };

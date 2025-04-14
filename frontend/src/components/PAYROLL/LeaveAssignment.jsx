@@ -14,7 +14,6 @@ import {
   Paper,
 } from "@mui/material";
 
-
 const LeaveAssignment = () => {
   const [leaveAssignments, setLeaveAssignments] = useState([]);
   const [form, setForm] = useState({
@@ -24,11 +23,9 @@ const LeaveAssignment = () => {
   });
   const [editingId, setEditingId] = useState(null);
 
-
   useEffect(() => {
     fetchLeaveAssignments();
   }, []);
-
 
   const fetchLeaveAssignments = async () => {
     try {
@@ -39,11 +36,9 @@ const LeaveAssignment = () => {
     }
   };
 
-
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -61,7 +56,6 @@ const LeaveAssignment = () => {
     }
   };
 
-
   const handleEdit = (assignment) => {
     setForm({
       employeeID: assignment.employeeID,
@@ -70,7 +64,6 @@ const LeaveAssignment = () => {
     });
     setEditingId(assignment.id);
   };
-
 
   const handleDelete = async (id) => {
     try {
@@ -81,16 +74,33 @@ const LeaveAssignment = () => {
     }
   };
 
-
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
+      {/* Section Title */}
+      <Typography
+        variant="h4"
+        sx={{
+          fontWeight: 'bold',
+          backgroundColor: '#6D2323',
+          color: '#FEF9E1',
+          padding: '12px 16px',
+          borderRadius: '8px',
+          marginBottom: '16px',
+        }}
+      >
         Leave Assignment Management
       </Typography>
 
-
-      {/* Form for Adding/Updating Leave Assignments */}
-      <Paper elevation={2} style={{ padding: "16px", marginBottom: "24px" }}>
+      {/* Form Section */}
+      <Paper
+        elevation={3}
+        sx={{
+          padding: 3,
+          backgroundColor: '#ffffff',
+          borderRadius: '8px',
+          marginBottom: '24px',
+        }}
+      >
         <Grid container spacing={2}>
           <Grid item xs={12} sm={4}>
             <TextField
@@ -126,106 +136,145 @@ const LeaveAssignment = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Button onClick={handleSubmit} variant="contained" color="primary">
+            <Button
+              onClick={handleSubmit}
+              variant="contained"
+              sx={{
+                backgroundColor: '#6D2323',
+                color: '#FEF9E1',
+                '&:hover': {
+                  backgroundColor: '#9C2A2A',
+                },
+              }}
+            >
               {editingId ? "Update" : "Add"} Leave Assignment
             </Button>
           </Grid>
         </Grid>
       </Paper>
 
-
-      {/* Leave Assignments Table */}
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Employee ID</TableCell>
-            <TableCell>Leave ID</TableCell>
-            <TableCell>No. of Leaves</TableCell>
-            <TableCell>Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {leaveAssignments.map((assignment) => (
-            <TableRow key={assignment.id}>
-              <TableCell>{assignment.id}</TableCell>
-              <TableCell>
-                {editingId === assignment.id ? (
-                  <TextField
-                    value={form.employeeID}
-                    name="employeeID"
-                    onChange={handleChange}
-                    size="small"
-                    variant="outlined"
-                  />
-                ) : (
-                  assignment.employeeID
-                )}
-              </TableCell>
-              <TableCell>
-                {editingId === assignment.id ? (
-                  <TextField
-                    value={form.leaveID}
-                    name="leaveID"
-                    onChange={handleChange}
-                    size="small"
-                    variant="outlined"
-                  />
-                ) : (
-                  assignment.leaveID
-                )}
-              </TableCell>
-              <TableCell>
-                {editingId === assignment.id ? (
-                  <TextField
-                    value={form.noOfLeaves}
-                    name="noOfLeaves"
-                    onChange={handleChange}
-                    size="small"
-                    variant="outlined"
-                  />
-                ) : (
-                  assignment.noOfLeaves
-                )}
-              </TableCell>
-              <TableCell>
-                {editingId === assignment.id ? (
-                  <>
-                    <Button onClick={handleSubmit} variant="contained" color="primary">
-                      Save
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        setEditingId(null);
-                        setForm({ employeeID: "", leaveID: "", noOfLeaves: "" });
-                      }}
-                      variant="contained"
-                      color="error"
-                    >
-                      Cancel
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Button onClick={() => handleEdit(assignment)} variant="contained" color="primary">
-                      Edit
-                    </Button>
-                    <Button onClick={() => handleDelete(assignment.id)} variant="contained" color="error">
-                      Delete
-                    </Button>
-                  </>
-                )}
-              </TableCell>
+      {/* Table Section */}
+      <Paper elevation={3}>
+        <Table>
+          <TableHead>
+            <TableRow style={{ backgroundColor: '#6D2323' }}>
+              <TableCell sx={{ color: '#FEF9E1', fontWeight: 'bold' }}>ID</TableCell>
+              <TableCell sx={{ color: '#FEF9E1', fontWeight: 'bold' }}>Employee ID</TableCell>
+              <TableCell sx={{ color: '#FEF9E1', fontWeight: 'bold' }}>Leave ID</TableCell>
+              <TableCell sx={{ color: '#FEF9E1', fontWeight: 'bold' }}>No. of Leaves</TableCell>
+              <TableCell sx={{ color: '#FEF9E1', fontWeight: 'bold' }}>Actions</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {leaveAssignments.map((assignment) => (
+              <TableRow key={assignment.id}>
+                <TableCell>{assignment.id}</TableCell>
+                <TableCell>
+                  {editingId === assignment.id ? (
+                    <TextField
+                      value={form.employeeID}
+                      name="employeeID"
+                      onChange={handleChange}
+                      size="small"
+                      variant="outlined"
+                    />
+                  ) : (
+                    assignment.employeeID
+                  )}
+                </TableCell>
+                <TableCell>
+                  {editingId === assignment.id ? (
+                    <TextField
+                      value={form.leaveID}
+                      name="leaveID"
+                      onChange={handleChange}
+                      size="small"
+                      variant="outlined"
+                    />
+                  ) : (
+                    assignment.leaveID
+                  )}
+                </TableCell>
+                <TableCell>
+                  {editingId === assignment.id ? (
+                    <TextField
+                      value={form.noOfLeaves}
+                      name="noOfLeaves"
+                      onChange={handleChange}
+                      size="small"
+                      variant="outlined"
+                    />
+                  ) : (
+                    assignment.noOfLeaves
+                  )}
+                </TableCell>
+                <TableCell>
+                  {editingId === assignment.id ? (
+                    <>
+                      <Button
+                        onClick={handleSubmit}
+                        variant="contained"
+                        sx={{
+                          backgroundColor: '#6D2323',
+                          color: '#FEF9E1',
+                          '&:hover': {
+                            backgroundColor: '#9C2A2A',
+                          },
+                          marginRight: 1,
+                        }}
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          setEditingId(null);
+                          setForm({ employeeID: "", leaveID: "", noOfLeaves: "" });
+                        }}
+                        variant="contained"
+                        color="error"
+                      >
+                        Cancel
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        onClick={() => handleEdit(assignment)}
+                        variant="contained"
+                        sx={{
+                          backgroundColor: '#6D2323',
+                          color: '#FEF9E1',
+                          '&:hover': {
+                            backgroundColor: '#9C2A2A',
+                          },
+                          marginRight: 1,
+                        }}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        onClick={() => handleDelete(assignment.id)}
+                        variant="contained"
+                        sx={{
+                          backgroundColor: '#000000',
+                          color: '#ffffff',
+                          '&:hover': {
+                            backgroundColor: '#333333',
+                          },
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>
     </Container>
   );
 };
 
-
 export default LeaveAssignment;
-
-
-

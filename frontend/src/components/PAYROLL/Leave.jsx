@@ -12,6 +12,7 @@ import {
   TableContainer,
   Paper,
   Container,
+  Typography,
 } from '@mui/material';
 
 const Leave = () => {
@@ -57,7 +58,7 @@ const Leave = () => {
       fetchLeave();
       resetForm();
     } catch (error) {
-      console.error('Error submitting holiday suspension data', error);
+      console.error('Error submitting leave data', error);
     }
   };
 
@@ -91,53 +92,84 @@ const Leave = () => {
 
   return (
     <Container>
-      <h2>Leave Records Management</h2>
-
-      <Box display="flex" flexWrap="wrap" sx={{ marginBottom: 3 }}>
-        {Object.keys(leave).map((key) => (
-          <TextField
-            key={key}
-            label={key.replace(/([A-Z])/g, ' $1').trim()}
-            name={key}
-            value={leave[key]}
-            onChange={handleChange}
-            sx={{ marginRight: 2, marginBottom: 2, width: '23%' }}
-          />
-        ))}
-        <Button
-          onClick={handleSubmit}
-          variant="contained"
-          color="primary"
-          sx={{ height: 55, marginRight: 2 }}
-        >
-          {editingId ? 'Update' : 'Add'}
-        </Button>
-        {editingId && (
-          <Button
-            onClick={handleCancel}
-            variant="contained"
-            color="error"
-            sx={{ height: 55 }}
-          >
-            Cancel
-          </Button>
-        )}
-      </Box>
-
-      <TableContainer
-        component={Paper}
-        sx={{ maxHeight: 500, overflow: 'auto' }}
+      {/* Header */}
+      <Typography
+        variant="h4"
+        sx={{
+          fontWeight: 'bold',
+          backgroundColor: '#6D2323', // Maroon color
+          color: '#FEF9E1', // Cream color
+          padding: '12px 16px',
+          borderRadius: '8px',
+          marginBottom: '16px',
+        }}
       >
+        Leave Records Management
+      </Typography>
+
+      {/* Form Box for Leave (white background) */}
+      <Paper
+        elevation={3}
+        sx={{
+          padding: 3,
+          backgroundColor: '#ffffff', // White background
+          borderRadius: '8px',
+          marginBottom: '24px',
+        }}
+      >
+        <Box display="flex" flexWrap="wrap" sx={{ marginBottom: 3, gap: 2 }}>
+          {Object.keys(leave).map((key) => (
+            <TextField
+              key={key}
+              label={key.replace(/([A-Z])/g, ' $1').trim()}
+              name={key}
+              value={leave[key]}
+              onChange={handleChange}
+              sx={{
+                width: '23%',
+                color: '#000000', // Black text for the input
+              }}
+            />
+          ))}
+          <Button
+            onClick={handleSubmit}
+            variant="contained"
+            sx={{
+              backgroundColor: '#6D2323', // Maroon for Add/Update
+              '&:hover': {
+                backgroundColor: '#9C2A2A', // Darker maroon for hover
+              },
+              height: '55px',
+            }}
+          >
+            {editingId ? 'Update' : 'Add'}
+          </Button>
+          {editingId && (
+            <Button
+              onClick={handleCancel}
+              variant="contained"
+              color="error"
+              sx={{
+                height: '55px',
+              }}
+            >
+              Cancel
+            </Button>
+          )}
+        </Box>
+      </Paper>
+
+      {/* Data Table */}
+      <TableContainer component={Paper} sx={{ maxHeight: 500, overflow: 'auto' }}>
         <Table stickyHeader>
           <TableHead>
-            <TableRow>
-              <TableCell>No.</TableCell>
-              <TableCell>Leave Code</TableCell>
-              <TableCell>Descriptions</TableCell>
-              <TableCell>Number of Hours</TableCell>
-              <TableCell>Status</TableCell>
-
-              <TableCell>Actions</TableCell>
+            <TableRow style={{ backgroundColor: '#6D2323' }}>
+              <TableCell style={{ color: '#000000', fontWeight: 'bold' }}>No.</TableCell>
+              <TableCell style={{ color: '#000000', fontWeight: 'bold' }}>Leave Code</TableCell>
+              <TableCell style={{ color: '#000000', fontWeight: 'bold' }}>Description</TableCell>
+              <TableCell style={{ color: '#000000', fontWeight: 'bold' }}>Number of Hours</TableCell>
+              <TableCell style={{ color: '#000000', fontWeight: 'bold' }}>Status</TableCell>
+              <TableCell style={{ color: '#000000', fontWeight: 'bold' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -152,8 +184,14 @@ const Leave = () => {
                   <Button
                     onClick={() => handleEdit(item)}
                     variant="contained"
-                    color="primary"
-                    sx={{ marginRight: 1 }}
+                    sx={{
+                      backgroundColor: '#6D2323', // Maroon for Edit
+                      color: '#FEF9E1', // Cream color text
+                      '&:hover': {
+                        backgroundColor: '#9C2A2A', // Darker maroon hover
+                      },
+                      marginRight: '8px',
+                    }}
                   >
                     Edit
                   </Button>
@@ -161,6 +199,13 @@ const Leave = () => {
                     onClick={() => handleDelete(item.id)}
                     variant="contained"
                     color="error"
+                    sx={{
+                      backgroundColor: '#000000', // Black for Delete
+                      color: '#ffffff', // White text
+                      '&:hover': {
+                        backgroundColor: '#333333', // Darker black hover
+                      },
+                    }}
                   >
                     Delete
                   </Button>
@@ -175,4 +220,3 @@ const Leave = () => {
 };
 
 export default Leave;
-

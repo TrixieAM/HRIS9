@@ -29,7 +29,7 @@ const AllAttendanceRecord = () => {
         { personID, startDate, endDate }
       );
       setRecords(response.data);
-      setSubmittedID(personID); // Store the submitted PersonID to display
+      setSubmittedID(personID);
     } catch (error) {
       console.error("Error fetching attendance records:", error);
     }
@@ -37,76 +37,110 @@ const AllAttendanceRecord = () => {
 
   return (
     <Box sx={{ p: 4 }}>
-      <Typography variant="h4" gutterBottom>
+      {/* Header */}
+      <Typography
+        variant="h4"
+        gutterBottom
+        style={{
+          fontWeight: 'bold',
+          backgroundColor: '#6D2323',
+          color: '#FEF9E1',
+          padding: '12px 16px',
+          borderRadius: '8px',
+        }}
+      >
         Attendance Record Search
       </Typography>
 
-      <TextField
-        label="Person ID"
-        variant="outlined"
-        value={personID}
-        onChange={(e) => setPersonID(e.target.value)}
-        required
-        sx={{ width: "180px", marginLeft: "10px" }}
-      />
-      <TextField
-        label="Start Date"
-        type="date"
-        sx={{ width: "180px", marginLeft: "10px" }}
-        slotProps={{
-          inputLabel: {
-            shrink: true,
-          },
+      {/* Form Box (white background) */}
+      <Paper
+        elevation={3}
+        sx={{
+          p: 3,
+          mb: 4,
+          backgroundColor: '#ffffff',
+          borderRadius: '8px',
         }}
-        value={startDate}
-        onChange={(e) => setStartDate(e.target.value)}
-        required
-      />
-      <TextField
-        label="End Date"
-        type="date"
-        sx={{ width: "180px", marginLeft: "10px" }}
-        slotProps={{
-          inputLabel: {
-            shrink: true,
-          },
-        }}
-        value={endDate}
-        onChange={(e) => setEndDate(e.target.value)}
-        required
-      />
-      <Button
-        sx={{ width: "200px", height: "55px", marginLeft: "10px" }}
-        variant="contained"
-        type="submit"
-        color="primary"
-        onClick={handleSubmit}
       >
-        Search
-      </Button>
+        <Box
+          component="form"
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            gap: 2,
+          }}
+          onSubmit={handleSubmit}
+        >
+          <TextField
+            label="Person ID"
+            variant="outlined"
+            value={personID}
+            onChange={(e) => setPersonID(e.target.value)}
+            required
+            sx={{ width: "180px" }}
+          />
+          <TextField
+            label="Start Date"
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            required
+            sx={{ width: "180px" }}
+            InputLabelProps={{ shrink: true }}
+          />
+          <TextField
+            label="End Date"
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            required
+            sx={{ width: "180px" }}
+            InputLabelProps={{ shrink: true }}
+          />
+          <Button
+            variant="contained"
+            type="submit"
+            style={{
+              width: "200px",
+              height: "55px",
+              backgroundColor: "#6D2323",
+              color: "#FEF9E1",
+            }}
+          >
+            Search
+          </Button>
+        </Box>
+      </Paper>
 
+      {/* Display submitted Person ID */}
       {submittedID && (
         <Typography variant="h6" sx={{ mt: 4 }}>
           Records for Person ID: {submittedID}
         </Typography>
       )}
 
+      {/* Results Table */}
       {records.length > 0 && (
-        <TableContainer component={Paper} sx={{ mt: 4 }} style={{marginBottom: '5%'}}>
+        <TableContainer
+          component={Paper}
+          sx={{ mt: 4, mb: 6 }}
+          elevation={3}
+        >
           <Table>
             <TableHead>
-              <TableRow>
-                <TableCell>
-                  <strong>PersonID</strong>
+              <TableRow style={{ backgroundColor: '#6D2323' }}>
+                <TableCell style={{ color: '#FEF9E1', fontWeight: 'bold' }}>
+                  Person ID
                 </TableCell>
-                <TableCell>
-                  <strong>Date</strong>
+                <TableCell style={{ color: '#FEF9E1', fontWeight: 'bold' }}>
+                  Date
                 </TableCell>
-                <TableCell>
-                  <strong>Time</strong>
+                <TableCell style={{ color: '#FEF9E1', fontWeight: 'bold' }}>
+                  Time
                 </TableCell>
-                <TableCell>
-                  <strong>AttendanceState</strong>
+                <TableCell style={{ color: '#FEF9E1', fontWeight: 'bold' }}>
+                  Attendance State
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -123,9 +157,6 @@ const AllAttendanceRecord = () => {
           </Table>
         </TableContainer>
       )}
-
-
-      
     </Box>
   );
 };

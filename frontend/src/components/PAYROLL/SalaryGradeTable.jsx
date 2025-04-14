@@ -14,7 +14,6 @@ import {
   Paper,
 } from "@mui/material";
 
-
 const SalaryGradeTable = () => {
   const [salaryGrades, setSalaryGrades] = useState([]);
   const [newSalaryGrade, setNewSalaryGrade] = useState({
@@ -31,17 +30,14 @@ const SalaryGradeTable = () => {
   });
   const [editSalaryGradeId, setEditSalaryGradeId] = useState(null);
 
-
   useEffect(() => {
     fetchSalaryGrades();
   }, []);
-
 
   const fetchSalaryGrades = async () => {
     const response = await axios.get("http://localhost:5000/salary-grade");
     setSalaryGrades(response.data);
   };
-
 
   const addSalaryGrade = async () => {
     if (Object.values(newSalaryGrade).includes("")) {
@@ -65,7 +61,6 @@ const SalaryGradeTable = () => {
     }
   };
 
-
   const updateSalaryGrade = async (id) => {
     const recordToUpdate = salaryGrades.find((record) => record.id === id);
     await axios.put(
@@ -76,22 +71,38 @@ const SalaryGradeTable = () => {
     fetchSalaryGrades();
   };
 
-
   const deleteSalaryGrade = async (id) => {
     await axios.delete(`http://localhost:5000/salary-grade/${id}`);
     fetchSalaryGrades();
   };
 
-
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
+      {/* Header */}
+      <Typography
+        variant="h4"
+        sx={{
+          fontWeight: "bold",
+          backgroundColor: "#6D2323", // Maroon color
+          color: "#FEF9E1", // Cream color
+          padding: "12px 16px",
+          borderRadius: "8px",
+          marginBottom: "16px",
+        }}
+      >
         Salary Grade Management
       </Typography>
 
-
       {/* Add New Salary Grade Record */}
-      <Paper elevation={2} style={{ padding: "16px", marginBottom: "24px" }}>
+      <Paper
+        elevation={3}
+        sx={{
+          padding: 3,
+          backgroundColor: "#ffffff", // White background
+          borderRadius: "8px",
+          marginBottom: "24px",
+        }}
+      >
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -104,6 +115,7 @@ const SalaryGradeTable = () => {
                 })
               }
               fullWidth
+              InputLabelProps={{ shrink: true }}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -138,7 +150,11 @@ const SalaryGradeTable = () => {
             <Button
               onClick={addSalaryGrade}
               variant="contained"
-              color="primary"
+              sx={{
+                backgroundColor: "#6D2323", // Maroon for Add button
+                '&:hover': { backgroundColor: "#9C2A2A" }, // Darker maroon hover
+                height: "55px",
+              }}
             >
               Add Salary Grade
             </Button>
@@ -146,17 +162,30 @@ const SalaryGradeTable = () => {
         </Grid>
       </Paper>
 
-
+      {/* Salary Grade Table */}
       <Table>
         <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Effectivity Date</TableCell>
-            <TableCell>Salary Grade Number</TableCell>
+          <TableRow style={{ backgroundColor: "#6D2323" }}>
+            <TableCell style={{ color: "#FEF9E1", fontWeight: "bold" }}>
+              ID
+            </TableCell>
+            <TableCell style={{ color: "#FEF9E1", fontWeight: "bold" }}>
+              Effectivity Date
+            </TableCell>
+            <TableCell style={{ color: "#FEF9E1", fontWeight: "bold" }}>
+              Salary Grade Number
+            </TableCell>
             {[...Array(8)].map((_, index) => (
-              <TableCell key={index}>Step {index + 1}</TableCell>
+              <TableCell
+                key={index}
+                style={{ color: "#FEF9E1", fontWeight: "bold" }}
+              >
+                Step {index + 1}
+              </TableCell>
             ))}
-            <TableCell>Actions</TableCell>
+            <TableCell style={{ color: "#FEF9E1", fontWeight: "bold" }}>
+              Actions
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -237,7 +266,12 @@ const SalaryGradeTable = () => {
                     <Button
                       onClick={() => updateSalaryGrade(record.id)}
                       variant="contained"
-                      color="primary"
+                      sx={{
+                        backgroundColor: "#6D2323",
+                        color: "#FEF9E1",
+                        "&:hover": { backgroundColor: "#9C2A2A" },
+                        marginRight: "8px",
+                      }}
                     >
                       Update
                     </Button>
@@ -245,6 +279,11 @@ const SalaryGradeTable = () => {
                       onClick={() => setEditSalaryGradeId(null)}
                       variant="contained"
                       color="error"
+                      sx={{
+                        backgroundColor: "#000000",
+                        color: "#ffffff",
+                        "&:hover": { backgroundColor: "#333333" },
+                      }}
                     >
                       Cancel
                     </Button>
@@ -254,7 +293,12 @@ const SalaryGradeTable = () => {
                     <Button
                       onClick={() => setEditSalaryGradeId(record.id)}
                       variant="contained"
-                      color="primary"
+                      sx={{
+                        backgroundColor: "#6D2323",
+                        color: "#FEF9E1",
+                        "&:hover": { backgroundColor: "#9C2A2A" },
+                        marginRight: "8px",
+                      }}
                     >
                       Edit
                     </Button>
@@ -262,6 +306,11 @@ const SalaryGradeTable = () => {
                       onClick={() => deleteSalaryGrade(record.id)}
                       variant="contained"
                       color="error"
+                      sx={{
+                        backgroundColor: "#000000",
+                        color: "#ffffff",
+                        "&:hover": { backgroundColor: "#333333" },
+                      }}
                     >
                       Delete
                     </Button>
@@ -276,8 +325,4 @@ const SalaryGradeTable = () => {
   );
 };
 
-
 export default SalaryGradeTable;
-
-
-

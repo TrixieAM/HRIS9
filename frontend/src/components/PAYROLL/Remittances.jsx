@@ -12,6 +12,7 @@ import {
   TableContainer,
   Paper,
   Container,
+  Typography,
 } from '@mui/material';
 
 const Remittances = () => {
@@ -66,10 +67,7 @@ const Remittances = () => {
     e.preventDefault();
     try {
       if (editingId) {
-        await axios.put(
-          `http://localhost:5000/api/remittance/${editingId}`,
-          payroll
-        );
+        await axios.put(`http://localhost:5000/api/remittance/${editingId}`, payroll);
       } else {
         await axios.post('http://localhost:5000/api/remittance', payroll);
       }
@@ -101,139 +99,111 @@ const Remittances = () => {
   };
 
   const resetForm = () => {
-    setPayroll({
-      name: '',
-      withHoldingTax: '',
-      personalLifeRet: '',
-      gsisSalarayLoan: '',
-      gsisPolicyLoan: '',
-      gfal: '',
-      cpl: '',
-      mpl: '',
-      mplLite: '',
-      emergencyLoan: '',
-      totalGsisDeds: '',
-      pagibigFundCont: '',
-      pagibig2: '',
-      multiPurpLoan: '',
-      totalPagibigDeds: '',
-      philhealth: '',
-      disallowance: '',
-      landbankSalaryLoan: '',
-      earistCreditCoop: '',
-      feu: '',
-      mtslaSalaryLoan: '',
-      savingAndLoan: '',
-      totalOtherDeds: '',
-      totalDeds: '',
-    });
+    setPayroll(
+      Object.fromEntries(Object.keys(payroll).map((key) => [key, '']))
+    );
   };
 
   return (
     <Container>
-      <h2>Remittances Register for Regular Employees</h2>
+      {/* Header */}
+      <Typography
+        variant="h4"
+        sx={{
+          fontWeight: "bold",
+          backgroundColor: "#6D2323",
+          color: "#FEF9E1",
+          padding: "12px 16px",
+          borderRadius: "8px",
+          marginBottom: "16px",
+        }}
+      >
+        Remittances Register for Regular Employees
+      </Typography>
 
-      <Box display="flex" flexWrap="wrap" sx={{ marginBottom: 3 }}>
-        {Object.keys(payroll).map((key) => (
-          <TextField
-            key={key}
-            label={key.replace(/([A-Z])/g, ' $1').trim()}
-            name={key}
-            value={payroll[key]}
-            onChange={handleChange}
-            sx={{ marginRight: 2, marginBottom: 2, width: '23%' }}
-          />
-        ))}
-        <Button
-          onClick={handleSubmit}
-          variant="contained"
-          color="primary"
-          sx={{ height: 55, marginRight: 2 }}
-        >
-          {editingId ? 'Update' : 'Add'}
-        </Button>
-        {editingId && (
+      {/* Form Box */}
+      <Paper
+        elevation={3}
+        sx={{
+          padding: 3,
+          backgroundColor: "#ffffff",
+          borderRadius: "8px",
+          marginBottom: "24px",
+        }}
+      >
+        <Box display="flex" flexWrap="wrap" sx={{ marginBottom: 3, gap: 2 }}>
+          {Object.keys(payroll).map((key) => (
+            <TextField
+              key={key}
+              label={key.replace(/([A-Z])/g, " $1").trim()}
+              name={key}
+              value={payroll[key]}
+              onChange={handleChange}
+              sx={{ width: "23%", color: "#000000" }}
+            />
+          ))}
           <Button
-            onClick={handleCancel}
+            onClick={handleSubmit}
             variant="contained"
-            color="error"
-            sx={{ height: 55 }}
+            sx={{
+              backgroundColor: "#6D2323",
+              "&:hover": {
+                backgroundColor: "#9C2A2A",
+              },
+              height: "55px",
+            }}
           >
-            Cancel
+            {editingId ? "Update" : "Add"}
           </Button>
-        )}
-      </Box>
+          {editingId && (
+            <Button
+              onClick={handleCancel}
+              variant="contained"
+              color="error"
+              sx={{ height: "55px" }}
+            >
+              Cancel
+            </Button>
+          )}
+        </Box>
+      </Paper>
 
+      {/* Table */}
       <TableContainer
         component={Paper}
         sx={{ maxHeight: 500, overflow: 'auto' }}
       >
         <Table stickyHeader>
           <TableHead>
-            <TableRow>
-              <TableCell>No.</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>With Holding Tax</TableCell>
-              <TableCell>Personal Life Ret</TableCell>
-              <TableCell>Gsis Salaray Loan</TableCell>
-              <TableCell>Gsis Policy Loan</TableCell>
-              <TableCell>GFAL</TableCell>
-              <TableCell>CPL</TableCell>
-              <TableCell>MPL</TableCell>
-              <TableCell>MPL LITE</TableCell>
-              <TableCell>Emergency Loan</TableCell>
-              <TableCell>Total Gsis Deds</TableCell>
-              <TableCell>Pag-ibig Fund Cont</TableCell>
-              <TableCell>Pagibig2</TableCell>
-              <TableCell>Multi Purp Loan</TableCell>
-              <TableCell>Total Pagibig Deds</TableCell>
-              <TableCell>Philhealth</TableCell>
-              <TableCell>Disallowance</TableCell>
-              <TableCell>Landbank Salary Loan</TableCell>
-              <TableCell>Earist Credit Coop</TableCell>
-              <TableCell>FEU</TableCell>
-              <TableCell>Mtsla Salary Loan</TableCell>
-              <TableCell>Saving And Loan</TableCell>
-              <TableCell>Total Other Deds</TableCell>
-              <TableCell>Total Deds</TableCell>
-              <TableCell>Action</TableCell>
+            <TableRow style={{ backgroundColor: "#6D2323" }}>
+              <TableCell style={{ color: "#000000", fontWeight: "bold" }}>No.</TableCell>
+              {Object.keys(payroll).map((key) => (
+                <TableCell key={key} style={{ color: "#000000", fontWeight: "bold" }}>
+                  {key.replace(/([A-Z])/g, " $1").trim()}
+                </TableCell>
+              ))}
+              <TableCell style={{ color: "#000000", fontWeight: "bold" }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {remittances.map((item) => (
               <TableRow key={item.id}>
                 <TableCell>{item.id}</TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.withHoldingTax}</TableCell>
-                <TableCell>{item.personalLifeRet}</TableCell>
-                <TableCell>{item.gsisSalarayLoan}</TableCell>
-                <TableCell>{item.gsisPolicyLoan}</TableCell>
-                <TableCell>{item.gfal}</TableCell>
-                <TableCell>{item.cpl}</TableCell>
-                <TableCell>{item.mpl}</TableCell>
-                <TableCell>{item.mplLite}</TableCell>
-                <TableCell>{item.emergencyLoan}</TableCell>
-                <TableCell>{item.totalGsisDeds}</TableCell>
-                <TableCell>{item.pagibigFundCont}</TableCell>
-                <TableCell>{item.pagibig2}</TableCell>
-                <TableCell>{item.multiPurpLoan}</TableCell>
-                <TableCell>{item.totalPagibigDeds}</TableCell>
-                <TableCell>{item.philhealth}</TableCell>
-                <TableCell>{item.disallowance}</TableCell>
-                <TableCell>{item.landbankSalaryLoan}</TableCell>
-                <TableCell>{item.earistCreditCoop}</TableCell>
-                <TableCell>{item.feu}</TableCell>
-                <TableCell>{item.mtslaSalaryLoan}</TableCell>
-                <TableCell>{item.savingAndLoan}</TableCell>
-                <TableCell>{item.totalOtherDeds}</TableCell>
-                <TableCell>{item.totalDeds}</TableCell>
-
+                {Object.keys(payroll).map((key) => (
+                  <TableCell key={key}>{item[key]}</TableCell>
+                ))}
                 <TableCell>
                   <Button
                     onClick={() => handleEdit(item)}
                     variant="contained"
-                    color="primary"
-                    sx={{ marginRight: 1 }}
+                    sx={{
+                      backgroundColor: "#6D2323",
+                      color: "#FEF9E1",
+                      "&:hover": {
+                        backgroundColor: "#9C2A2A",
+                      },
+                      marginRight: "8px",
+                    }}
                   >
                     Edit
                   </Button>
@@ -241,6 +211,13 @@ const Remittances = () => {
                     onClick={() => handleDelete(item.id)}
                     variant="contained"
                     color="error"
+                    sx={{
+                      backgroundColor: "#000000",
+                      color: "#ffffff",
+                      "&:hover": {
+                        backgroundColor: "#333333",
+                      },
+                    }}
                   >
                     Delete
                   </Button>

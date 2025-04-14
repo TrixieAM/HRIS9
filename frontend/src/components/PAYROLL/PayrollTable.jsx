@@ -12,6 +12,7 @@ import {
   TableContainer,
   Paper,
   Container,
+  Typography,
 } from "@mui/material";
 
 const PayrollTable = () => {
@@ -83,46 +84,86 @@ const PayrollTable = () => {
 
   const resetForm = () => {
     setPayroll(
-      Object.fromEntries(
-        Object.keys(payroll).map((key) => [key, ""])
-      )
+      Object.fromEntries(Object.keys(payroll).map((key) => [key, ""]))
     );
   };
 
   return (
     <Container>
-      <h2>Payroll Register for Regular Employees</h2>
+      {/* Header */}
+      <Typography
+        variant="h4"
+        sx={{
+          fontWeight: "bold",
+          backgroundColor: "#6D2323",
+          color: "#FEF9E1",
+          padding: "12px 16px",
+          borderRadius: "8px",
+          marginBottom: "16px",
+        }}
+      >
+        Payroll Register for Regular Employees
+      </Typography>
 
-      <Box display="flex" flexWrap="wrap" sx={{ marginBottom: 3 }}>
-        {Object.keys(payroll).map((key) => (
-          <TextField
-            key={key}
-            label={key.replace(/([A-Z])/g, " $1").trim()}
-            name={key}
-            value={payroll[key]}
-            onChange={handleChange}
-            sx={{ marginRight: 2, marginBottom: 2, width: "23%" }}
-          />
-        ))}
-        <Button onClick={handleSubmit} variant="contained" color="primary" sx={{ height: 55, marginRight: 2 }}>
-          {editingId ? "Update" : "Add"}
-        </Button>
-        {editingId && (
-          <Button onClick={handleCancel} variant="contained" color="error" sx={{ height: 55 }}>
-            Cancel
+      {/* Form Box */}
+      <Paper
+        elevation={3}
+        sx={{
+          padding: 3,
+          backgroundColor: "#ffffff",
+          borderRadius: "8px",
+          marginBottom: "24px",
+        }}
+      >
+        <Box display="flex" flexWrap="wrap" sx={{ marginBottom: 3, gap: 2 }}>
+          {Object.keys(payroll).map((key) => (
+            <TextField
+              key={key}
+              label={key.replace(/([A-Z])/g, " $1").trim()}
+              name={key}
+              value={payroll[key]}
+              onChange={handleChange}
+              sx={{ width: "23%", color: "#000000" }}
+            />
+          ))}
+          <Button
+            onClick={handleSubmit}
+            variant="contained"
+            sx={{
+              backgroundColor: "#6D2323",
+              "&:hover": {
+                backgroundColor: "#9C2A2A",
+              },
+              height: "55px",
+            }}
+          >
+            {editingId ? "Update" : "Add"}
           </Button>
-        )}
-      </Box>
+          {editingId && (
+            <Button
+              onClick={handleCancel}
+              variant="contained"
+              color="error"
+              sx={{ height: "55px" }}
+            >
+              Cancel
+            </Button>
+          )}
+        </Box>
+      </Paper>
 
+      {/* Table */}
       <TableContainer component={Paper} sx={{ maxHeight: 500, overflow: "auto" }}>
         <Table stickyHeader>
           <TableHead>
-            <TableRow>
-              <TableCell>No.</TableCell>
+            <TableRow style={{ backgroundColor: "#6D2323" }}>
+              <TableCell style={{ color: "#000000", fontWeight: "bold" }}>No.</TableCell>
               {Object.keys(payroll).map((key) => (
-                <TableCell key={key}>{key.replace(/([A-Z])/g, " $1").trim()}</TableCell>
+                <TableCell key={key} style={{ color: "#000000", fontWeight: "bold" }}>
+                  {key.replace(/([A-Z])/g, " $1").trim()}
+                </TableCell>
               ))}
-              <TableCell>Actions</TableCell>
+              <TableCell style={{ color: "#000000", fontWeight: "bold" }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -133,10 +174,32 @@ const PayrollTable = () => {
                   <TableCell key={key}>{item[key]}</TableCell>
                 ))}
                 <TableCell>
-                  <Button onClick={() => handleEdit(item)} variant="contained" color="primary" sx={{ marginRight: 1 }}>
+                  <Button
+                    onClick={() => handleEdit(item)}
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "#6D2323",
+                      color: "#FEF9E1",
+                      "&:hover": {
+                        backgroundColor: "#9C2A2A",
+                      },
+                      marginRight: "8px",
+                    }}
+                  >
                     Edit
                   </Button>
-                  <Button onClick={() => handleDelete(item.id)} variant="contained" color="error">
+                  <Button
+                    onClick={() => handleDelete(item.id)}
+                    variant="contained"
+                    color="error"
+                    sx={{
+                      backgroundColor: "#000000",
+                      color: "#ffffff",
+                      "&:hover": {
+                        backgroundColor: "#333333",
+                      },
+                    }}
+                  >
                     Delete
                   </Button>
                 </TableCell>

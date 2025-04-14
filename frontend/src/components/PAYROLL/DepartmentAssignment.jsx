@@ -10,8 +10,9 @@ import {
   TableHead,
   TableRow,
   Container,
+  Paper,
+  Typography,
 } from "@mui/material";
-
 
 const DepartmentAssignment = () => {
   const [data, setData] = useState([]);
@@ -19,15 +20,11 @@ const DepartmentAssignment = () => {
     department_id: "",
     employeeID: "",
   });
-
-
   const [editingId, setEditingId] = useState(null);
-
 
   useEffect(() => {
     fetchData();
   }, []);
-
 
   const fetchData = async () => {
     try {
@@ -38,14 +35,12 @@ const DepartmentAssignment = () => {
     }
   };
 
-
   const handleChange = (e) => {
     setForm((prevForm) => ({
       ...prevForm,
       [e.target.name]: e.target.value,
     }));
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,12 +57,10 @@ const DepartmentAssignment = () => {
     }
   };
 
-
   const handleEdit = (item) => {
     setForm({ department_id: item.department_id, employeeID: item.employeeID });
     setEditingId(item.id);
   };
-
 
   const handleDelete = async (id) => {
     try {
@@ -78,46 +71,92 @@ const DepartmentAssignment = () => {
     }
   };
 
-
   const resetForm = () => {
     setForm({ department_id: "", employeeID: "" });
     setEditingId(null);
   };
 
-
   return (
     <Container>
-      <h2>Department Assignment</h2>
-      <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-        {Object.keys(form).map((key) => (
-          <TextField
-            key={key}
-            label={key.replace(/([A-Z])/g, " $1").toUpperCase()}
-            name={key}
-            value={form[key]}
-            onChange={handleChange}
-            required
-          />
-        ))}
-        <Button type="submit" variant="contained" color="primary">
-          {editingId ? "Update" : "Add"}
-        </Button>
-        {editingId && (
-          <Button type="button" variant="outlined" color="secondary" onClick={resetForm}>
-            Cancel
+      {/* Header */}
+      <Typography
+        variant="h4"
+        sx={{
+          fontWeight: "bold",
+          backgroundColor: "#6D2323",
+          color: "#FEF9E1",
+          padding: "12px 16px",
+          borderRadius: "8px",
+          mb: 4,
+        }}
+      >
+        Department Assignment
+      </Typography>
+
+      {/* Form Box for Department Assignment (white background) */}
+      <Paper
+        elevation={3}
+        sx={{
+          p: 3,
+          mb: 4,
+          backgroundColor: "#ffffff", // White background
+          borderRadius: "8px",
+        }}
+      >
+        <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+          {Object.keys(form).map((key) => (
+            <TextField
+              key={key}
+              label={key.replace(/([A-Z])/g, " $1").toUpperCase()}
+              name={key}
+              value={form[key]}
+              onChange={handleChange}
+              required
+              sx={{ width: "180px" }}
+            />
+          ))}
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              backgroundColor: "#6D2323", // Maroon for Add/Update
+              "&:hover": {
+                backgroundColor: "#9C2A2A", // Darker maroon for hover
+              },
+            }}
+          >
+            {editingId ? "Update" : "Add"}
           </Button>
-        )}
-      </Box>
+          {editingId && (
+            <Button
+              type="button"
+              variant="outlined"
+              color="secondary"
+              onClick={resetForm}
+              sx={{
+                borderColor: "#000000", // Black border for Cancel
+                color: "#000000", // Black text for Cancel
+                "&:hover": {
+                  backgroundColor: "#f0f0f0", // Light grey hover
+                  borderColor: "#000000", // Keep black border on hover
+                },
+              }}
+            >
+              Cancel
+            </Button>
+          )}
+        </Box>
+      </Paper>
 
-
-      <Box sx={{ overflowX: "auto", width: "100%" }}>
+      {/* Data Table */}
+      <Box sx={{ overflowX: "auto", width: "100%", backgroundColor: "white"}}>
         <Table sx={{ minWidth: "800px", tableLayout: "auto" }}>
           <TableHead>
-            <TableRow>
-              <TableCell>NO.</TableCell>
-              <TableCell>Department ID</TableCell>
-              <TableCell>Employee ID</TableCell>
-              <TableCell>Actions</TableCell>
+            <TableRow style={{ backgroundColor: "#6D2323" }}>
+              <TableCell style={{ color: "#FEF9E1", fontWeight: "bold" }}>NO.</TableCell>
+              <TableCell style={{ color: "#FEF9E1", fontWeight: "bold" }}>Department ID</TableCell>
+              <TableCell style={{ color: "#FEF9E1", fontWeight: "bold" }}>Employee ID</TableCell>
+              <TableCell style={{ color: "#FEF9E1", fontWeight: "bold" }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -127,8 +166,31 @@ const DepartmentAssignment = () => {
                 <TableCell>{item.department_id}</TableCell>
                 <TableCell>{item.employeeID}</TableCell>
                 <TableCell>
-                  <Button onClick={() => handleEdit(item)}>Edit</Button>
-                  <Button onClick={() => handleDelete(item.id)}>Delete</Button>
+                  <Button
+                    onClick={() => handleEdit(item)}
+                    sx={{
+                      backgroundColor: "#6D2323", // Maroon for Edit
+                      marginRight: "10px",
+                      color: "#FEF9E1", // Cream text color
+                      "&:hover": {
+                        backgroundColor: "#9C2A2A", // Darker maroon on hover
+                      },
+                    }}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    onClick={() => handleDelete(item.id)}
+                    sx={{
+                      backgroundColor: "#000000", // Black background for Delete
+                      color: "#ffffff", // White text
+                      "&:hover": {
+                        backgroundColor: "#333333", // Darker black on hover
+                      },
+                    }}
+                  >
+                    Delete
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -139,8 +201,4 @@ const DepartmentAssignment = () => {
   );
 };
 
-
 export default DepartmentAssignment;
-
-
-

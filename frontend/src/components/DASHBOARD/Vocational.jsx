@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Button, TextField, Table, TableBody, TableCell, TableHead, TableRow, Container } from '@mui/material';
-import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Save as SaveIcon, Cancel as CancelIcon } from '@mui/icons-material';
+import {
+  Button, TextField, Table, TableBody, TableCell, TableHead, TableRow, Container
+} from '@mui/material';
+import {
+  Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon,
+  Save as SaveIcon, Cancel as CancelIcon
+} from '@mui/icons-material';
 
 const Vocational = () => {
   const [vocationalData, setVocationalData] = useState([]);
@@ -30,6 +35,24 @@ const Vocational = () => {
     }
   };
 
+  const handleAddVocational = async () => {
+    try {
+      await axios.post('http://localhost:5000/vocational/vocational-table', newVocational);
+      fetchVocationalData();
+      setNewVocational({
+        vocationalNameOfSchool: '',
+        vocationalDegree: '',
+        vocationalPeriodFrom: '',
+        vocationalPeriodTo: '',
+        vocationalHighestAttained: '',
+        vocationalYearGraduated: '',
+        person_id: ''
+      });
+    } catch (error) {
+      console.error('Error adding vocational data:', error);
+    }
+  };
+
   const updateVocational = async () => {
     try {
       await axios.put(`http://localhost:5000/vocational/vocational-table/${editingVocationalId}`, editVocationalData);
@@ -50,8 +73,19 @@ const Vocational = () => {
   };
 
   return (
-    <Container style={{ marginTop: '20px', backgroundColor: 'FEFE9E1' }}>
-      <h1>Vocational Information Dashboard</h1>
+    <Container style={{ marginTop: '20px', backgroundColor: '#FEF9E1', padding: '20px', borderRadius: '10px' }}>
+      {/* Header Section */}
+      <div
+        style={{
+          backgroundColor: '#6D2323',
+          color: '#FEF9E1',
+          padding: '10px 20px',
+          borderRadius: '8px',
+          marginBottom: '20px',
+        }}
+      >
+        <h1>Vocational Information Dashboard</h1>
+      </div>
 
       {/* Add New Vocational Form Box */}
       <div
@@ -63,65 +97,30 @@ const Vocational = () => {
           marginBottom: '20px'
         }}
       >
-        <h3>Add New Vocational Information</h3>
-        <TextField
-          label="School"
-          value={newVocational.vocationalNameOfSchool}
-          onChange={(e) => setNewVocational({ ...newVocational, vocationalNameOfSchool: e.target.value })}
-          style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }}
-        />
-        <TextField
-          label="Degree"
-          value={newVocational.vocationalDegree}
-          onChange={(e) => setNewVocational({ ...newVocational, vocationalDegree: e.target.value })}
-          style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }}
-        />
-        <TextField
-          label="From Year"
-          value={newVocational.vocationalPeriodFrom}
-          onChange={(e) => setNewVocational({ ...newVocational, vocationalPeriodFrom: e.target.value })}
-          style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }}
-        />
-        <TextField
-          label="To Year"
-          value={newVocational.vocationalPeriodTo}
-          onChange={(e) => setNewVocational({ ...newVocational, vocationalPeriodTo: e.target.value })}
-          style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }}
-        />
-        <TextField
-          label="Highest Attained"
-          value={newVocational.vocationalHighestAttained}
-          onChange={(e) => setNewVocational({ ...newVocational, vocationalHighestAttained: e.target.value })}
-          style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }}
-        />
-        <TextField
-          label="Year Graduated"
-          value={newVocational.vocationalYearGraduated}
-          onChange={(e) => setNewVocational({ ...newVocational, vocationalYearGraduated: e.target.value })}
-          style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }}
-        />
-        <TextField
-          label="Person ID"
-          value={newVocational.person_id}
-          onChange={(e) => setNewVocational({ ...newVocational, person_id: e.target.value })}
-          style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }}
-        />
+        <h3 style={{ color: '#6D2323' }}>Add New Vocational Information</h3>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+          {[
+            { label: 'School', key: 'vocationalNameOfSchool' },
+            { label: 'Degree', key: 'vocationalDegree' },
+            { label: 'From Year', key: 'vocationalPeriodFrom' },
+            { label: 'To Year', key: 'vocationalPeriodTo' },
+            { label: 'Highest Attained', key: 'vocationalHighestAttained' },
+            { label: 'Year Graduated', key: 'vocationalYearGraduated' },
+            { label: 'Person ID', key: 'person_id' },
+          ].map(({ label, key }) => (
+            <TextField
+              key={key}
+              label={label}
+              value={newVocational[key]}
+              onChange={(e) => setNewVocational({ ...newVocational, [key]: e.target.value })}
+              style={{ width: '324px' }}
+            />
+          ))}
+        </div>
         <Button
-          onClick={async () => {
-            await axios.post('http://localhost:5000/vocational/vocational-table', newVocational);
-            fetchVocationalData();
-            setNewVocational({
-              vocationalNameOfSchool: '',
-              vocationalDegree: '',
-              vocationalPeriodFrom: '',
-              vocationalPeriodTo: '',
-              vocationalHighestAttained: '',
-              vocationalYearGraduated: '',
-              person_id: ''
-            });
-          }}
+          onClick={handleAddVocational}
           variant="contained"
-          style={{ backgroundColor: '#6D2323', color: '#FEF9E1', width: '1020px', marginTop: '35px', marginLeft: '-10px' }}
+          style={{ backgroundColor: '#6D2323', color: '#FEF9E1', marginTop: '20px', width: '100%' }}
           startIcon={<AddIcon />}
         >
           Add
@@ -144,79 +143,36 @@ const Vocational = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {vocationalData.map((vocational) => (
-            <TableRow key={vocational.id}>
-              <TableCell>{vocational.id}</TableCell>
-              {editingVocationalId === vocational.id ? (
+          {vocationalData.map((voc) => (
+            <TableRow key={voc.id}>
+              {editingVocationalId === voc.id ? (
                 <>
-                  <TableCell>
-                    <TextField
-                      value={editVocationalData.vocationalNameOfSchool}
-                      onChange={(e) => setEditVocationalData({ ...editVocationalData, vocationalNameOfSchool: e.target.value })}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      value={editVocationalData.vocationalDegree}
-                      onChange={(e) => setEditVocationalData({ ...editVocationalData, vocationalDegree: e.target.value })}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      type="number"
-                      value={editVocationalData.vocationalPeriodFrom}
-                      onChange={(e) => setEditVocationalData({ ...editVocationalData, vocationalPeriodFrom: e.target.value })}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      type="number"
-                      value={editVocationalData.vocationalPeriodTo}
-                      onChange={(e) => setEditVocationalData({ ...editVocationalData, vocationalPeriodTo: e.target.value })}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      value={editVocationalData.vocationalHighestAttained}
-                      onChange={(e) => setEditVocationalData({ ...editVocationalData, vocationalHighestAttained: e.target.value })}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      type="number"
-                      value={editVocationalData.vocationalYearGraduated}
-                      onChange={(e) => setEditVocationalData({ ...editVocationalData, vocationalYearGraduated: e.target.value })}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      type="number"
-                      value={editVocationalData.person_id}
-                      onChange={(e) => setEditVocationalData({ ...editVocationalData, person_id: e.target.value })}
-                    />
-                  </TableCell>
+                  <TableCell>{voc.id}</TableCell>
+                  {[
+                    'vocationalNameOfSchool', 'vocationalDegree', 'vocationalPeriodFrom',
+                    'vocationalPeriodTo', 'vocationalHighestAttained',
+                    'vocationalYearGraduated', 'person_id'
+                  ].map((key) => (
+                    <TableCell key={key}>
+                      <TextField
+                        value={editVocationalData[key]}
+                        onChange={(e) => setEditVocationalData({ ...editVocationalData, [key]: e.target.value })}
+                      />
+                    </TableCell>
+                  ))}
                   <TableCell>
                     <Button
                       onClick={updateVocational}
                       variant="contained"
-                      style={{ backgroundColor: '#6D2323',
-                        color: '#FEF9E1',
-                        width: '100px',
-                        height: '40px',
-                        marginBottom: '5px', }}
+                      style={{ backgroundColor: '#6D2323', color: '#FEF9E1', marginBottom: '5px', width: '100px' }}
                       startIcon={<SaveIcon />}
                     >
-                      Update
+                      Save
                     </Button>
                     <Button
                       onClick={() => setEditingVocationalId(null)}
                       variant="contained"
-                      style={{ backgroundColor: 'black',
-                        color: 'white',
-                        width: '100px',
-                        height: '40px',
-                        marginBottom: '5px',
-                        marginLeft: '10px', }}
+                      style={{ backgroundColor: 'black', color: 'white', marginLeft: '10px', width: '100px' }}
                       startIcon={<CancelIcon />}
                     >
                       Cancel
@@ -225,42 +181,31 @@ const Vocational = () => {
                 </>
               ) : (
                 <>
-                  <TableCell>{vocational.vocationalNameOfSchool}</TableCell>
-                  <TableCell>{vocational.vocationalDegree}</TableCell>
-                  <TableCell>{vocational.vocationalPeriodFrom}</TableCell>
-                  <TableCell>{vocational.vocationalPeriodTo}</TableCell>
-                  <TableCell>{vocational.vocationalHighestAttained}</TableCell>
-                  <TableCell>{vocational.vocationalYearGraduated}</TableCell>
-                  <TableCell>{vocational.person_id}</TableCell>
+                  <TableCell>{voc.id}</TableCell>
+                  <TableCell>{voc.vocationalNameOfSchool}</TableCell>
+                  <TableCell>{voc.vocationalDegree}</TableCell>
+                  <TableCell>{voc.vocationalPeriodFrom}</TableCell>
+                  <TableCell>{voc.vocationalPeriodTo}</TableCell>
+                  <TableCell>{voc.vocationalHighestAttained}</TableCell>
+                  <TableCell>{voc.vocationalYearGraduated}</TableCell>
+                  <TableCell>{voc.person_id}</TableCell>
                   <TableCell>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ display: 'flex', gap: '10px' }}>
                       <Button
                         onClick={() => {
-                          setEditVocationalData(vocational);
-                          setEditingVocationalId(vocational.id);
+                          setEditingVocationalId(voc.id);
+                          setEditVocationalData(voc);
                         }}
                         variant="contained"
-                        style={{
-                          backgroundColor: '#6D2323',
-                          color: '#FEF9E1',
-                          width: '100px',
-                          height: '40px',
-                          marginBottom: '5px',
-                        }}
+                        style={{ backgroundColor: '#6D2323', color: '#FEF9E1', width: '100px' }}
                         startIcon={<EditIcon />}
                       >
                         Edit
                       </Button>
                       <Button
-                        onClick={() => deleteVocational(vocational.id)}
+                        onClick={() => deleteVocational(voc.id)}
                         variant="contained"
-                        style={{
-                          backgroundColor: 'black',
-                          color: 'white',
-                          width: '100px',
-                          height: '40px',
-                          marginBottom: '5px',
-                        }}
+                        style={{ backgroundColor: 'black', color: 'white', width: '100px' }}
                         startIcon={<DeleteIcon />}
                       >
                         Delete
