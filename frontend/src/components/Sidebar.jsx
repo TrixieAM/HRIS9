@@ -254,7 +254,6 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/personalinfo' 
-                  /*HAHAHAHAHAHAHAHAHAHAHAHHAHAHAHAHAHAHAHAHAHAHAHAHAHAAHAHAHAHAHAH */
                   sx={{
                     color: selectedItem === 'personalinfo' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'personalinfo' ? '#A31D1D' : 'inherit',
@@ -1626,12 +1625,12 @@ const Sidebar = ({
             </Collapse>
           </>
         )}
+      </List>
+    </Box>
+  </Drawer>
+  );
+};
 
-            </List>
-            </Box>
-           
-          </Drawer>
-        );
-      };
+
 
 export default Sidebar;
