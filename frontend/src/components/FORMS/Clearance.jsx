@@ -27,13 +27,14 @@ return (
         padding: "0.25in",
         width: "8in",
         height: "15.5in",
-        fontFamily: "Arial, Helvetica, sans-serif",
+        fontFamily: "Poppins, sans-serif",
         alignContent:'center',
         margin: 'auto',
-        marginTop: '50px'
+        marginTop: '50px',
+        backgroundColor: '#ffffff',
       }}
     >
-      <span style={{ fontSize: "2", fontWeight: "bold", fontStyle: "italic" }}>
+      <span style={{ fontSize: "2", fontWeight: "bold", fontStyle: "italic"}}>
         CS Form No. 7
         <br />
         Revised 2018

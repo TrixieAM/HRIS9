@@ -10,7 +10,8 @@ const LeaveBack = () => {
             fontFamily: "Arial, Helvetica, sans-serif",
             alignContent:'center',
             margin: 'auto',
-            marginTop: '50px'
+            marginTop: '50px',
+			backgroundColor: '#ffffff'
         }}>
 
     <div style={{border: '1px solid black', padding: '0.1in', width: '7.5in', textAlign: 'center', margin: 'auto'}}>

@@ -21,7 +21,8 @@ const ClearanceBack = () => {
             fontFamily: 'Arial, Helvetica, sans-serif',
             alignContent: 'center',
             margin: 'auto',
-            marginTop: '50px'
+            marginTop: '50px',
+            backgroundColor: '#ffffff'
             
             }}>
             <font size="4">

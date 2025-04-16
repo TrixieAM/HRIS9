@@ -12,7 +12,8 @@ const RequestForID = () => {
             height: '6.375in',
             fontFamily: 'Arial, Helvetica, sans-serif',
             margin: 'auto',
-            marginTop:'50px'
+            marginTop:'50px',
+            backgroundColor: '#ffffff'
         }}>
 
 
@@ -142,6 +143,8 @@ const RequestForID = () => {
         Chief, HRMS
     </div><br/><br/><br/>
 <div>
+
+
 </div>
         </div>
         <div style={{
@@ -150,15 +153,9 @@ const RequestForID = () => {
             width: '7.75in',
             height: '6.375in',
             fontFamily: 'Arial, Helvetica, sans-serif',
-            margin: 'auto'
+            margin: 'auto',
+            backgroundColor: '#ffffff'
         }}>
-
-
-
-
-
-
-
 
             <div style={{ width: '5.25in', margin: 'auto' }}>
         <div style={{ position: 'relative', top: '5px', float: 'left' }}>

@@ -20,7 +20,8 @@ const LeaveCard = () => {
             height:'9.25in',
             fontFamily:'Arial, Helvetica, sans-serif',
             margin:'auto',
-            marginTop:'50px'
+            marginTop:'50px',
+            backgroundColor: '#ffffff'
         }}>
             <table style={{border: '0px', borderCollapse: 'collapse', width: '11in', tableLayout: 'fixed', margin: 'auto'}}>
                 <tr>

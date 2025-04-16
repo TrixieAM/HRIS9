@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+
 const PDS3 = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -10,15 +11,19 @@ const PDS3 = () => {
   const [employeeNumber, setEmployeeNumber] = useState("");
   const [voluntaryWorkInfo, setVoluntaryWorkInfo] = useState([]);
   const [learningDevelopmentInfo, setLearningDevelopmentInfo] = useState([]);
+  const [otherInformationInfo, setOtherInformationInfo] = useState([]);
+
 
   useEffect(() => {
     const storedEmail = localStorage.getItem('email');
     const storedRole = localStorage.getItem('role');
     const storedEmployeeNumber = localStorage.getItem('employeeNumber');
 
+
     console.log("Stored email:", storedEmail);
     console.log("Stored Role:", storedRole);
     console.log("Stored Employee Number:", storedEmployeeNumber);
+
 
     if (storedEmail && storedRole && storedEmployeeNumber) {
       setEmail(storedEmail);
@@ -28,6 +33,7 @@ const PDS3 = () => {
       navigate("/");
     }
   }, [navigate]);
+
 
   useEffect(() => {
     if (employeeNumber) {
@@ -39,38 +45,74 @@ const PDS3 = () => {
           const responses = await Promise.all(requests);
           setVoluntaryWorkInfo(responses.map(res => res.data || null));
         } catch (error) {
-          console.error("Error loading woluntary work data:", error);
+          console.error("Error loading voluntary work data:", error);
         }
       };
 
+
       const fetchLearningDevelopmentData = async () => {
         try {
-          const requests = Array.from({ length: 7 }, (_, i) =>
-            axios.get(`http://localhost:5000/VoluntaryRoute/voluntary-work${i + 1}/${employeeNumber}`)
+          const requests = Array.from({ length: 21 }, (_, i) =>
+            axios.get(`http://localhost:5000/learning_and_development_table${i + 1}/${employeeNumber}`)
           );
           const responses = await Promise.all(requests);
           setLearningDevelopmentInfo(responses.map(res => res.data || null));
         } catch (error) {
-          console.error("Error loading woluntary work data:", error);
+          console.error("Error loading learning and development data:", error);
         }
       };
 
-      
+
+      const fetchOtherInformationData = async () => {
+        try {
+          const requests = Array.from({ length: 7 }, (_, i) =>
+            axios.get(`http://localhost:5000/OtherInfo/other-information${i + 1}/${employeeNumber}`)
+          );
+          const responses = await Promise.all(requests);
+          setOtherInformationInfo(responses.map(res => res.data || null));
+        } catch (error) {
+          console.error("Error loading other information data:", error);
+        }
+      };
+
+
+
+
+     
+
 
       fetchvoluntaryWorkData();
+      fetchLearningDevelopmentData();
+      fetchOtherInformationData();
     }
   }, [employeeNumber]);
+
+
+ 
+
 
   // Normalize data
   const normalizedVoluntaryWork = [...voluntaryWorkInfo.filter(e => e !== null)];
   while (normalizedVoluntaryWork.length < 7) normalizedVoluntaryWork.push(null);
 
-  
+
+  const normalizedLearningDevelopment = [...learningDevelopmentInfo.filter(e => e !== null)];
+  while (normalizedLearningDevelopment.length < 21) normalizedLearningDevelopment.push(null);
+
+
+  const normalizedOtherInformation = [...otherInformationInfo.filter(e => e !== null)];
+  while (normalizedOtherInformation.length < 7) normalizedOtherInformation.push(null);
+ 
+
+
+
 
 
 
            
         return (
+
+
 
 
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white'}}>
@@ -84,6 +126,8 @@ const PDS3 = () => {
                
                     <table style= {{border: '1px solid black', borderCollapse: 'collapse', fontFamily: 'Arial, Helvetica, sans-serif', width: '8in', tableLayout: 'fixed'}}>
                         <tbody>
+
+
 
 
                         <tr>
@@ -121,7 +165,7 @@ const PDS3 = () => {
                             </td>          
                         </tr>
                         {normalizedVoluntaryWork.map((voluntarywork, index) => (
-                        <tr key={index}>                         
+                        <tr key={index}>                        
                             <td colSpan="7" style={{ height:'0.3in', fontSize:'62.5%', border: '1px solid black'}}>
                             {voluntarywork ? voluntarywork.nameAndAddress: 'N/A'}
                             </td>
@@ -142,7 +186,7 @@ const PDS3 = () => {
                         ))}
                        
                        
-                    
+                   
                         <tr>
                             <td colSpan="15" style={{ height:'0.11in', fontSize:'55%', backgroundColor:'lightgray', color:'red', border: '1px solid black', textAlign: 'center'}}>
                                 <b><i>(Continue on separate sheet if necessary)</i></b>
@@ -189,27 +233,30 @@ const PDS3 = () => {
                                 To
                             </td>          
                         </tr>
-                        <tr>
+                        {normalizedLearningDevelopment.map((learningdevelopment, index) => (
+                        <tr key={index}>
+                       
                             <td colSpan="7" style={{ height:'0.25in', fontSize:'62.5%', border: '1px solid black'}}>
-                            &nbsp;
+                           {learningdevelopment ? learningdevelopment.titleOfProgram: 'N/A'}
                             </td>
                             <td colSpan="1" style={{ height:'0.25in', fontSize:'52.5%', border: '1px solid black'}}>
-                            &nbsp;
+                            {learningdevelopment ? learningdevelopment.dateFrom: 'N/A'}
                             </td>
                             <td colSpan="1" style={{ height:'0.25in', fontSize:'52.5%', border: '1px solid black'}}>
-                           &nbsp;
+                            {learningdevelopment ? learningdevelopment.dateTo: 'N/A'}
                             </td>
                             <td colSpan="1" style={{ height:'0.25in', fontSize:'52.5%', border: '1px solid black'}}>
-                           &nbsp;
+                            {learningdevelopment ? learningdevelopment.numberOfHours: 'N/A'}
                             </td>
                             <td colSpan="1" style={{ height:'0.25in', fontSize:'52.5%', border: '1px solid black'}}>
-                            &nbsp;
+                            {learningdevelopment ? learningdevelopment.typeOfLearningDevelopment: 'N/A'}
                             </td>
                             <td colSpan="4" style={{ height:'0.25in', fontSize:'62.5%', border: '1px solid black'}}>
-                           &nbsp;
+                            {learningdevelopment ? learningdevelopment.conductedSponsored: 'N/A'}
                             </td>
                         </tr>
-                    
+                        ))}
+                   
                        
                         <tr>
                             <td colSpan="1" style={{ height:'0.3in', fontSize:'62.5%', backgroundColor:'lightgray', border:'1px 1px 1px 0px solid black'}}>
@@ -235,21 +282,25 @@ const PDS3 = () => {
                         </tr>
 
 
-                        
-                        <tr>
+
+
+                       
+                       
+                         
+                        {normalizedOtherInformation.map((otherinformation, index) => (
+                        <tr key={index}>
                             <td colSpan="4" style={{ height:'0.3in', fontSize:'62.5%', border: '1px solid black'}}>
-                            &nbsp;
+                            {otherinformation ? otherinformation.specialSkills: 'N/A'}
                             </td>
                             <td colSpan="7" style={{ height:'0.3in', fontSize:'62.5%', border: '1px solid black'}}>
-                            &nbsp;
+                            {otherinformation ? otherinformation.nonAcademicDistinctions: 'N/A'}
                             </td>
                             <td colSpan="4" style={{ height:'0.3in', fontSize:'62.5%', border: '1px solid black'}}>
-                           &nbsp;
+                            {otherinformation ? otherinformation.membershipInAssociation: 'N/A'}
                             </td>
-
-
                         </tr>
-                        
+                        ))}
+                       
                         <tr>
                             <td colSpan="15" style={{ height:'0.11in', fontSize:'55%', backgroundColor:'lightgray', color:'red', border: '1px solid black', textAlign: 'center'}}>
                                 <b><i>(Continue on separate sheet if necessary)</i></b>
@@ -277,8 +328,13 @@ const PDS3 = () => {
 
 
 
+
+
+
                        
                            
+
+
 
 
                            
@@ -295,10 +351,20 @@ const PDS3 = () => {
 );
 
 
+
+
 };
 
 
 
 
+
+
+
+
 export default PDS3;
+
+
+
+
 

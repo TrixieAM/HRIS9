@@ -20,6 +20,7 @@ const HrmsRequestForms = () => {
         fontFamily: 'Poppins, sans-serif',
         margin: 'auto',
         marginBottom: '0.30in',
+        backgroundColor: '#ffffff'
 
 
       }}>
@@ -147,6 +148,7 @@ const HrmsRequestForms = () => {
         fontFamily: 'Poppins, sans-serif',
         margin: 'auto',
         marginBottom: '0.30in',
+        backgroundColor: '#ffffff'
 
 
       }}>

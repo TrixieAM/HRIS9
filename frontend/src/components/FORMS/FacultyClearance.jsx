@@ -13,6 +13,7 @@ const FacultyClearance = () => {
             margin: 'auto',
             display: 'block',
             marginTop: '50px',
+            backgroundColor: '#ffffff'
             
             }}>
 

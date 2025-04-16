@@ -10,7 +10,8 @@ const ScholarshipAgreement = () => {
             width: '8in',
             height: '15.25in',
             fontFamily: 'Arial, Helvetica, sans-serif',
-            margin: 'auto'
+            margin: 'auto',
+            backgroundColor: '#ffffff'
         }}>
             <div style={{ padding: '0.25in', width: '7.5in', margin: 'auto' }}>
                 <div style={{ width: '7.5in', margin: 'auto' }}>

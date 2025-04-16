@@ -11,6 +11,8 @@ const SalnBack = () => {
           fontFamily: 'Arial, Helvetica, sans-serif',
           width: '8in',
           tableLayout: 'fixed',
+          backgroundColor: '#ffffff'
+
         }}>
 
 

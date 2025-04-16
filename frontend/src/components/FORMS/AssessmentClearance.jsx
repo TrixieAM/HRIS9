@@ -12,7 +12,8 @@ const AssesmentClearance = () => {
         fontFamily: "Poppins, sans-serif",
         alignContent:'center',
         margin: 'auto',
-        marginTop: '50px'
+        marginTop: '50px',
+        backgroundColor: '#ffffff',
       }}
     >        {/* start div*/}
         <div style={{width: '5.25in',  margin: 'auto'}}>

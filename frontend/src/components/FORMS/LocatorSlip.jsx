@@ -13,6 +13,7 @@ const LocatorSlip = () => {
             fontFamily:'Arial, Helvetica, sans-serif',
             margin:'auto',
             marginTop:'50px',
+            backgroundColor: '#ffffff'
         }}>
         <div style={{width: '5.25in', margin: 'auto'}}>
         <div style={{position: 'relative', top: '-50px', float: 'left'}}>
@@ -54,6 +55,7 @@ const LocatorSlip = () => {
             height:'3.875in',
             fontFamily:'Arial, Helvetica, sans-serif',
             margin:'auto',
+            backgroundColor: '#ffffff'
         }}>
         <div style={{width: '5.25in', margin: 'auto'}}>
         <div style={{position: 'relative', top: '-50px', float: 'left'}}>

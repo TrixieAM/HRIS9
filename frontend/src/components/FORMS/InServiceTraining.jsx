@@ -11,7 +11,8 @@ const InServiceTraining = () =>{
             height:'15in',
             fontFamily:'Arial, Helvetica, sans-serif',
             margin:'auto',
-            marginTop:'50px'
+            marginTop:'50px',
+            backgroundColor: '#ffffff'
         }}>
             <br />
             <br />

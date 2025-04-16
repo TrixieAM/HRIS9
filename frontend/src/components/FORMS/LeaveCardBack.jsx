@@ -19,7 +19,8 @@ const LeaveCardBack = () => {
             height: '9.25in',
             fontFamily: 'Arial, Helvetica, sans-serif',
             margin:'auto',
-            marginTop:'50px'
+            marginTop:'50px',
+            backgroungColor: '#ffffff'
             }}>
             <table style={{border: '1px solid black', borderCollapse: 'collapse', width: '11in', tableLayout: 'fixed', margin: 'auto'}}>
                 <tr>

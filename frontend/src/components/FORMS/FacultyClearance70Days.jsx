@@ -12,7 +12,8 @@ const FacultyClearance70Days = () => {
           fontFamily: "Arial, Helvetica, sans-serif",
           alignContent:'center',
           margin: 'auto',
-          marginTop: '50px'
+          marginTop: '50px',
+          backgroundColor: '#ffffff'
         }}
       >
                 <div style={{width:'5.12in', margin:'auto'}}>

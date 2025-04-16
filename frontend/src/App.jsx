@@ -65,7 +65,7 @@ import LeaveAssignment from './components/PAYROLL/LeaveAssignment';
 
 //FORMS
 import AssessmentClearance from './components/FORMS/AssessmentClearance';
-import Clearance from './components/Forms/Clearance';
+import Clearance from './components/FORMS/Clearance';
 import ClearanceBack from './components/FORMS/ClearanceBack';
 import FacultyClearance from './components/FORMS/FacultyClearance';
 import FacultyClearance70Days from './components/FORMS/FacultyClearance70Days';
@@ -74,7 +74,7 @@ import LeaveCard from './components/FORMS/LeaveCard';
 import LeaveCardBack from './components/FORMS/LeaveCardBack';
 import LocatorSlip from './components/FORMS/LocatorSlip';
 import PermissionToTeach from './components/FORMS/PermissionToTeach';
-import RequestForID from './components/FORMS/RequestForId';
+import RequestForID from './components/FORMS/RequestForID';
 import SalnFront from './components/FORMS/SalnFront';
 import SalnBack from './components/FORMS/SalnBack';
 import ScholarshipAgreement from './components/FORMS/ScholarshipAgreement';
@@ -662,6 +662,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            
             
 
             <Route path="/unauthorized" element={<Unauthorized />} />

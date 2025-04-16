@@ -11,6 +11,7 @@ const IndividualFacultyLoading = () => {
             fontFamily:'Arial, Helvetica, sans-serif',
             margin:'auto',
             marginTop:'50px',
+            backgroundColor: '#ffffff'
         }}>
         <font size="2">HRD FORM 009</font>
             <div style={{width: '4in', textAlign: 'center', margin: 'auto'}}>

@@ -11,7 +11,8 @@ const SubjectStillToBeTaken= () => {
             height: '14.25in',
             fontFamily: 'Arial, Helvetica, sans-serif',
             alignContent: 'center',
-            margin: 'auto'
+            margin: 'auto',
+            backgroundColor: '#ffffff'
         }}>
 
 

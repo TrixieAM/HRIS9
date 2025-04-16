@@ -8,13 +8,20 @@ import {
   Collapse,
   Toolbar,
   Typography,
+  IconButton,
+  Tooltip,
+  Avatar,
+  Box,
+  Divider,
+
 } from '@mui/material';
-import { Link } from 'react-router-dom';
 import {
+  House,
+  ChevronLeft,
+  ChevronRight,
   Dashboard as DashboardIcon,
   ExpandMore,
   ExpandLess,
-  House,
   ChildFriendlyRounded,
   BadgeRounded,
   School,
@@ -31,20 +38,21 @@ import {
   AddBusiness as AddBusinessIcon,
   Announcement as AnnouncementIcon,
   Summarize as SummarizeIcon,
+  Portrait as PortraitIcon,
+  ContactPage as ContactPageIcon,
+  AddHomeWork as AddHomeWorkIcon,
+  TableView as TableViewIcon,
+  RequestQuote as RequestQuoteIcon,
+
 } from '@mui/icons-material';
+import { useNavigate, Link } from 'react-router-dom';
 
-import PortraitIcon from '@mui/icons-material/Portrait';
-import ContactPageIcon from '@mui/icons-material/ContactPage';
-import AddHomeWorkIcon from '@mui/icons-material/AddHomeWork';
-import TableViewIcon from '@mui/icons-material/TableView';
-import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
-const drawerWidth = 250;
-
+const drawerWidth = 270;
+const collapsedWidth = 60;
 
 const getUserRole = () => {
   const token = localStorage.getItem('token');
   if (!token) return null;
-
 
   try {
     const decoded = JSON.parse(atob(token.split('.')[1]));
@@ -54,7 +62,6 @@ const getUserRole = () => {
     return null;
   }
 };
-
 
 const Sidebar = ({
   open,
@@ -67,10 +74,19 @@ const Sidebar = ({
   handleClickForms,
   open5,
   handleClickPDSFiles,
-
 }) => {
-  const userRole = getUserRole();
+  const [drawerOpen, setDrawerOpen] = useState(true);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [username, setUsername] = useState('');
+  const [userRole, setUserRole] = useState('');
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem('username');
+    const role = getUserRole();
+    setUsername(storedUser || '');
+    setUserRole(role || '');
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -78,53 +94,137 @@ const Sidebar = ({
     window.location.href = '/';
   };
 
-  const [selectedItem, setSelectedItem] = useState(null);
-  const handleItemClick = (item) => {setSelectedItem(item);};
+  const handleToggleDrawer = () => {
+    setDrawerOpen(!drawerOpen);
+  };
 
+  const handleItemClick = (item) => {
+    setSelectedItem(item);
+  };
 
+  const dynamicDrawerWidth = drawerOpen ? drawerWidth : collapsedWidth;
 
   return (
       <Drawer
         className="no-print"
         variant="permanent"
         sx={{
-          width: drawerWidth,
+          width: dynamicDrawerWidth,
           flexShrink: 0,
           '& .MuiDrawer-paper': {
-            width: '17%',
+            width: dynamicDrawerWidth,
             boxSizing: 'border-box',
-            backgroundColor: '#white',
+            transition: 'width 0.3s',
+            display: 'flex',
+            flexDirection: 'column',
           },
         }}
       >
-      <Toolbar />
-      <List>
+       {/* Sidebar */}
+<Box
+  onMouseEnter={() => setDrawerOpen(true)} 
+  onMouseLeave={() => setDrawerOpen(false)} 
+  sx={{
+    display: 'flex',
+    flexDirection: 'column',
+    width: 230, 
+    height: '100vh', 
+    transition: 'all 0.3s ease',  
+  }}
+>
+  <Toolbar
+    sx={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      px: 2,
+    }}
+  >
+    {drawerOpen && (
+      <Box display="flex" alignItems="center" gap={1}>
+        <img
+          src="/earist-logo-1.png"
+          alt="earist-logo"
+          style={{ height: 32 }}
+        />
+        <Typography variant="h6" noWrap>
+          HRIS
+        </Typography>
+      </Box>
+    )}
+    <IconButton onClick={handleToggleDrawer} size="small">
+      {drawerOpen ? <ChevronLeft /> : <ChevronRight />}
+    </IconButton>
+  </Toolbar>
+
+  <List>
+  {userRole !== 'staff' && (
+        <>
+        <List component="div" disablePadding sx={{ pl: 2.5}}>
+        <Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, }}>
+            <Tooltip title="Go to Profile">
+              <Box
+                onClick={() => navigate('/profile')}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                  cursor: 'pointer',
+
+                }}
+              >
+                <Avatar alt={username} sx={{ width: 32, height: 32, marginLeft: -1, color: 'black' }} />
+                <Box>
+                  <Typography variant="body2" fontWeight="bold">
+                    {username}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ fontFamily: 'Poppins', marginLeft: '9px', color: 'black'}}>
+                    {userRole}
+                  </Typography>
+                </Box>
+              </Box>
+            </Tooltip>
+
+            <Tooltip title="Logout">
+              <IconButton onClick={handleLogout} size="small" sx={{ ml: 10, color: 'black' }}>
+                <LogoutIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        </Box>
+      </List>  
+        </>
+      )}
+
+      <Divider sx={{ marginTop: '7px', marginBottom: '7px'}}/>
+   
       <ListItem 
   button 
   component={Link} 
   to='/home' 
-  sx={{ 
-    color: selectedItem === 'home' ? 'white' : 'black',
-    bgcolor: selectedItem === 'home' ? '#6c0b19' : 'inherit', 
-    '&:hover': { 
-      bgcolor: '#6c0b19', 
+  sx={{
+    color: selectedItem === 'home' ? 'white' : 'inherit',
+    bgcolor: selectedItem === 'home' ? '#A31D1D' : 'inherit',
+    '&:hover': {
+      bgcolor: '#A31D1D',
       color: 'white',
-      '& .MuiListItemIcon-root, & .MuiSvgIcon-root': {
-        color: 'white',
-      }
+      borderTopRightRadius: '15px',
+      borderBottomRightRadius: '15px',
     },
-    '& .MuiListItemIcon-root, & .MuiSvgIcon-root': {
-      color: selectedItem === 'home' ? 'white' : 'black',
-    }
+    borderTopRightRadius: selectedItem === 'home' ? '15px' : 0,
+    borderBottomRightRadius: selectedItem === 'home' ? '15px' : 0,
   }}
   onClick={() => handleItemClick('home')}
 >
-  <ListItemIcon>
+<ListItemIcon sx={{ color: selectedItem === 'home' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
     <House sx={{ fontSize: 29, marginLeft: '-6%' }} />
   </ListItemIcon>
   <ListItemText 
     primary="Home" 
-    sx={{ marginLeft: '-25px' }} 
+    sx={{ marginLeft: '-10px' }} 
   />
 </ListItem>
 
@@ -141,7 +241,7 @@ const Sidebar = ({
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
-              <ListItemText primary="Dashboards" sx={{marginLeft: '-25px'}} />
+              <ListItemText primary="Dashboards" sx={{marginLeft: '-10px'}} />
               <ListItemIcon sx={{ marginLeft: '10rem', color: 'black' }}>
                 {open ? <ExpandLess /> : <ExpandMore />}
               </ListItemIcon>
@@ -154,8 +254,20 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/personalinfo' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'personalinfo' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'personalinfo' ? 'white' : 'inherit',
+                  /*HAHAHAHAHAHAHAHAHAHAHAHHAHAHAHAHAHAHAHAHAHAHAHAHAHAAHAHAHAHAHAH */
+                  sx={{
+                    color: selectedItem === 'personalinfo' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'personalinfo' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'personalinfo' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'personalinfo' ? '15px' : 0,
                   }}
+
                   onClick={() => handleItemClick('personalinfo')} 
                 >
                   <ListItemIcon sx={{ marginRight: '-1rem',
@@ -172,7 +284,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/children' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'children' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'children' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'children' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'children' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'children' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'children' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('children')} 
                 >
@@ -190,7 +312,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/college' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'college' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'college' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'college' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'college' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'college' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'college' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('college')} 
                   >
@@ -208,7 +340,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/other-information' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'other-information' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'other-information' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'other-information' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'other-information' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'other-information' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'other-information' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('other-information')} 
                   >
@@ -226,7 +368,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/workexperience' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'workexperience' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'workexperience' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'workexperience' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'workexperience' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'workexperience' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'workexperience' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('workexperience')} 
                   >
@@ -244,7 +396,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/vocational' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'vocational' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'vocational' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'vocational' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'vocational' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'vocational' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'vocational' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('vocational')} 
                   >
@@ -262,7 +424,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/learningdev' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'learningdev' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'learningdev' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'learningdev' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'learningdev' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'learningdev' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'learningdev' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('learningdev')} 
                   >
@@ -280,7 +452,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/voluntarywork' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'voluntarywork' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'voluntarywork' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'voluntarywork' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'voluntarywork' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'voluntarywork' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'voluntarywork' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('voluntarywork')} 
                   >
@@ -298,7 +480,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/eligibility' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'eligibility' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'eligibility' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'eligibility' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'eligibility' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'eligibility' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'eligibility' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('eligibility')} 
                   >
@@ -324,7 +516,7 @@ const Sidebar = ({
           <ListItemIcon>
             <TableViewIcon />
           </ListItemIcon>
-          <ListItemText primary="Records" sx={{marginLeft: '-25px'}}/>
+          <ListItemText primary="Records" sx={{marginLeft: '-10px'}}/>
           <ListItemIcon sx={{ marginLeft: '10rem', color:'black' }}>
             {open2 ? <ExpandLess /> : <ExpandMore />}
           </ListItemIcon>
@@ -339,7 +531,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/view_attendance' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'view_attendance' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'view_attendance' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'view_attendance' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'view_attendance' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'view_attendance' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'view_attendance' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('view_attendance')} 
                   >
@@ -360,7 +562,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/search_attendance' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'search_attendance' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'search_attendance' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'search_attendance' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'search_attendance' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'search_attendance' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'search_attendance' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('search_attendance')} 
                   >
@@ -383,7 +595,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/daily_time_record' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'daily_time_record' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'daily_time_record' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'daily_time_record' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'daily_time_record' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'daily_time_record' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'daily_time_record' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('daily_time_record')} 
                   >
@@ -407,7 +629,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/daily_time_record_faculty' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'daily_time_record_faculty' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'daily_time_record_faculty' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'daily_time_record_faculty' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'daily_time_record_faculty' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'daily_time_record_faculty' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'daily_time_record_faculty' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('daily_time_record_faculty')} 
                   >
@@ -428,7 +660,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/attendance_form' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'attendance_form' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'attendance_form' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'attendance_form' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'attendance_form' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'attendance_form' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'attendance_form' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('attendance_form')} 
                   >
@@ -449,7 +691,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/attendance_module' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'attendance_module' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'attendance_module' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'attendance_module' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'attendance_module' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'attendance_module' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'attendance_module' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('attendance_module')} 
                   >
@@ -470,7 +722,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/attendance_module_faculty' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'attendance_module_faculty' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'attendance_module_faculty' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'attendance_module_faculty' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'attendance_module_faculty' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'attendance_module_faculty' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'attendance_module_faculty' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('attendance_module_faculty')} 
                   >
@@ -491,7 +753,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/attendance_module_faculty_40hrs' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'attendance_module_faculty_40hrs' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'attendance_module_faculty_40hrs' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'attendance_module_faculty_40hrs' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'attendance_module_faculty_40hrs' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'attendance_module_faculty_40hrs' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'attendance_module_faculty_40hrs' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('attendance_module_faculty_40hrs')} 
                   >
@@ -512,7 +784,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/attendance_summary' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'attendance_summary' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'attendance_summary' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'attendance_summary' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'attendance_summary' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'attendance_summary' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'attendance_summary' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('attendance_summary')} 
                   >
@@ -533,7 +815,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/official_time' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'official_time' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'official_time' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'official_time' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'official_time' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'official_time' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'official_time' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('official_time')} 
                   >
@@ -550,7 +842,7 @@ const Sidebar = ({
           </>
         )}
 
-{userRole !== 'staff' && (
+      {userRole !== 'staff' && (
           <>
         
         <ListItem
@@ -561,19 +853,29 @@ const Sidebar = ({
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
-              <ListItemText primary="PDS Files" sx={{marginLeft: '-25px'}} />
+              <ListItemText primary="PDS Files" sx={{marginLeft: '-10px'}} />
               <ListItemIcon sx={{ marginLeft: '10rem', color: 'black' }}>
                 {open5 ? <ExpandLess /> : <ExpandMore />}
               </ListItemIcon>
             </ListItem>
 
             <Collapse in={open5} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding sx={{ pl: 4 }}>
+            <List component="div" disablePadding sx={{ pl: 5.4 }}>
           <ListItem 
                   button 
                   component={Link} 
                   to= '/pds1' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'pds1' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'pds1' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'pds1' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'pds1' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'pds1' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'pds1' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('pds1')} 
                   >
@@ -589,12 +891,22 @@ const Sidebar = ({
         </Collapse>
 
         <Collapse in={open5} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding sx={{ pl: 4 }}>
+        <List component="div" disablePadding sx={{ pl: 5.4 }}>
           <ListItem 
                   button 
                   component={Link} 
                   to= '/pds2' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'pds2' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'pds2' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'pds2' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'pds2' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'pds2' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'pds2' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('pds2')} 
                   >
@@ -610,12 +922,22 @@ const Sidebar = ({
         </Collapse>
         
         <Collapse in={open5} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding sx={{ pl: 4 }}>
+        <List component="div" disablePadding sx={{ pl: 5.4 }}>
           <ListItem 
                   button 
                   component={Link} 
                   to= '/pds3' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'pds3' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'pds3' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'pds3' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'pds3' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'pds3' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'pds3' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('pds3')} 
                   >
@@ -643,7 +965,7 @@ const Sidebar = ({
               <ListItemIcon>
                 <RequestQuoteIcon />
               </ListItemIcon>
-              <ListItemText primary="Payroll Management" sx={{ marginLeft: '-25px' }} />
+              <ListItemText primary="Payroll Management" sx={{ marginLeft: '-10px' }} />
               <ListItemIcon sx={{ marginLeft: '10rem',
                 
                }}>
@@ -657,7 +979,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/payroll-table' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'payroll-table' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'payroll-table' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'payroll-table' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'payroll-table' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'payroll-table' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'payroll-table' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('payroll-table')} 
                   >
@@ -674,7 +1006,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/remittance-table' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'remittance-table' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'remittance-table' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'remittance-table' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'remittance-table' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'remittance-table' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'remittance-table' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('remittance-table')} 
                   >
@@ -691,7 +1033,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/item-table' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'item-table' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'item-table' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'item-table' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'item-table' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'item-table' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'item-table' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('item-table')} 
                   >
@@ -709,7 +1061,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/salary-grade' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'salary-grade' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'salary-grade' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'salary-grade' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'salary-grade' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'salary-grade' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'salary-grade' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('salary-grade')} 
                   >
@@ -726,7 +1088,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/salary-grade-status' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'salary-grade-status' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'salary-grade-status' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'salary-grade-status' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'salary-grade-status' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'salary-grade-status' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'salary-grade-status' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('salary-grade-status')} 
                   >
@@ -743,7 +1115,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/department-table' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'department-table' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'department-table' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'department-table' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'department-table' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'department-table' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'department-table' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('department-table')} 
                   >
@@ -760,7 +1142,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/department-assignment' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'department-assignment' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'department-assignment' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'department-assignment' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'department-assignment' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'department-assignment' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'department-assignment' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('department-assignment')} 
                   >
@@ -777,7 +1169,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/leave-table' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'leave-table' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'leave-table' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'leave-table' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'leave-table' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'leave-table' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'leave-table' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('leave-table')} 
                   >
@@ -795,7 +1197,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/leave-assignment' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'leave-assignment' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'leave-assignment' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'leave-assignment' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'leave-assignment' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'leave-assignment' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'leave-assignment' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('leave-assignment')} 
                   >
@@ -812,7 +1224,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/holiday-suspension' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'holiday-suspension' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'holiday-suspension' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'holiday-suspension' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'holiday-suspension' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'holiday-suspension' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'holiday-suspension' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('holiday-suspension')} 
                   >
@@ -840,7 +1262,7 @@ const Sidebar = ({
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
-              <ListItemText primary="Forms" sx={{ marginLeft: '-25px' }} />
+              <ListItemText primary="Forms" sx={{ marginLeft: '-10px' }} />
               <ListItemIcon sx={{ marginLeft: '10rem' }}>
                 {open4 ? <ExpandLess /> : <ExpandMore />}
               </ListItemIcon>
@@ -852,7 +1274,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/assessment-clearance' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'assessment-clearance' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'assessment-clearance' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'assessment-clearance' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'assessment-clearance' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'assessment-clearance' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'assessment-clearance' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('assessment-clearance')} 
                   >
@@ -869,7 +1301,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/clearance' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'clearance' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'clearance' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'clearance' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'clearance' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'clearance' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'clearance' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('clearance')} 
                   >
@@ -886,7 +1328,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/faculty-clearance' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'faculty-clearance' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'faculty-clearance' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'faculty-clearance' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'faculty-clearance' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'faculty-clearance' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'faculty-clearance' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('faculty-clearance')} 
                   >
@@ -903,7 +1355,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/hrms-request-forms' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'hrms-request-forms' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'hrms-request-forms' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'hrms-request-forms' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'hrms-request-forms' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'hrms-request-forms' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'hrms-request-forms' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('hrms-request-forms')} 
                   >
@@ -920,7 +1382,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/individual-faculty-loading' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'individual-faculty-loading' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'individual-faculty-loading' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'individual-faculty-loading' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'individual-faculty-loading' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'individual-faculty-loading' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'individual-faculty-loading' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('individual-faculty-loading')} 
                   >
@@ -937,7 +1409,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/in-service-training' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'in-service-training' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'in-service-training' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'in-service-training' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'in-service-training' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'in-service-training' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'in-service-training' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('in-service-training')} 
                   >
@@ -954,7 +1436,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/leave-card' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'leave-card' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'leave-card' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'leave-card' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'leave-card' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'leave-card' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'leave-card' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('leave-card')} 
                   >
@@ -972,7 +1464,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/locator-slip' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'locator-slip' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'locator-slip' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'locator-slip' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'locator-slip' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'locator-slip' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'locator-slip' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('locator-slip')} 
                   >
@@ -989,7 +1491,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/permission-to-teach' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'permission-to-teach' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'permission-to-teach' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'permission-to-teach' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'permission-to-teach' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'permission-to-teach' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'permission-to-teach' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('permission-to-teach')} 
                   >
@@ -1007,7 +1519,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/request-for-id' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'request-for-id' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'request-for-id' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'request-for-id' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'request-for-id' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'request-for-id' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'request-for-id' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('request-for-id')} 
                   >
@@ -1024,7 +1546,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/saln-front' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'saln-front' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'saln-front' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'saln-front' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'saln-front' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'saln-front' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'saln-front' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('saln-front')} 
                   >
@@ -1041,7 +1573,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/scholarship-agreement' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'scholarship-agreement' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'scholarship-agreement' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'scholarship-agreement' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'scholarship-agreement' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'scholarship-agreement' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'scholarship-agreement' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('scholarship-agreement')} 
                   >
@@ -1058,7 +1600,17 @@ const Sidebar = ({
                   button 
                   component={Link} 
                   to= '/subject' 
-                  sx={{ color: 'black', bgcolor: selectedItem === 'subject' ? '#6c0b19' : 'inherit', '&:hover': { bgcolor: '#6c0b19', color: 'white' }, color: selectedItem === 'subject' ? 'white' : 'inherit',
+                  sx={{
+                    color: selectedItem === 'subject' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'subject' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#A31D1D',
+                      color: 'white',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'subject' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'subject' ? '15px' : 0,
                   }}
                   onClick={() => handleItemClick('subject')} 
                   >
@@ -1075,21 +1627,11 @@ const Sidebar = ({
           </>
         )}
 
-      
-
-        <ListItem button sx={{ cursor: 'pointer' }} onClick={handleLogout}>
-          <ListItemIcon>
-            <LogoutIcon />
-          </ListItemIcon>
-          <ListItemText primary="Logout" sx={{ marginLeft: '-25px' }}/>
-        </ListItem>
-      </List>
-    </Drawer>
-  );
-};
-
+            </List>
+            </Box>
+           
+          </Drawer>
+        );
+      };
 
 export default Sidebar;
-
-
-

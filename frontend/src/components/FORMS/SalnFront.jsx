@@ -30,8 +30,9 @@ const SalnFront = () => {
           border: '1px solid white',
           borderCollapse: 'collapse',
           fontFamily: 'Arial, Helvetica, sans-serif',
-          width: '8in',
+          width: '8.2in',
           tableLayout: 'fixed',
+          backgroundColor: '#ffffff'
         }}
       >
         <tr>
