@@ -682,217 +682,85 @@ app.delete("/api/payroll/:id", (req, res) => {
 
 
 //////// REMITTANCE
-
-// Get all remittance records
-app.get('/api/remittance', (req, res) => {
-  db.query('SELECT * FROM remittances', (err, result) => {
+app.get('/employee-remittance', (req, res) => {
+  const sql = 'SELECT * FROM employee_remittance_table';
+  db.query(sql, (err, result) => {
     if (err) {
-      res.status(500).send(err);
+      res.status(500).json({ message: 'Error fetching data' });
     } else {
       res.json(result);
     }
   });
 });
 
-// Add a new remittance record
-app.post('/api/remittance', (req, res) => {
+
+// POST: Add new remittance data
+app.post('/employee-remittance', (req, res) => {
   const {
-    name,
-    withHoldingTax,
-    personalLifeRet,
-    gsisSalarayLoan,
-    gsisPolicyLoan,
-    gfal,
-    cpl,
-    mpl,
-    mplLite,
-    emergencyLoan,
-    totalGsisDeds,
-    pagibigFundCont,
-    pagibig2,
-    multiPurpLoan,
-    totalPagibigDeds,
-    philhealth,
-    disallowance,
-    landbankSalaryLoan,
-    earistCreditCoop,
-    feu,
-    mtslaSalaryLoan,
-    savingAndLoan,
-    totalOtherDeds,
-    totalDeds,
+    employeeNumber, disallowance, gsisSalaryLoan, gsisPolicyLoan, gfal, cpl, mpl, mplLite, emergencyLoan,
+    nbc594, increment, pagibigFundCont, pagibig2, multiPurpLoan, landbankSalaryLoan, earistCreditCoop, feu
   } = req.body;
 
-  const sql = `
-      INSERT INTO remittances
-      ( name,
-    withHoldingTax,
-    personalLifeRet,
-    gsisSalarayLoan,
-    gsisPolicyLoan,
-    gfal,
-    cpl,
-    mpl,
-    mplLite,
-    emergencyLoan,
-    totalGsisDeds,
-    pagibigFundCont,
-    pagibig2,
-    multiPurpLoan,
-    totalPagibigDeds,
-    philhealth,
-    disallowance,
-    landbankSalaryLoan,
-    earistCreditCoop,
-    feu,
-    mtslaSalaryLoan,
-    savingAndLoan,
-    totalOtherDeds,
-    totalDeds)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `;
 
-  db.query(
-    sql,
-    [
-      name,
-      withHoldingTax,
-      personalLifeRet,
-      gsisSalarayLoan,
-      gsisPolicyLoan,
-      gfal,
-      cpl,
-      mpl,
-      mplLite,
-      emergencyLoan,
-      totalGsisDeds,
-      pagibigFundCont,
-      pagibig2,
-      multiPurpLoan,
-      totalPagibigDeds,
-      philhealth,
-      disallowance,
-      landbankSalaryLoan,
-      earistCreditCoop,
-      feu,
-      mtslaSalaryLoan,
-      savingAndLoan,
-      totalOtherDeds,
-      totalDeds,
-    ],
-    (err, result) => {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.json({
-          message: 'Remittance record added successfully',
-          id: result.insertId,
-        });
-      }
+  const sql = `INSERT INTO employee_remittance_table (employeeNumber, disallowance, gsisSalaryLoan, gsisPolicyLoan, gfal, cpl, mpl, mplLite, emergencyLoan, nbc594, increment, pagibigFundCont, pagibig2, multiPurpLoan, landbankSalaryLoan, earistCreditCoop, feu)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+
+  const values = [employeeNumber, disallowance, gsisSalaryLoan, gsisPolicyLoan, gfal, cpl, mpl, mplLite, emergencyLoan, nbc594, increment, pagibigFundCont, pagibig2, multiPurpLoan, landbankSalaryLoan, earistCreditCoop, feu];
+
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error during POST request:", err);
+      res.status(500).json({ message: 'Error adding data' });
+    } else {
+      res.status(200).json({ message: 'Data added successfully' });
     }
-  );
-});
-
-// Update a remittances record
-app.put('/api/remittance/:id', (req, res) => {
-  const { id } = req.params;
-  const {
-    name,
-    withHoldingTax,
-    personalLifeRet,
-    gsisSalarayLoan,
-    gsisPolicyLoan,
-    gfal,
-    cpl,
-    mpl,
-    mplLite,
-    emergencyLoan,
-    totalGsisDeds,
-    pagibigFundCont,
-    pagibig2,
-    multiPurpLoan,
-    totalPagibigDeds,
-    philhealth,
-    disallowance,
-    landbankSalaryLoan,
-    earistCreditCoop,
-    feu,
-    mtslaSalaryLoan,
-    savingAndLoan,
-    totalOtherDeds,
-    totalDeds,
-  } = req.body;
-
-  const sql = `UPDATE remittances SET
-      name = ?,
-      withHoldingTax = ?,
-      personalLifeRet= ?,
-      gsisSalarayLoan= ?,
-      gsisPolicyLoan= ?,
-      gfal= ?,
-      cpl= ?,
-      mpl= ?,
-      mplLite= ?,
-      emergencyLoan= ?,
-      totalGsisDeds= ?,
-      pagibigFundCont= ?,
-      pagibig2= ?,
-      multiPurpLoan= ?,
-      totalPagibigDeds= ?,
-      philhealth= ?,
-      disallowance= ?,
-      landbankSalaryLoan= ?,
-      earistCreditCoop= ?,
-      feu= ?,
-      mtslaSalaryLoan= ?,
-      savingAndLoan= ?,
-      totalOtherDeds= ?,
-      totalDeds= ?
-    WHERE id=?`;
-
-  db.query(
-    sql,
-    [
-      name,
-      withHoldingTax,
-      personalLifeRet,
-      gsisSalarayLoan,
-      gsisPolicyLoan,
-      gfal,
-      cpl,
-      mpl,
-      mplLite,
-      emergencyLoan,
-      totalGsisDeds,
-      pagibigFundCont,
-      pagibig2,
-      multiPurpLoan,
-      totalPagibigDeds,
-      philhealth,
-      disallowance,
-      landbankSalaryLoan,
-      earistCreditCoop,
-      feu,
-      mtslaSalaryLoan,
-      savingAndLoan,
-      totalOtherDeds,
-      totalDeds,
-      id,
-    ],
-    (err) => {
-      if (err) res.status(500).send(err);
-      else res.json({ message: 'Remittance record updated successfully' });
-    }
-  );
-});
-
-app.delete('/api/remittance/:id', (req, res) => {
-  const { id } = req.params;
-  db.query('DELETE FROM remittances WHERE id=?', [id], (err) => {
-    if (err) res.status(500).send(err);
-    else res.json({ message: 'Remittance record deleted successfully' });
   });
 });
+
+
+// PUT: Update remittance data by ID
+app.put('/employee-remittance/:id', (req, res) => {
+  const { id } = req.params;
+  const {
+    employeeNumber, disallowance, gsisSalaryLoan, gsisPolicyLoan, gfal, cpl, mpl, mplLite, emergencyLoan,
+    nbc594, increment, pagibigFundCont, pagibig2, multiPurpLoan, landbankSalaryLoan, earistCreditCoop, feu
+  } = req.body;
+
+
+  const sql = `UPDATE employee_remittance_table SET employeeNumber = ?, disallowance = ?, gsisSalaryLoan = ?, gsisPolicyLoan = ?, gfal = ?, cpl = ?, mpl = ?, mplLite = ?, emergencyLoan = ?, nbc594 = ?, increment = ?, pagibigFundCont = ?, pagibig2 = ?, multiPurpLoan = ?, landbankSalaryLoan = ?, earistCreditCoop = ?, feu = ?
+               WHERE id = ?`;
+
+
+  const values = [employeeNumber, disallowance, gsisSalaryLoan, gsisPolicyLoan, gfal, cpl, mpl, mplLite, emergencyLoan, nbc594, increment, pagibigFundCont, pagibig2, multiPurpLoan, landbankSalaryLoan, earistCreditCoop, feu, id];
+
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      res.status(500).json({ message: 'Error updating data' });
+    } else {
+      res.status(200).json({ message: 'Data updated successfully' });
+    }
+  });
+});
+
+
+// DELETE: Delete remittance data by ID
+app.delete('/employee-remittance/:id', (req, res) => {
+  const { id } = req.params;
+  const sql = 'DELETE FROM employee_remittance_table WHERE id = ?';
+
+
+  db.query(sql, [id], (err, result) => {
+    if (err) {
+      res.status(500).json({ message: 'Error deleting data' });
+    } else {
+      res.status(200).json({ message: 'Data deleted successfully' });
+    }
+  });
+});
+
 
 /////// ITEM-TABLE
 

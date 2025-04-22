@@ -207,8 +207,8 @@ const Sidebar = ({
     color: selectedItem === 'home' ? 'white' : 'inherit',
     bgcolor: selectedItem === 'home' ? '#A31D1D' : 'inherit',
     '&:hover': {
-      bgcolor: '#A31D1D',
-      color: 'white',
+      bgcolor: '#f0f0f0',
+      color: 'black',
       borderTopRightRadius: '15px',
       borderBottomRightRadius: '15px',
     },
@@ -218,7 +218,7 @@ const Sidebar = ({
   onClick={() => handleItemClick('home')}
 >
 <ListItemIcon sx={{ color: selectedItem === 'home' ? 'white' : 'inherit',
-                    '&:hover': { color: 'white' }
+                    '&:hover': { color: 'black' }
                    }}>
     <House sx={{ fontSize: 29, marginLeft: '-6%' }} />
   </ListItemIcon>
@@ -236,7 +236,8 @@ const Sidebar = ({
             <ListItem
               button
               onClick={handleClick}
-              sx={{ color: 'black', cursor: 'pointer' }}
+              sx={{ color: 'black', cursor: 'pointer',  borderTopRightRadius: selectedItem === 'home' ? '15px' : 0,
+                borderBottomRightRadius: selectedItem === 'home' ? '15px' : 0, }}
             >
               <ListItemIcon>
                 <DashboardIcon />
@@ -258,8 +259,8 @@ const Sidebar = ({
                     color: selectedItem === 'personalinfo' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'personalinfo' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -287,8 +288,8 @@ const Sidebar = ({
                     color: selectedItem === 'children' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'children' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -315,8 +316,8 @@ const Sidebar = ({
                     color: selectedItem === 'college' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'college' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -343,8 +344,8 @@ const Sidebar = ({
                     color: selectedItem === 'other-information' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'other-information' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -371,8 +372,8 @@ const Sidebar = ({
                     color: selectedItem === 'workexperience' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'workexperience' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -399,8 +400,8 @@ const Sidebar = ({
                     color: selectedItem === 'vocational' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'vocational' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -427,8 +428,8 @@ const Sidebar = ({
                     color: selectedItem === 'learningdev' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'learningdev' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -455,8 +456,8 @@ const Sidebar = ({
                     color: selectedItem === 'voluntarywork' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'voluntarywork' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -483,8 +484,8 @@ const Sidebar = ({
                     color: selectedItem === 'eligibility' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'eligibility' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -510,7 +511,7 @@ const Sidebar = ({
         <ListItem
           button
           onClick={handleClickAttendance}
-          sx={{ color: 'black', cursor: 'pointer' }}
+          sx={{ color: 'black', cursor: 'pointer',  }}
         >
           <ListItemIcon>
             <TableViewIcon />
@@ -534,8 +535,8 @@ const Sidebar = ({
                     color: selectedItem === 'view_attendance' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'view_attendance' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -565,8 +566,8 @@ const Sidebar = ({
                     color: selectedItem === 'search_attendance' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'search_attendance' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -598,8 +599,8 @@ const Sidebar = ({
                     color: selectedItem === 'daily_time_record' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'daily_time_record' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -632,8 +633,8 @@ const Sidebar = ({
                     color: selectedItem === 'daily_time_record_faculty' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'daily_time_record_faculty' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -663,8 +664,8 @@ const Sidebar = ({
                     color: selectedItem === 'attendance_form' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'attendance_form' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -694,8 +695,8 @@ const Sidebar = ({
                     color: selectedItem === 'attendance_module' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'attendance_module' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -725,8 +726,8 @@ const Sidebar = ({
                     color: selectedItem === 'attendance_module_faculty' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'attendance_module_faculty' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -756,8 +757,8 @@ const Sidebar = ({
                     color: selectedItem === 'attendance_module_faculty_40hrs' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'attendance_module_faculty_40hrs' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -787,8 +788,8 @@ const Sidebar = ({
                     color: selectedItem === 'attendance_summary' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'attendance_summary' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -818,8 +819,8 @@ const Sidebar = ({
                     color: selectedItem === 'official_time' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'official_time' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -868,8 +869,8 @@ const Sidebar = ({
                     color: selectedItem === 'pds1' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'pds1' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -899,8 +900,8 @@ const Sidebar = ({
                     color: selectedItem === 'pds2' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'pds2' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -930,8 +931,8 @@ const Sidebar = ({
                     color: selectedItem === 'pds3' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'pds3' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -982,8 +983,8 @@ const Sidebar = ({
                     color: selectedItem === 'payroll-table' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'payroll-table' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1009,8 +1010,8 @@ const Sidebar = ({
                     color: selectedItem === 'remittance-table' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'remittance-table' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1036,8 +1037,8 @@ const Sidebar = ({
                     color: selectedItem === 'item-table' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'item-table' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1064,8 +1065,8 @@ const Sidebar = ({
                     color: selectedItem === 'salary-grade' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'salary-grade' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1091,8 +1092,8 @@ const Sidebar = ({
                     color: selectedItem === 'salary-grade-status' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'salary-grade-status' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1118,8 +1119,8 @@ const Sidebar = ({
                     color: selectedItem === 'department-table' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'department-table' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1145,8 +1146,8 @@ const Sidebar = ({
                     color: selectedItem === 'department-assignment' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'department-assignment' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1172,8 +1173,8 @@ const Sidebar = ({
                     color: selectedItem === 'leave-table' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'leave-table' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1200,8 +1201,8 @@ const Sidebar = ({
                     color: selectedItem === 'leave-assignment' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'leave-assignment' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1227,8 +1228,8 @@ const Sidebar = ({
                     color: selectedItem === 'holiday-suspension' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'holiday-suspension' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1277,8 +1278,8 @@ const Sidebar = ({
                     color: selectedItem === 'assessment-clearance' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'assessment-clearance' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1304,8 +1305,8 @@ const Sidebar = ({
                     color: selectedItem === 'clearance' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'clearance' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1331,8 +1332,8 @@ const Sidebar = ({
                     color: selectedItem === 'faculty-clearance' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'faculty-clearance' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1358,8 +1359,8 @@ const Sidebar = ({
                     color: selectedItem === 'hrms-request-forms' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'hrms-request-forms' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1385,8 +1386,8 @@ const Sidebar = ({
                     color: selectedItem === 'individual-faculty-loading' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'individual-faculty-loading' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1412,8 +1413,8 @@ const Sidebar = ({
                     color: selectedItem === 'in-service-training' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'in-service-training' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1439,8 +1440,8 @@ const Sidebar = ({
                     color: selectedItem === 'leave-card' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'leave-card' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1467,8 +1468,8 @@ const Sidebar = ({
                     color: selectedItem === 'locator-slip' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'locator-slip' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1494,8 +1495,8 @@ const Sidebar = ({
                     color: selectedItem === 'permission-to-teach' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'permission-to-teach' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1522,8 +1523,8 @@ const Sidebar = ({
                     color: selectedItem === 'request-for-id' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'request-for-id' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1549,8 +1550,8 @@ const Sidebar = ({
                     color: selectedItem === 'saln-front' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'saln-front' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1576,8 +1577,8 @@ const Sidebar = ({
                     color: selectedItem === 'scholarship-agreement' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'scholarship-agreement' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },
@@ -1603,8 +1604,8 @@ const Sidebar = ({
                     color: selectedItem === 'subject' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'subject' ? '#A31D1D' : 'inherit',
                     '&:hover': {
-                      bgcolor: '#A31D1D',
-                      color: 'white',
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
                       borderTopRightRadius: '15px',
                       borderBottomRightRadius: '15px',
                     },

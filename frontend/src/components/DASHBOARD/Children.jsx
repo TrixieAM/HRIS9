@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Button, TextField, Table, TableBody, TableCell, TableHead, TableRow, Container } from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Save as SaveIcon, Cancel as CancelIcon } from '@mui/icons-material';
 
+
 const Children = () => {
   const [children, setChildren] = useState([]);
   const [newChild, setNewChild] = useState({
@@ -16,9 +17,11 @@ const Children = () => {
   const [editingChildId, setEditingChildId] = useState(null);
   const [editChildData, setEditChildData] = useState({});
 
+
   useEffect(() => {
     fetchChildren();
   }, []);
+
 
   const fetchChildren = async () => {
     try {
@@ -28,6 +31,7 @@ const Children = () => {
       console.error('Error fetching children:', error);
     }
   };
+
 
   const updateChild = async () => {
     try {
@@ -39,6 +43,7 @@ const Children = () => {
     }
   };
 
+
   const deleteChild = async (id) => {
     try {
       await axios.delete(`http://localhost:5000/childrenRoute/children-table/${id}`);
@@ -48,95 +53,103 @@ const Children = () => {
     }
   };
 
+
   return (
     <Container style={{ marginTop: '20px', backgroundColor: '#FEF9E1' }}>
       {/* Red Header Section */}
       <div
-        style={{
-          backgroundColor: '#6D2323',
-          color: '#FEF9E1',
-          padding: '20px',
-          borderRadius: '8px',
-          marginBottom: '20px'
-        }}
-      >
-        <h1 style={{ margin: 0 }}>Children Information</h1>
-        <h3 style={{ margin: 0 }}>Add Children</h3>
-      </div>
+  style={{
+    backgroundColor: 'white',
+    padding: '20px',
+    borderRadius: '8px',
+    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+    marginBottom: '20px'
+  }}
+>
+  {/* Header Section */}
+  <div
+    style={{
+      backgroundColor: '#6D2323',
+      color: '#ffffff',
+      padding: '10px',
+      borderRadius: '8px',
+      marginBottom: '25px'
+    }}
+  >
+    <h4 style={{ margin: 0, fontSize: '150%', marginBottom:'2px' }}>Children Information</h4>
+    <p style={{ margin: 0, fontSize:'85%', marginLeft:'.25%',}}>Insert Your Children Information</p>
+  </div>
 
-      {/* Add New Child Form Box */}
-      <div
-        style={{
-          backgroundColor: 'white',
-          padding: '20px',
-          borderRadius: '8px',
-          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-          marginBottom: '20px'
-        }}
-      >
-        <TextField
-          label="First Name"
-          value={newChild.childrenFirstName}
-          onChange={(e) => setNewChild({ ...newChild, childrenFirstName: e.target.value })}
-          style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }}
-        />
-        <TextField
-          label="Middle Name"
-          value={newChild.childrenMiddleName}
-          onChange={(e) => setNewChild({ ...newChild, childrenMiddleName: e.target.value })}
-          style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }}
-        />
-        <TextField
-          label="Last Name"
-          value={newChild.childrenLastName}
-          onChange={(e) => setNewChild({ ...newChild, childrenLastName: e.target.value })}
-          style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }}
-        />
-        <TextField
-          label="Name Extension"
-          value={newChild.childrenNameExtension}
-          onChange={(e) => setNewChild({ ...newChild, childrenNameExtension: e.target.value })}
-          style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }}
-        />
-        <TextField
-          type="Date"
-          label=""
-          value={newChild.dateOfBirth}
-          onChange={(e) => setNewChild({ ...newChild, dateOfBirth: e.target.value })}
-          style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }}
-        />
-        <TextField
-          label="Person ID"
-          value={newChild.person_id}
-          onChange={(e) => setNewChild({ ...newChild, person_id: e.target.value })}
-          style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }}
-        />
-        <Button
-          onClick={async () => {
-            await axios.post('http://localhost:5000/childrenRoute/children-table', newChild);
-            fetchChildren();
-            setNewChild({
-              childrenFirstName: '',
-              childrenMiddleName: '',
-              childrenLastName: '',
-              childrenNameExtension: '',
-              dateOfBirth: '',
-              person_id: ''
-            });
-          }}
-          variant="contained"
-          style={{
-            backgroundColor: '#6D2323',
-            color: '#FEF9E1',
-            width: '1020px',
-            marginTop: '35px',
-            marginLeft: '-10px'
-          }}
-          startIcon={<AddIcon />}
-        >
-          Add
-        </Button>
-      </div>
+
+  {/* Form Section */}
+  <TextField
+    label="First Name"
+    value={newChild.childrenFirstName}
+    onChange={(e) => setNewChild({ ...newChild, childrenFirstName: e.target.value })}
+    style={{ marginRight: '10px', marginBottom: '20px', width: '324.25px', marginLeft:'50px' }}
+  />
+  <TextField
+    label="Middle Name"
+    value={newChild.childrenMiddleName}
+    onChange={(e) => setNewChild({ ...newChild, childrenMiddleName: e.target.value })}
+    style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }}
+  />
+  <TextField
+    label="Last Name"
+    value={newChild.childrenLastName}
+    onChange={(e) => setNewChild({ ...newChild, childrenLastName: e.target.value })}
+    style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }}
+  />
+  <TextField
+    label="Name Extension"
+    value={newChild.childrenNameExtension}
+    onChange={(e) => setNewChild({ ...newChild, childrenNameExtension: e.target.value })}
+    style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px', marginLeft:'50px' }}
+  />
+  <TextField
+    type="Date"
+    label=""
+    value={newChild.dateOfBirth}
+    onChange={(e) => setNewChild({ ...newChild, dateOfBirth: e.target.value })}
+    style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }}
+  />
+  <TextField
+    label="Person ID"
+    value={newChild.person_id}
+    onChange={(e) => setNewChild({ ...newChild, person_id: e.target.value })}
+    style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }}
+  />
+
+
+  <Button
+    onClick={async () => {
+      await axios.post('http://localhost:5000/childrenRoute/children-table', newChild);
+      fetchChildren();
+      setNewChild({
+        childrenFirstName: '',
+        childrenMiddleName: '',
+        childrenLastName: '',
+        childrenNameExtension: '',
+        dateOfBirth: '',
+        person_id: ''
+      });
+    }}
+    variant="contained"
+    style={{
+      backgroundColor: '#6D2323',
+      color: '#ffffff',
+      width: '1000px',
+      marginTop: '35px',
+      marginLeft: '50px'
+    }}
+    startIcon={<AddIcon />}
+  >
+    Add
+  </Button>
+</div>
+
+
+
 
       {/* Children Table Styled Like Personal Info */}
       <div
@@ -292,4 +305,8 @@ const Children = () => {
   );
 };
 
+
 export default Children;
+
+
+

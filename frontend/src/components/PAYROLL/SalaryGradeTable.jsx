@@ -13,6 +13,10 @@ import {
   Grid,
   Paper,
 } from "@mui/material";
+import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Save as SaveIcon, Cancel as CancelIcon } from '@mui/icons-material';
+
+
+
 
 const SalaryGradeTable = () => {
   const [salaryGrades, setSalaryGrades] = useState([]);
@@ -30,14 +34,17 @@ const SalaryGradeTable = () => {
   });
   const [editSalaryGradeId, setEditSalaryGradeId] = useState(null);
 
+
   useEffect(() => {
     fetchSalaryGrades();
   }, []);
+
 
   const fetchSalaryGrades = async () => {
     const response = await axios.get("http://localhost:5000/salary-grade");
     setSalaryGrades(response.data);
   };
+
 
   const addSalaryGrade = async () => {
     if (Object.values(newSalaryGrade).includes("")) {
@@ -61,6 +68,7 @@ const SalaryGradeTable = () => {
     }
   };
 
+
   const updateSalaryGrade = async (id) => {
     const recordToUpdate = salaryGrades.find((record) => record.id === id);
     await axios.put(
@@ -71,119 +79,137 @@ const SalaryGradeTable = () => {
     fetchSalaryGrades();
   };
 
+
   const deleteSalaryGrade = async (id) => {
     await axios.delete(`http://localhost:5000/salary-grade/${id}`);
     fetchSalaryGrades();
   };
 
+
   return (
     <Container>
       {/* Header */}
-      <Typography
-        variant="h4"
-        sx={{
-          fontWeight: "bold",
-          backgroundColor: "#6D2323", // Maroon color
-          color: "#FEF9E1", // Cream color
-          padding: "12px 16px",
-          borderRadius: "8px",
-          marginBottom: "16px",
-        }}
-      >
-        Salary Grade Management
-      </Typography>
-
-      {/* Add New Salary Grade Record */}
       <Paper
-        elevation={3}
+  elevation={3}
+  sx={{
+    padding: 3,
+    backgroundColor: "#ffffff",
+    borderRadius: "8px",
+    marginBottom: "24px",
+  }}
+>
+  <Typography
+    variant="h6"
+    sx={{
+      fontWeight: "bold",
+      backgroundColor: "#6D2323",
+      color: "#ffffff",
+      padding: "12px 16px",
+      borderRadius: "8px",
+      marginBottom: "16px",
+    }}
+  >
+    2025 Second Tranche Salary Schedule
+    <p style={{ fontSize: "14px", marginTop: "8px", fontWeight: "normal" }}>
+      For Civilian Personnel of the National Government  
+      Effective January 1, 2025
+</p>
+
+
+
+
+  </Typography>
+ 
+
+
+  <Grid container spacing={2}>
+    <Grid item xs={12} sm={6}>
+      <TextField
+        label="Effectivity Date"
+        value={newSalaryGrade.effectivityDate}
+        onChange={(e) =>
+          setNewSalaryGrade({
+            ...newSalaryGrade,
+            effectivityDate: e.target.value,
+          })
+        }
+        fullWidth
+        InputLabelProps={{ shrink: true }}
+      />
+    </Grid>
+    <Grid item xs={12} sm={6}>
+      <TextField
+        label="Salary Grade Number"
+        value={newSalaryGrade.sg_number}
+        onChange={(e) =>
+          setNewSalaryGrade({
+            ...newSalaryGrade,
+            sg_number: e.target.value,
+          })
+        }
+        fullWidth
+      />
+    </Grid>
+    {[...Array(8)].map((_, index) => (
+      <Grid item xs={12} sm={6} key={index}>
+        <TextField
+          label={`Step ${index + 1}`}
+          value={newSalaryGrade[`step${index + 1}`]}
+          onChange={(e) =>
+            setNewSalaryGrade({
+              ...newSalaryGrade,
+              [`step${index + 1}`]: e.target.value,
+            })
+          }
+          fullWidth
+        />
+      </Grid>
+    ))}
+    <Grid item xs={12}>
+      <Button
+        onClick={addSalaryGrade}
+        variant="contained"
         sx={{
-          padding: 3,
-          backgroundColor: "#ffffff", // White background
-          borderRadius: "8px",
-          marginBottom: "24px",
+          backgroundColor: "#6D2323",
+          '&:hover': { backgroundColor: "#9C2A2A" },
+          height: "40px",
+          width: "100%",
         }}
+        startIcon={<AddIcon />}
       >
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Effectivity Date"
-              value={newSalaryGrade.effectivityDate}
-              onChange={(e) =>
-                setNewSalaryGrade({
-                  ...newSalaryGrade,
-                  effectivityDate: e.target.value,
-                })
-              }
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Salary Grade Number"
-              value={newSalaryGrade.sg_number}
-              onChange={(e) =>
-                setNewSalaryGrade({
-                  ...newSalaryGrade,
-                  sg_number: e.target.value,
-                })
-              }
-              fullWidth
-            />
-          </Grid>
-          {[...Array(8)].map((_, index) => (
-            <Grid item xs={12} sm={6} key={index}>
-              <TextField
-                label={`Step ${index + 1}`}
-                value={newSalaryGrade[`step${index + 1}`]}
-                onChange={(e) =>
-                  setNewSalaryGrade({
-                    ...newSalaryGrade,
-                    [`step${index + 1}`]: e.target.value,
-                  })
-                }
-                fullWidth
-              />
-            </Grid>
-          ))}
-          <Grid item xs={12}>
-            <Button
-              onClick={addSalaryGrade}
-              variant="contained"
-              sx={{
-                backgroundColor: "#6D2323", // Maroon for Add button
-                '&:hover': { backgroundColor: "#9C2A2A" }, // Darker maroon hover
-                height: "55px",
-              }}
-            >
-              Add Salary Grade
-            </Button>
-          </Grid>
-        </Grid>
-      </Paper>
+        Add Salary Grade
+      </Button>
+    </Grid>
+  </Grid>
+</Paper>
+ <br />
+ 
+
 
       {/* Salary Grade Table */}
-      <Table>
-        <TableHead>
-          <TableRow style={{ backgroundColor: "#6D2323" }}>
-            <TableCell style={{ color: "#FEF9E1", fontWeight: "bold" }}>
+      <Table style={{ backgroundColor: 'white', borderRadius: '5px', overflow: 'hidden', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', marginLeft: '-3%' }}>
+      <TableHead>
+          <TableRow style={{ backgroundColor: "#6D2323", borderRadius: "15px", overflow: "hidden" }}>
+            <TableCell style={{ color: "#ffffff", fontWeight: "bold" }}>
               ID
             </TableCell>
-            <TableCell style={{ color: "#FEF9E1", fontWeight: "bold" }}>
+            <TableCell style={{ color: "#ffffff", fontWeight: "bold" }}>
               Effectivity Date
             </TableCell>
-            <TableCell style={{ color: "#FEF9E1", fontWeight: "bold" }}>
+            <TableCell style={{ color: "#ffffff", fontWeight: "bold" }}>
               Salary Grade Number
             </TableCell>
             {[...Array(8)].map((_, index) => (
               <TableCell
                 key={index}
-                style={{ color: "#FEF9E1", fontWeight: "bold" }}
+                style={{ color: "#ffffff", fontWeight: "bold", minWidth: "80px", // Adjust width as needed
+                  padding: "12px 16px",
+                }}
               >
                 Step {index + 1}
               </TableCell>
             ))}
-            <TableCell style={{ color: "#FEF9E1", fontWeight: "bold" }}>
+            <TableCell style={{ color: "#ffffff", fontWeight: "bold" }}>
               Actions
             </TableCell>
           </TableRow>
@@ -271,7 +297,10 @@ const SalaryGradeTable = () => {
                         color: "#FEF9E1",
                         "&:hover": { backgroundColor: "#9C2A2A" },
                         marginRight: "8px",
+                        marginBottom:'5px',
+                        width: "100%",
                       }}
+                      startIcon={<SaveIcon />}
                     >
                       Update
                     </Button>
@@ -283,7 +312,9 @@ const SalaryGradeTable = () => {
                         backgroundColor: "#000000",
                         color: "#ffffff",
                         "&:hover": { backgroundColor: "#333333" },
+                        width: "100%",
                       }}
+                      startIcon={<CancelIcon />}
                     >
                       Cancel
                     </Button>
@@ -298,7 +329,11 @@ const SalaryGradeTable = () => {
                         color: "#FEF9E1",
                         "&:hover": { backgroundColor: "#9C2A2A" },
                         marginRight: "8px",
+                        marginBottom:'5px',
+                        width: "100%",
+                       
                       }}
+                      startIcon={<EditIcon />}
                     >
                       Edit
                     </Button>
@@ -310,7 +345,9 @@ const SalaryGradeTable = () => {
                         backgroundColor: "#000000",
                         color: "#ffffff",
                         "&:hover": { backgroundColor: "#333333" },
+                        width: "100%",
                       }}
+                      startIcon={<DeleteIcon />}
                     >
                       Delete
                     </Button>
@@ -325,4 +362,8 @@ const SalaryGradeTable = () => {
   );
 };
 
+
 export default SalaryGradeTable;
+
+
+

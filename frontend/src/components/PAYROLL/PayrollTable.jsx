@@ -21,9 +21,9 @@ const PayrollTable = () => {
     Object.fromEntries(
       [
         "name", "position", "rateNbc188", "nbc594", "increment", "grossSalary",
-        "abs", "d", "h", "m", "netSalary", "withholdingTax", "totalGsisDeds",
-        "totalPagibigDeds", "philhealth", "totalOtherDeds", "totalDeductions",
-        "pay1st", "pay2nd", "rtIns", "ec", "pagibig"
+        "abs", "d", "h", "m", "netSalary", "withholdingTax","personalLifeRetIns", "gsisSalarayLoan", "gsisPolicyLoan", "gfal", "cpl", "mpl", "mplLite","emergencyLoan", "totalGsisDeds",
+        "totalPagibigDeds", "philhealth", "disallowance", "landbankSalaryLoan", "earistCreditCoop", "feu", "totalOtherDeds", "totalDeductions",
+        "pay1st", "pay2nd", "rtIns", "ec", "pagibigFundCont", "pagibig2", "multiPurpLoan"
       ].map((key) => [key, ""])
     )
   );
@@ -96,7 +96,7 @@ const PayrollTable = () => {
         sx={{
           fontWeight: "bold",
           backgroundColor: "#6D2323",
-          color: "#FEF9E1",
+          color: "#ffffff",
           padding: "12px 16px",
           borderRadius: "8px",
           marginBottom: "16px",

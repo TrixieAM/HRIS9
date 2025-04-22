@@ -1,234 +1,225 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
-  Button,
-  Box,
-  TextField,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  TableContainer,
-  Paper,
-  Container,
-  Typography,
+  Button, TextField, Table, TableBody, TableCell,
+  TableHead, TableRow, Container, Box
 } from '@mui/material';
+import {
+  Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon,
+  Save as SaveIcon, Cancel as CancelIcon
+} from '@mui/icons-material';
+
 
 const Remittances = () => {
   const [remittances, setRemittances] = useState([]);
-  const [payroll, setPayroll] = useState({
-    name: '',
-    withHoldingTax: '',
-    personalLifeRet: '',
-    gsisSalarayLoan: '',
-    gsisPolicyLoan: '',
-    gfal: '',
-    cpl: '',
-    mpl: '',
-    mplLite: '',
-    emergencyLoan: '',
-    totalGsisDeds: '',
-    pagibigFundCont: '',
-    pagibig2: '',
-    multiPurpLoan: '',
-    totalPagibigDeds: '',
-    philhealth: '',
-    disallowance: '',
-    landbankSalaryLoan: '',
-    earistCreditCoop: '',
-    feu: '',
-    mtslaSalaryLoan: '',
-    savingAndLoan: '',
-    totalOtherDeds: '',
-    totalDeds: '',
+  const [newRemittance, setNewRemittance] = useState({
+    employeeNumber: '', disallowance: '', gsisSalaryLoan: '', gsisPolicyLoan: '',
+    gfal: '', cpl: '', mpl: '', mplLite: '', emergencyLoan: '', nbc594: '',
+    increment: '', pagibigFundCont: '', pagibig2: '', multiPurpLoan: '',
+    landbankSalaryLoan: '', earistCreditCoop: '', feu: ''
   });
+  const [editingRemittanceId, setEditingRemittanceId] = useState(null);
+  const [editRemittanceData, setEditRemittanceData] = useState({});
 
-  const [editingId, setEditingId] = useState(null);
 
   useEffect(() => {
-    fetchPayrolls();
+    fetchRemittances();
   }, []);
 
-  const fetchPayrolls = async () => {
+
+  const fetchRemittances = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/remittance');
-      setRemittances(response.data);
+      const result = await axios.get('http://localhost:5000/employee-remittance');
+      setRemittances(result.data);
     } catch (error) {
-      console.error('Error fetching remittances data', error);
+      console.error('Error fetching remittances:', error);
     }
   };
 
-  const handleChange = (e) => {
-    setPayroll({ ...payroll, [e.target.name]: e.target.value });
-  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const updateRemittance = async () => {
     try {
-      if (editingId) {
-        await axios.put(`http://localhost:5000/api/remittance/${editingId}`, payroll);
-      } else {
-        await axios.post('http://localhost:5000/api/remittance', payroll);
-      }
-      setEditingId(null);
-      fetchPayrolls();
-      resetForm();
+      await axios.put(`http://localhost:5000/employee-remittance/${editingRemittanceId}`, editRemittanceData);
+      setEditingRemittanceId(null);
+      fetchRemittances();
     } catch (error) {
-      console.error('Error submitting remittance data', error);
+      console.error('Failed to update remittance:', error);
     }
   };
 
-  const handleEdit = (item) => {
-    setPayroll(item);
-    setEditingId(item.id);
-  };
 
-  const handleDelete = async (id) => {
+  const deleteRemittance = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/remittance/${id}`);
-      fetchPayrolls();
+      await axios.delete(`http://localhost:5000/employee-remittance/${id}`);
+      fetchRemittances();
     } catch (error) {
-      console.error('Error deleting remittance record', error);
+      console.error('Error deleting remittance:', error);
     }
   };
 
-  const handleCancel = () => {
-    resetForm();
-    setEditingId(null);
-  };
-
-  const resetForm = () => {
-    setPayroll(
-      Object.fromEntries(Object.keys(payroll).map((key) => [key, '']))
-    );
-  };
 
   return (
-    <Container>
-      {/* Header */}
-      <Typography
-        variant="h4"
-        sx={{
-          fontWeight: "bold",
-          backgroundColor: "#6D2323",
-          color: "#FEF9E1",
-          padding: "12px 16px",
-          borderRadius: "8px",
-          marginBottom: "16px",
+    <Container style={{ marginTop: '20px', backgroundColor: '#FEF9E1' }}>
+      <div
+        style={{
+          backgroundColor: 'white',
+          padding: '20px',
+          borderRadius: '8px',
+          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+          marginBottom: '20px'
         }}
       >
-        Remittances Register for Regular Employees
-      </Typography>
+        <div
+          style={{
+            backgroundColor: '#6D2323',
+            color: '#ffffff',
+            padding: '10px',
+            borderRadius: '8px',
+            marginBottom: '25px'
+          }}
+        >
+          <h4 style={{ margin: 0, fontSize: '150%', marginBottom: '2px' }}>Employee Remittance</h4>
+          <p style={{ margin: 0, fontSize: '85%', marginLeft: '.25%' }}>Insert Employee Remittance Information</p>
+        </div>
 
-      {/* Form Box */}
-      <Paper
-        elevation={3}
-        sx={{
-          padding: 3,
-          backgroundColor: "#ffffff",
-          borderRadius: "8px",
-          marginBottom: "24px",
-        }}
-      >
-        <Box display="flex" flexWrap="wrap" sx={{ marginBottom: 3, gap: 2 }}>
-          {Object.keys(payroll).map((key) => (
+
+        <Box display="flex" flexWrap="wrap" gap={2} marginLeft="50px">
+          {Object.keys(newRemittance).map((key) => (
             <TextField
               key={key}
-              label={key.replace(/([A-Z])/g, " $1").trim()}
-              name={key}
-              value={payroll[key]}
-              onChange={handleChange}
-              sx={{ width: "23%", color: "#000000" }}
+              label={key}
+              value={newRemittance[key]}
+              onChange={(e) => setNewRemittance({ ...newRemittance, [key]: e.target.value })}
+              style={{ width: '300px', marginLeft: '15px' }}
             />
           ))}
-          <Button
-            onClick={handleSubmit}
-            variant="contained"
-            sx={{
-              backgroundColor: "#6D2323",
-              "&:hover": {
-                backgroundColor: "#9C2A2A",
-              },
-              height: "55px",
-            }}
-          >
-            {editingId ? "Update" : "Add"}
-          </Button>
-          {editingId && (
-            <Button
-              onClick={handleCancel}
-              variant="contained"
-              color="error"
-              sx={{ height: "55px" }}
-            >
-              Cancel
-            </Button>
-          )}
         </Box>
-      </Paper>
 
-      {/* Table */}
-      <TableContainer
-        component={Paper}
-        sx={{ maxHeight: 500, overflow: 'auto' }}
+
+        <Button
+          onClick={async () => {
+            await axios.post('http://localhost:5000/employee-remittance', newRemittance);
+            fetchRemittances();
+            setNewRemittance(Object.fromEntries(Object.keys(newRemittance).map(k => [k, ''])));
+          }}
+          variant="contained"
+          style={{
+            backgroundColor: '#6D2323',
+            color: '#ffffff',
+            width: '1000px',
+            marginTop: '35px',
+            marginLeft: '50px'
+          }}
+          startIcon={<AddIcon />}
+        >
+          Add
+        </Button>
+      </div>
+
+
+      <div
+        style={{
+          backgroundColor: 'white',
+          padding: '20px',
+          borderRadius: '8px',
+          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+          marginBottom: '20px',
+          overflowX: 'auto'
+        }}
       >
-        <Table stickyHeader>
+       
+        <Table>
           <TableHead>
-            <TableRow style={{ backgroundColor: "#6D2323" }}>
-              <TableCell style={{ color: "#000000", fontWeight: "bold" }}>No.</TableCell>
-              {Object.keys(payroll).map((key) => (
-                <TableCell key={key} style={{ color: "#000000", fontWeight: "bold" }}>
-                  {key.replace(/([A-Z])/g, " $1").trim()}
-                </TableCell>
+            <TableRow >
+              {Object.keys(newRemittance).map((key) => (
+                <TableCell key={key}>{key}</TableCell>
               ))}
-              <TableCell style={{ color: "#000000", fontWeight: "bold" }}>Actions</TableCell>
+             
+
+
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
+
+
           <TableBody>
-            {remittances.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>{item.id}</TableCell>
-                {Object.keys(payroll).map((key) => (
-                  <TableCell key={key}>{item[key]}</TableCell>
-                ))}
-                <TableCell>
-                  <Button
-                    onClick={() => handleEdit(item)}
-                    variant="contained"
-                    sx={{
-                      backgroundColor: "#6D2323",
-                      color: "#FEF9E1",
-                      "&:hover": {
-                        backgroundColor: "#9C2A2A",
-                      },
-                      marginRight: "8px",
-                    }}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    onClick={() => handleDelete(item.id)}
-                    variant="contained"
-                    color="error"
-                    sx={{
-                      backgroundColor: "#000000",
-                      color: "#ffffff",
-                      "&:hover": {
-                        backgroundColor: "#333333",
-                      },
-                    }}
-                  >
-                    Delete
-                  </Button>
-                </TableCell>
+            {remittances.map((remittance) => (
+              <TableRow key={remittance.id}>
+                {editingRemittanceId === remittance.id ? (
+                  <>
+                    {Object.keys(newRemittance).map((key) => (
+                      <TableCell key={key}>
+                        <TextField
+                          value={editRemittanceData[key] || ''}
+                          onChange={(e) =>
+                            setEditRemittanceData({ ...editRemittanceData, [key]: e.target.value })
+                          }
+                          style={{ width: '120px', }}
+                         
+                        />
+                       
+                      </TableCell>
+                    ))}
+                    <TableCell>
+                      <Button
+                        onClick={updateRemittance}
+                        variant="contained"
+                        style={{ backgroundColor: '#6D2323', color: '#FEF9E1', marginBottom: '5px', width: '100px' }}
+                        startIcon={<SaveIcon />}
+                      >
+                        Update
+                      </Button>
+                      <Button
+                        onClick={() => setEditingRemittanceId(null)}
+                        variant="contained"
+                        style={{ backgroundColor: 'black', color: 'white', marginLeft: '10px', width: '100px', marginBottom: '5px' }}
+                        startIcon={<CancelIcon />}
+                      >
+                        Cancel
+                      </Button>
+                    </TableCell>
+                  </>
+                ) : (
+                  <>
+                    {Object.keys(newRemittance).map((key) => (
+                      <TableCell key={key}>{remittance[key]}</TableCell>
+                    ))}
+                    <TableCell>
+                      <div style={{ display: 'flex', gap: '10px' }}>
+                        <Button
+                          onClick={() => {
+                            setEditRemittanceData(remittance);
+                            setEditingRemittanceId(remittance.id);
+                          }}
+                          variant="contained"
+                          style={{ backgroundColor: '#6D2323', color: '#FEF9E1', width: '100px' }}
+                          startIcon={<EditIcon />}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          onClick={() => deleteRemittance(remittance.id)}
+                          variant="contained"
+                          style={{ backgroundColor: 'black', color: 'white' }}
+                          startIcon={<DeleteIcon />}
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </>
+                )}
               </TableRow>
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
+      </div>
     </Container>
   );
 };
 
+
 export default Remittances;
+
+
+
