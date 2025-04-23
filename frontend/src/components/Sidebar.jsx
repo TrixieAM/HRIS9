@@ -250,7 +250,7 @@ const Sidebar = ({
 
 
             <Collapse in={open} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding sx={{ pl: 4 }}>
+              <List component="div" disablePadding sx={{ pl: 5.4 }}>
                 <ListItem
                   button 
                   component={Link} 
@@ -526,7 +526,7 @@ const Sidebar = ({
         {userRole !== 'staff' && (
           <>
             <Collapse in={open2} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding sx={{ pl: 4 }}>
+              <List component="div" disablePadding sx={{ pl: 5.4 }}>
               <ListItem 
                   button 
                   component={Link} 
@@ -557,7 +557,7 @@ const Sidebar = ({
             </Collapse>
 
             <Collapse in={open2} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding sx={{ pl: 4 }}>
+              <List component="div" disablePadding sx={{ pl: 5.4 }}>
                  <ListItem 
                   button 
                   component={Link} 
@@ -590,7 +590,7 @@ const Sidebar = ({
         )}
 
         <Collapse in={open2} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding sx={{ pl: 4 }}>
+          <List component="div" disablePadding sx={{ pl: 5.4 }}>
              <ListItem 
                   button 
                   component={Link} 
@@ -624,7 +624,7 @@ const Sidebar = ({
         {userRole !== 'staff' && (
           <>
             <Collapse in={open2} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding sx={{ pl: 4 }}>
+              <List component="div" disablePadding sx={{ pl: 5.4 }}>
               <ListItem 
                   button 
                   component={Link} 
@@ -655,7 +655,7 @@ const Sidebar = ({
             </Collapse>
 
             <Collapse in={open2} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding sx={{ pl: 4 }}>
+              <List component="div" disablePadding sx={{ pl: 5.4 }}>
                  <ListItem 
                   button 
                   component={Link} 
@@ -686,7 +686,7 @@ const Sidebar = ({
             </Collapse>
 
             <Collapse in={open2} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding sx={{ pl: 4 }}>
+              <List component="div" disablePadding sx={{ pl: 5.4 }}>
               <ListItem 
                   button 
                   component={Link} 
@@ -717,7 +717,7 @@ const Sidebar = ({
             </Collapse>
             
             <Collapse in={open2} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding sx={{ pl: 4 }}>
+              <List component="div" disablePadding sx={{ pl: 5.4 }}>
                 <ListItem 
                   button 
                   component={Link} 
@@ -748,7 +748,7 @@ const Sidebar = ({
             </Collapse>
 
             <Collapse in={open2} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding sx={{ pl: 4 }}>
+              <List component="div" disablePadding sx={{ pl: 5.4 }}>
                  <ListItem 
                   button 
                   component={Link} 
@@ -779,7 +779,7 @@ const Sidebar = ({
             </Collapse>
 
             <Collapse in={open2} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding sx={{ pl: 4 }}>
+              <List component="div" disablePadding sx={{ pl: 5.4 }}>
               <ListItem 
                   button 
                   component={Link} 
@@ -810,7 +810,7 @@ const Sidebar = ({
             </Collapse>
 
             <Collapse in={open2} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding sx={{ pl: 4 }}>
+              <List component="div" disablePadding sx={{ pl: 5.4 }}>
                  <ListItem 
                   button 
                   component={Link} 
@@ -974,7 +974,7 @@ const Sidebar = ({
             </ListItem>
 
             <Collapse in={open3} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding sx={{ pl: 4 }}>
+              <List component="div" disablePadding sx={{ pl: 5.4 }}>
                  <ListItem 
                   button 
                   component={Link} 
@@ -1002,10 +1002,10 @@ const Sidebar = ({
                   <ListItemText primary="Payroll" sx={{ marginLeft: '-10px' }} />
                 </ListItem>
 
-                <ListItem 
-                  button 
-                  component={Link} 
-                  to= '/remittance-table' 
+                <ListItem
+                  button
+                  component={Link}
+                  to= '/remittance-table'
                   sx={{
                     color: selectedItem === 'remittance-table' ? 'white' : 'inherit',
                     bgcolor: selectedItem === 'remittance-table' ? '#A31D1D' : 'inherit',
@@ -1018,7 +1018,7 @@ const Sidebar = ({
                     borderTopRightRadius: selectedItem === 'remittance-table' ? '15px' : 0,
                     borderBottomRightRadius: selectedItem === 'remittance-table' ? '15px' : 0,
                   }}
-                  onClick={() => handleItemClick('remittance-table')} 
+                  onClick={() => handleItemClick('remittance-table')}
                   >
                   <ListItemIcon sx={{ marginRight: '-1rem',
                     color: selectedItem === 'remittance-table' ? 'white' : 'inherit',
@@ -1028,6 +1028,35 @@ const Sidebar = ({
                   </ListItemIcon>
                   <ListItemText primary="Remittances" sx={{ marginLeft: '-10px' }} />
                 </ListItem>
+
+
+                <ListItem
+                  button
+                  component={Link}
+                  to= '/plantillia-table'
+                  sx={{
+                    color: selectedItem === 'plantillia-table' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'plantillia-table' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'plantillia-table' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'plantillia-table' ? '15px' : 0,
+                  }}
+                  onClick={() => handleItemClick('plantillia-table')}
+                  >
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'plantillia-table' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
+                    <PointOfSaleIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Plantillia" sx={{ marginLeft: '-10px' }} />
+                </ListItem>
+
 
                 <ListItem 
                   button 
@@ -1055,6 +1084,33 @@ const Sidebar = ({
                     <CategoryIcon />
                   </ListItemIcon>
                   <ListItemText primary="Item Table" sx={{ marginLeft: '-10px' }} />
+                </ListItem>
+
+                <ListItem
+                  button
+                  component={Link}
+                  to= '/employee-salary-grade'
+                  sx={{
+                    color: selectedItem === 'employee-salary-grade' ? 'white' : 'inherit',
+                    bgcolor: selectedItem === 'employee-salary-grade' ? '#A31D1D' : 'inherit',
+                    '&:hover': {
+                      bgcolor: '#f0f0f0',
+                      color: 'black',
+                      borderTopRightRadius: '15px',
+                      borderBottomRightRadius: '15px',
+                    },
+                    borderTopRightRadius: selectedItem === 'employee-salary-grade' ? '15px' : 0,
+                    borderBottomRightRadius: selectedItem === 'employee-salary-grade' ? '15px' : 0,
+                  }}
+                  onClick={() => handleItemClick('employee-salary-grade')}
+                  >
+                  <ListItemIcon sx={{ marginRight: '-1rem',
+                    color: selectedItem === 'employee-salary-grade' ? 'white' : 'inherit',
+                    '&:hover': { color: 'white' }
+                   }}>
+                    <PointOfSaleIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Employee Salary Grade" sx={{ marginLeft: '-10px' }} />
                 </ListItem>
 
                 <ListItem 
@@ -1269,7 +1325,7 @@ const Sidebar = ({
             </ListItem>
 
             <Collapse in={open4} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding sx={{ pl: 4 }}>
+              <List component="div" disablePadding sx={{ pl: 5.4 }}>
               <ListItem 
                   button 
                   component={Link} 
@@ -1611,6 +1667,7 @@ const Sidebar = ({
                     },
                     borderTopRightRadius: selectedItem === 'subject' ? '15px' : 0,
                     borderBottomRightRadius: selectedItem === 'subject' ? '15px' : 0,
+                    marginBottom: '40px',
                   }}
                   onClick={() => handleItemClick('subject')} 
                   >

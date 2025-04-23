@@ -10,7 +10,7 @@ import {
 } from '@mui/icons-material';
 
 
-const Remittances = () => {
+const EmployeeRemittance = () => {
   const [remittances, setRemittances] = useState([]);
   const [newRemittance, setNewRemittance] = useState({
     employeeNumber: '', disallowance: '', gsisSalaryLoan: '', gsisPolicyLoan: '',
@@ -29,7 +29,7 @@ const Remittances = () => {
 
   const fetchRemittances = async () => {
     try {
-      const result = await axios.get('http://localhost:5000/employee-remittance');
+      const result = await axios.get('http://localhost:5000/Remittance/employee-remittance');
       setRemittances(result.data);
     } catch (error) {
       console.error('Error fetching remittances:', error);
@@ -39,7 +39,7 @@ const Remittances = () => {
 
   const updateRemittance = async () => {
     try {
-      await axios.put(`http://localhost:5000/employee-remittance/${editingRemittanceId}`, editRemittanceData);
+      await axios.put(`http://localhost:5000/Remittance/employee-remittance/${editingRemittanceId}`, editRemittanceData);
       setEditingRemittanceId(null);
       fetchRemittances();
     } catch (error) {
@@ -50,7 +50,7 @@ const Remittances = () => {
 
   const deleteRemittance = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/employee-remittance/${id}`);
+      await axios.delete(`http://localhost:5000/Remittance/employee-remittance/${id}`);
       fetchRemittances();
     } catch (error) {
       console.error('Error deleting remittance:', error);
@@ -98,10 +98,16 @@ const Remittances = () => {
 
         <Button
           onClick={async () => {
-            await axios.post('http://localhost:5000/employee-remittance', newRemittance);
+            // Filter out empty fields
+            const filteredRemittance = Object.fromEntries(
+              Object.entries(newRemittance).filter(([_, value]) => value !== '')
+            );
+         
+            await axios.post('http://localhost:5000/Remittance/employee-remittance', filteredRemittance);
             fetchRemittances();
             setNewRemittance(Object.fromEntries(Object.keys(newRemittance).map(k => [k, ''])));
           }}
+         
           variant="contained"
           style={{
             backgroundColor: '#6D2323',
@@ -219,7 +225,7 @@ const Remittances = () => {
 };
 
 
-export default Remittances;
+export default EmployeeRemittance;
 
 
 

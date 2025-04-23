@@ -17,6 +17,8 @@ import axios from 'axios';
 import ProtectedRoute from './components/ProtectedRoute';
 
 
+
+
 import Login from './components/Login';
 import Register from './components/Register';
 import Unauthorized from './components/Unauthorized';
@@ -24,8 +26,11 @@ import AllIcons from './components/Page';
 import SettingsForm from './SettingsForm';
 
 
+
+
 import Home from './components/Home';
 import Sidebar from './components/Sidebar';
+
 
 //DASHBOARD
 import PersonalTable from './components/DASHBOARD/PersonTable';
@@ -37,6 +42,7 @@ import Vocational from './components/DASHBOARD/Vocational';
 import LearningAndDevelopment from './components/DASHBOARD/LearningAndDevelopment';
 import VoluntaryWork from './components/DASHBOARD/Voluntary';
 import Eligibility from './components/DASHBOARD/Eligibility';
+
 
 //RECORDS
 import ViewAttendanceRecord from './components/ATTENDANCE/ViewAttendanceRecord';
@@ -50,6 +56,7 @@ import AttendanceModuleFaculty40 from './components/ATTENDANCE/AttendanceModuleF
 import OverallAttendancePage from './components/ATTENDANCE/OverallAttendance';
 import OfficialTimeForm from './components/ATTENDANCE/OfficialTimeForm';
 
+
 //PAYROLL
 import PayrollTable from './components/PAYROLL/PayrollTable';
 import Remittances from './components/PAYROLL/Remittances';
@@ -61,6 +68,8 @@ import DepartmentAssignment from './components/PAYROLL/DepartmentAssignment';
 import HolidaySuspension from './components/PAYROLL/HolidaySuspension';
 import Leave from './components/PAYROLL/Leave';
 import LeaveAssignment from './components/PAYROLL/LeaveAssignment';
+
+
 
 
 //FORMS
@@ -82,13 +91,24 @@ import SubjectStillToBeTaken from './components/FORMS/SubjectStillToBeTaken';
 import IndividualFacultyLoading from './components/FORMS/IndividualFacultyLoading';
 import HrmsRequestForms from './components/FORMS/HRMSRequestForms';
 
-// PDS 
+
+// PDS
 import PDS1 from './components/PDS1';
 import PDS2 from './components/PDS2';
 import PDS3 from './components/PDS3';
 import PDS4 from './components/PDS4';
 import { PictureAsPdfOutlined } from '@mui/icons-material';
 import ForgotPassword from './components/ForgotPassword';
+import PlantillaTable from './components/PAYROLL/Plantillia';
+import EmployeeSalaryGrade from './components/PAYROLL/EmployeeSalaryGrade';
+
+
+
+
+
+
+
+
 
 
 
@@ -98,6 +118,8 @@ import ForgotPassword from './components/ForgotPassword';
 
 
 const drawerWidth = 250;
+
+
 
 
 function App() {
@@ -111,13 +133,18 @@ function App() {
   const location = useLocation();
 
 
+
+
   const handleClick = () => setOpen(!open);
   const handleClickAttendance = () => setOpen2(!open2);
   const handleClickPayroll = () => setOpen3(!open3);
   const handleClickForms = () => setOpen4(!open4);
   const handleClickPDSFiles = () => setOpen5(!open5);
 
+
   const handleItemClick = (item) => {setSelectedItem(item);};
+
+
 
 
   const fetchSettings = async () => {
@@ -130,9 +157,13 @@ function App() {
   };
 
 
+
+
   useEffect(() => {
     fetchSettings();
   }, []);
+
+
 
 
   return (
@@ -144,7 +175,7 @@ function App() {
           },
         })}
       >
-  
+ 
       <Box
         sx={{
           display: 'flex',
@@ -172,6 +203,8 @@ function App() {
         </AppBar>
 
 
+
+
         {!['/', '/login', '/Register', '/forgot-password'].includes(location.pathname) && (
           <Sidebar
             open={open}
@@ -186,6 +219,8 @@ function App() {
             handleClickPDSFiles={handleClickPDSFiles}
           />
         )}
+
+
 
 
         {/* Main Content */}
@@ -355,6 +390,8 @@ function App() {
             />
 
 
+
+
             <Route
               path="/attendance_module_faculty_40hrs"
               element={
@@ -363,6 +400,8 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+
 
 
             <Route
@@ -381,6 +420,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
 
             <Route
               path="/pds1"
@@ -424,6 +464,8 @@ function App() {
             />
 
 
+
+
             <Route
               path="/payroll-table"
               element={
@@ -432,6 +474,8 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+
 
 
             <Route
@@ -444,6 +488,8 @@ function App() {
             />
 
 
+
+
             <Route
               path="/item-table"
               element={
@@ -452,6 +498,8 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+
 
 
             <Route
@@ -464,6 +512,8 @@ function App() {
             />
 
 
+
+
             <Route
               path="/salary-grade-status"
               element={
@@ -472,6 +522,8 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+
 
 
             <Route
@@ -484,6 +536,8 @@ function App() {
             />
 
 
+
+
             <Route
               path="/department-assignment"
               element={
@@ -492,6 +546,8 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+
 
 
             <Route
@@ -504,6 +560,8 @@ function App() {
             />
 
 
+
+
             <Route
               path="/leave-assignment"
               element={
@@ -514,6 +572,8 @@ function App() {
             />
 
 
+
+
             <Route
               path="/holiday-suspension"
               element={
@@ -522,6 +582,8 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+
 
 
             <Route
@@ -548,6 +610,8 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+
 
 
             <Route
@@ -662,12 +726,35 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            
-            
+
+
+            <Route
+              path="/plantillia-table"
+              element={
+                <ProtectedRoute allowedRoles={['administrator', 'superadmin']}>
+                  <PlantillaTable />
+                </ProtectedRoute>
+              }
+            />
+
+
+            <Route
+              path="/employee-salary-grade"
+              element={
+                <ProtectedRoute allowedRoles={['administrator', 'superadmin']}>
+                  <EmployeeSalaryGrade />
+                </ProtectedRoute>
+              }
+            />
+           
+           
+
 
             <Route path="/unauthorized" element={<Unauthorized />} />
           </Routes>
         </Box>
+
+
 
 
         {/* Footer */}
@@ -683,7 +770,7 @@ function App() {
             color: 'white',
             textAlign: 'center',
             padding: '20px',
-            height: '10px', 
+            height: '10px',
           }}
         >
           <Typography variant="body2">
@@ -696,6 +783,8 @@ function App() {
 }
 
 
+
+
 export default function WrappedApp() {
   return (
     <Router>
@@ -703,6 +792,12 @@ export default function WrappedApp() {
     </Router>
   );
 }
+
+
+
+
+
+
 
 
 

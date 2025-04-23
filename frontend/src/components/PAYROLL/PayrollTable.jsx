@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Button,
-  Box,
-  TextField,
   Table,
   TableBody,
   TableCell,
@@ -17,56 +15,41 @@ import {
 
 const PayrollTable = () => {
   const [payrolls, setPayrolls] = useState([]);
-  const [payroll, setPayroll] = useState(
-    Object.fromEntries(
-      [
-        "name", "position", "rateNbc188", "nbc594", "increment", "grossSalary",
-        "abs", "d", "h", "m", "netSalary", "withholdingTax","personalLifeRetIns", "gsisSalarayLoan", "gsisPolicyLoan", "gfal", "cpl", "mpl", "mplLite","emergencyLoan", "totalGsisDeds",
-        "totalPagibigDeds", "philhealth", "disallowance", "landbankSalaryLoan", "earistCreditCoop", "feu", "totalOtherDeds", "totalDeductions",
-        "pay1st", "pay2nd", "rtIns", "ec", "pagibigFundCont", "pagibig2", "multiPurpLoan"
-      ].map((key) => [key, ""])
-    )
-  );
 
-  const [editingId, setEditingId] = useState(null);
+  const [payrollKeys, setPayrollKeys] = useState([]);
+  const [remittance, setRemittance] = useState([]);
+
 
   useEffect(() => {
     fetchPayrolls();
+    fetchRemittance();
   }, []);
 
   const fetchPayrolls = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/payroll");
       setPayrolls(response.data);
+      if (response.data.length > 0) {
+        setPayrollKeys(Object.keys(response.data[0]).filter(key => key !== "id"));
+      }
     } catch (error) {
       console.error("Error fetching payroll data", error);
     }
   };
 
-  const handleChange = (e) => {
-    setPayroll({ ...payroll, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const fetchRemittance = async () => {
     try {
-      if (editingId) {
-        await axios.put(`http://localhost:5000/api/payroll/${editingId}`, payroll);
-      } else {
-        await axios.post("http://localhost:5000/api/payroll", payroll);
+      const response = await axios.get("http://localhost:5000/payroll-remittance");
+      console.log("Remittance Data:", response.data);  // Log the data here
+      setRemittance(response.data);
+      if (response.data.length > 0) {
+        setPayrollKeys(Object.keys(response.data[0]).filter(key => key !== "id"));
       }
-      setEditingId(null);
-      fetchPayrolls();
-      resetForm();
     } catch (error) {
-      console.error("Error submitting payroll data", error);
+      console.error("Error fetching remittance data", error);
     }
   };
-
-  const handleEdit = (item) => {
-    setPayroll(item);
-    setEditingId(item.id);
-  };
+  
 
   const handleDelete = async (id) => {
     try {
@@ -77,20 +60,8 @@ const PayrollTable = () => {
     }
   };
 
-  const handleCancel = () => {
-    resetForm();
-    setEditingId(null);
-  };
-
-  const resetForm = () => {
-    setPayroll(
-      Object.fromEntries(Object.keys(payroll).map((key) => [key, ""]))
-    );
-  };
-
   return (
     <Container>
-      {/* Header */}
       <Typography
         variant="h4"
         sx={{
@@ -105,60 +76,12 @@ const PayrollTable = () => {
         Payroll Register for Regular Employees
       </Typography>
 
-      {/* Form Box */}
-      <Paper
-        elevation={3}
-        sx={{
-          padding: 3,
-          backgroundColor: "#ffffff",
-          borderRadius: "8px",
-          marginBottom: "24px",
-        }}
-      >
-        <Box display="flex" flexWrap="wrap" sx={{ marginBottom: 3, gap: 2 }}>
-          {Object.keys(payroll).map((key) => (
-            <TextField
-              key={key}
-              label={key.replace(/([A-Z])/g, " $1").trim()}
-              name={key}
-              value={payroll[key]}
-              onChange={handleChange}
-              sx={{ width: "23%", color: "#000000" }}
-            />
-          ))}
-          <Button
-            onClick={handleSubmit}
-            variant="contained"
-            sx={{
-              backgroundColor: "#6D2323",
-              "&:hover": {
-                backgroundColor: "#9C2A2A",
-              },
-              height: "55px",
-            }}
-          >
-            {editingId ? "Update" : "Add"}
-          </Button>
-          {editingId && (
-            <Button
-              onClick={handleCancel}
-              variant="contained"
-              color="error"
-              sx={{ height: "55px" }}
-            >
-              Cancel
-            </Button>
-          )}
-        </Box>
-      </Paper>
-
-      {/* Table */}
       <TableContainer component={Paper} sx={{ maxHeight: 500, overflow: "auto" }}>
         <Table stickyHeader>
           <TableHead>
             <TableRow style={{ backgroundColor: "#6D2323" }}>
               <TableCell style={{ color: "#000000", fontWeight: "bold" }}>No.</TableCell>
-              {Object.keys(payroll).map((key) => (
+              {payrollKeys.map((key) => (
                 <TableCell key={key} style={{ color: "#000000", fontWeight: "bold" }}>
                   {key.replace(/([A-Z])/g, " $1").trim()}
                 </TableCell>
@@ -170,28 +93,14 @@ const PayrollTable = () => {
             {payrolls.map((item) => (
               <TableRow key={item.id}>
                 <TableCell>{item.id}</TableCell>
-                {Object.keys(payroll).map((key) => (
+                {payrollKeys.map((key) => (
                   <TableCell key={key}>{item[key]}</TableCell>
                 ))}
                 <TableCell>
                   <Button
-                    onClick={() => handleEdit(item)}
-                    variant="contained"
-                    sx={{
-                      backgroundColor: "#6D2323",
-                      color: "#FEF9E1",
-                      "&:hover": {
-                        backgroundColor: "#9C2A2A",
-                      },
-                      marginRight: "8px",
-                    }}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    onClick={() => handleDelete(item.id)}
                     variant="contained"
                     color="error"
+                    onClick={() => handleDelete(item.id)}
                     sx={{
                       backgroundColor: "#000000",
                       color: "#ffffff",

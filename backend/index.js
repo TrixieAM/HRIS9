@@ -23,6 +23,13 @@ const OtherInformation = require("./dashboardRoutes/OtherSkills");
 const AllData = require("./dashboardRoutes/DataRoute");
 const Attendance = require("./dashboardRoutes/Attendance");
 
+const EmployeeSalaryGrade = require("./payrollRoutes/EmployeeSalaryGrade");
+const PlantillaTable = require("./payrollRoutes/PlantilliaTable");
+const SalaryGradeTable = require ("./payrollRoutes/SalaryGradeTable");
+const Remittance = require ("./payrollRoutes/Remittance");
+
+
+
 
 const app = express();
 
@@ -45,6 +52,10 @@ app.use("/WorkExperienceRoute", WorkExperienceRoute);
 app.use("/OtherInfo", OtherInformation);
 app.use("/allData", AllData);
 app.use("/attendance", Attendance);
+app.use("/EmployeeSalaryGrade", EmployeeSalaryGrade);
+app.use("/PlantillaTable", PlantillaTable);
+app.use("/SalaryGradeTable", SalaryGradeTable);
+app.use("/Remittance", Remittance);
 
 //MYSQL CONNECTION
 const db = mysql.createConnection({
@@ -604,81 +615,8 @@ app.get('/api/user-role/:user', (req, res) => {
 });
 
 
-///////// PAYROLL
 
-// Get all payroll
-app.get("/api/payroll", (req, res) => {
-  db.query("SELECT * FROM payroll", (err, result) => {
-      if (err) {
-          res.status(500).send(err);
-      } else {
-          res.json(result);
-      }
-  });
-});
 
-// Add
-app.post("/api/payroll", (req, res) => {
-  const {
-      name, position, rateNbc188, nbc594, increment, grossSalary, abs, d, h, m,
-      netSalary, withholdingTax, totalGsisDeds, totalPagibigDeds, philhealth,
-      totalOtherDeds, totalDeductions, pay1st, pay2nd, rtIns, ec, pagibig
-  } = req.body;
-
-  const sql = `
-      INSERT INTO payroll 
-      (name, position, rateNbc188, nbc594, increment, grossSalary, abs, d, h, m, 
-       netSalary, withholdingTax, totalGsisDeds, totalPagibigDeds, philhealth, 
-       totalOtherDeds, totalDeductions, pay1st, pay2nd, rtIns, ec, pagibig) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `;
-
-  db.query(sql, [
-      name, position, rateNbc188, nbc594, increment, grossSalary, abs, d, h, m,
-      netSalary, withholdingTax, totalGsisDeds, totalPagibigDeds, philhealth,
-      totalOtherDeds, totalDeductions, pay1st, pay2nd, rtIns, ec, pagibig
-  ], (err, result) => {
-      if (err) {
-          res.status(500).send(err);
-      } else {
-          res.json({ message: "Payroll record added successfully", id: result.insertId });
-      }
-  });
-});
-
-// Update
-app.put("/api/payroll/:id", (req, res) => {
-  const { id } = req.params;
-  const {
-    name, position, rateNbc188, nbc594, increment, grossSalary, abs, d, h, m,
-    netSalary, withholdingTax, totalGsisDeds, totalPagibigDeds, philhealth,
-    totalOtherDeds, totalDeductions, pay1st, pay2nd, rtIns, ec, pagibig
-  } = req.body;
-
-  const sql = `UPDATE payroll SET 
-    name=?, position=?, rateNbc188=?, nbc594=?, increment=?, grossSalary=?, abs=?, d=?, h=?, m=?,
-    netSalary=?, withholdingTax=?, totalGsisDeds=?, totalPagibigDeds=?, philhealth=?,
-    totalOtherDeds=?, totalDeductions=?, pay1st=?, pay2nd=?, rtIns=?, ec=?, pagibig=? 
-    WHERE id=?`;
-
-  db.query(sql, [
-    name, position, rateNbc188, nbc594, increment, grossSalary, abs, d, h, m,
-    netSalary, withholdingTax, totalGsisDeds, totalPagibigDeds, philhealth,
-    totalOtherDeds, totalDeductions, pay1st, pay2nd, rtIns, ec, pagibig, id
-  ], (err, result) => {
-    if (err) res.status(500).send(err);
-    else res.json({ message: "Payroll record updated successfully" });
-  });
-});
-
-// delete
-app.delete("/api/payroll/:id", (req, res) => {
-  const { id } = req.params;
-  db.query("DELETE FROM payroll WHERE id=?", [id], (err, result) => {
-    if (err) res.status(500).send(err);
-    else res.json({ message: "Payroll record deleted successfully" });
-  });
-});
 
 
 //////// REMITTANCE
@@ -837,77 +775,6 @@ app.delete("/api/item-table/:id", (req, res) => {
 });
 
 
-// SALARY GRADE TABLE START
-// Create
-app.post('/salary-grade', (req, res) => {
-  const { effectivityDate, sg_number, step1, step2, step3, step4, step5, step6, step7, step8 } = req.body;
- 
-  const query = 'INSERT INTO salary_grade_table (effectivityDate, sg_number, step1, step2, step3, step4, step5, step6, step7, step8) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-  const values = [effectivityDate, sg_number, step1, step2, step3, step4, step5, step6, step7, step8];
- 
-  db.query(query, values, (err, results) => {
-    if (err) {
-      console.error('Error inserting data:', err);
-      res.status(500).send('Error inserting data');
-    } else {
-      res.status(200).send('Salary grade added successfully');
-    }
-  });
-});
-
-
-// Read (Get all records)
-app.get('/salary-grade', (req, res) => {
-  const query = 'SELECT * FROM salary_grade_table';
- 
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error('Error fetching data:', err);
-      res.status(500).send('Error fetching data');
-    } else {
-      res.status(200).json(results);
-    }
-  });
-});
-
-
-// Update (Update a record by ID)
-app.put('/salary-grade/:id', (req, res) => {
-  const { id } = req.params;
-  const { effectivityDate, sg_number, step1, step2, step3, step4, step5, step6, step7, step8 } = req.body;
- 
-  const query = 'UPDATE salary_grade_table SET effectivityDate = ?, sg_number = ?, step1 = ?, step2 = ?, step3 = ?, step4 = ?, step5 = ?, step6 = ?, step7 = ?, step8 = ? WHERE id = ?';
-  const values = [effectivityDate, sg_number, step1, step2, step3, step4, step5, step6, step7, step8, id];
- 
-  db.query(query, values, (err, results) => {
-    if (err) {
-      console.error('Error updating data:', err);
-      res.status(500).send('Error updating data');
-    } else {
-      res.status(200).send('Salary grade updated successfully');
-    }
-  });
-});
-
-
-// Delete (Delete a record by ID)
-app.delete('/salary-grade/:id', (req, res) => {
-  const { id } = req.params;
- 
-  const query = 'DELETE FROM salary_grade_table WHERE id = ?';
- 
-  db.query(query, [id], (err, results) => {
-    if (err) {
-      console.error('Error deleting data:', err);
-      res.status(500).send('Error deleting data');
-    } else {
-      res.status(200).send('Salary grade deleted successfully');
-    }
-  });
-});
-
-
-//SALARY GRADE TABLE END
 
 
 // Get all records
@@ -1432,6 +1299,128 @@ for (let i = 1; i <= 7; i++) {
     });
   });
 }
+
+
+// Get all payroll
+app.get("/api/payroll", (req, res) => {
+  db.query("SELECT * FROM payroll", (err, result) => {
+      if (err) {
+          res.status(500).send(err);
+      } else {
+          res.json(result);
+      }
+  });
+});
+
+
+
+
+// Add
+app.post("/api/payroll", (req, res) => {
+  const {
+      employeeNumber, name, position, rateNbc188, nbc594, increment, grossSalary, abs, h, m,
+      netSalary, withholdingTax, totalGsisDeds, totalPagibigDeds, philhealth,
+      totalOtherDeds, totalDeductions, pay1st, pay2nd, rtIns, ec, pagibig
+  } = req.body;
+
+
+
+
+  const sql = `
+      INSERT INTO payroll
+      (employeeNumber, name, position, rateNbc188, nbc594, increment, grossSalary, abs, h, m,
+       netSalary, withholdingTax, totalGsisDeds, totalPagibigDeds, philhealth,
+       totalOtherDeds, totalDeductions, pay1st, pay2nd, rtIns, ec, pagibig)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+
+
+
+  db.query(sql, [
+      employeeNumber, name, position, rateNbc188, nbc594, increment, grossSalary, abs, h, m,
+      netSalary, withholdingTax, totalGsisDeds, totalPagibigDeds, philhealth,
+      totalOtherDeds, totalDeductions, pay1st, pay2nd, rtIns, ec, pagibig
+  ], (err, result) => {
+      if (err) {
+          res.status(500).send(err);
+      } else {
+          res.json({ message: "Payroll record added successfully", id: result.insertId });
+      }
+  });
+});
+
+
+
+
+// Update
+app.put("/api/payroll/:id", (req, res) => {
+  const { id } = req.params;
+  const {
+    employeeNumber, name, position, rateNbc188, nbc594, increment, grossSalary, abs, h, m,
+    netSalary, withholdingTax, totalGsisDeds, totalPagibigDeds, philhealth,
+    totalOtherDeds, totalDeductions, pay1st, pay2nd, rtIns, ec, pagibig
+  } = req.body;
+
+
+
+
+  const sql = `UPDATE payroll SET
+    employeeNumber = ?, name=?, position=?, rateNbc188=?, nbc594=?, increment=?, grossSalary=?, abs=?, h=?, m=?,
+    netSalary=?, withholdingTax=?, totalGsisDeds=?, totalPagibigDeds=?, philhealth=?,
+    totalOtherDeds=?, totalDeductions=?, pay1st=?, pay2nd=?, rtIns=?, ec=?, pagibig=?
+    WHERE id=?`;
+
+
+
+
+  db.query(sql, [
+    employeeNumber, name, position, rateNbc188, nbc594, increment, grossSalary, abs, h, m,
+    netSalary, withholdingTax, totalGsisDeds, totalPagibigDeds, philhealth,
+    totalOtherDeds, totalDeductions, pay1st, pay2nd, rtIns, ec, pagibig, id
+  ], (err, result) => {
+    if (err) res.status(500).send(err);
+    else res.json({ message: "Payroll record updated successfully" });
+  });
+});
+
+
+
+
+// delete
+app.delete("/api/payroll/:id", (req, res) => {
+  const { id } = req.params;
+  db.query("DELETE FROM payroll WHERE id=?", [id], (err, result) => {
+    if (err) res.status(500).send(err);
+    else res.json({ message: "Payroll record deleted successfully" });
+  });
+});
+
+
+app.get("/payroll-remittance", (req, res) => {
+  const sql = `
+    SELECT r.*, pt.position, p.* 
+    FROM remittance_table AS r
+    INNER JOIN payroll AS p ON r.employeeNumber = p.employeeNumber
+    INNER JOIN plantilla_table AS pt ON r.employeeNumber = pt.employeeNumber
+  `;
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Error fetching data:", err);
+      res.status(500).send("Error fetching data");
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+
+
+
+
+
+
+
 
 
 app.listen(5000, () => {

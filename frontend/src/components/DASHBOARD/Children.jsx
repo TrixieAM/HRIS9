@@ -71,9 +71,9 @@ const Children = () => {
     style={{
       backgroundColor: '#6D2323',
       color: '#ffffff',
-      padding: '10px',
+      padding: '20px',
       borderRadius: '8px',
-      marginBottom: '25px'
+      marginBottom: '50px'
     }}
   >
     <h4 style={{ margin: 0, fontSize: '150%', marginBottom:'2px' }}>Children Information</h4>

@@ -41,7 +41,7 @@ const SalaryGradeTable = () => {
 
 
   const fetchSalaryGrades = async () => {
-    const response = await axios.get("http://localhost:5000/salary-grade");
+    const response = await axios.get("http://localhost:5000/SalaryGradeTable/salary-grade");
     setSalaryGrades(response.data);
   };
 
@@ -51,7 +51,7 @@ const SalaryGradeTable = () => {
       console.log("All fields are required");
       return;
     } else {
-      await axios.post("http://localhost:5000/salary-grade", newSalaryGrade);
+      await axios.post("http://localhost:5000/SalaryGradeTable/salary-grade", newSalaryGrade);
       setNewSalaryGrade({
         effectivityDate: "",
         sg_number: "",
@@ -72,7 +72,7 @@ const SalaryGradeTable = () => {
   const updateSalaryGrade = async (id) => {
     const recordToUpdate = salaryGrades.find((record) => record.id === id);
     await axios.put(
-      `http://localhost:5000/salary-grade/${id}`,
+      `http://localhost:5000/SalaryGradeTable/salary-grade/${id}`,
       recordToUpdate
     );
     setEditSalaryGradeId(null);
@@ -81,7 +81,7 @@ const SalaryGradeTable = () => {
 
 
   const deleteSalaryGrade = async (id) => {
-    await axios.delete(`http://localhost:5000/salary-grade/${id}`);
+    await axios.delete(`http://localhost:5000/SalaryGradeTable/salary-grade/${id}`);
     fetchSalaryGrades();
   };
 

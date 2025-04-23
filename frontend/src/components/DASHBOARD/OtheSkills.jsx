@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from "axios";
+import axios from 'axios';
 import {
   Button,
   Table,
@@ -11,8 +11,9 @@ import {
   Container,
   Grid,
   Paper,
-  Typography
-} from "@mui/material";
+  Typography,
+  Divider
+} from '@mui/material';
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
@@ -79,36 +80,30 @@ const OtherInformation = () => {
   };
 
   return (
-    <Container>
-      {/* Styled Header */}
-      <Paper
-        elevation={3}
-        style={{
-          backgroundColor: '#6D2323',
-          color: '#FEF9E1',
-          padding: '10px 20px',
-          marginTop: '20px',
-          marginBottom: '20px',
-          borderRadius: '8px'
-        }}
-      >
-        <Typography variant="h5" align="left" style={{ fontWeight: 'bold' }}>
-          Other Information Dashboard
-        </Typography>
-      </Paper>
-
-      {/* Form */}
-      <Paper elevation={3} style={{ backgroundColor: '#ffffff', padding: '16px', marginBottom: '20px' }}>
-        <Typography variant="h6" gutterBottom>
-          Add Other Information
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
+      {/* Form Box with Header */}
+      <Paper elevation={3} sx={{ p: 3, borderRadius: 2 }}>
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          sx={{
+            backgroundColor: '#6D2323',
+            color: '#FFFFFF',
+            p: 2,
+            borderRadius: 1,
+            mb: 3,
+            textAlign: 'left',
+          }}
+        >
+          Other Information
         </Typography>
 
         <Grid container spacing={2}>
-          {Object.keys(newInformation).map((key) => (
+          {Object.entries(newInformation).map(([key, value]) => (
             <Grid item xs={12} sm={6} md={4} key={key}>
               <TextField
                 label={key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-                value={newInformation[key]}
+                value={value}
                 onChange={(e) => setNewInformation({ ...newInformation, [key]: e.target.value })}
                 type={key.includes('Date') ? 'date' : 'text'}
                 InputLabelProps={key.includes('Date') ? { shrink: true } : {}}
@@ -120,60 +115,83 @@ const OtherInformation = () => {
             <Button
               onClick={addInformation}
               variant="contained"
-              style={{ backgroundColor: '#6D2323', color: '#FEF9E1' }}
+              sx={{
+                backgroundColor: '#6D2323',
+                color: '#FEF9E1',
+                '&:hover': {
+                  backgroundColor: '#5A1E1E',
+                },
+                width: '100%',
+              }}
               startIcon={<EditIcon />}
-              fullWidth
             >
-              Add Other Information
+              Add
             </Button>
           </Grid>
         </Grid>
       </Paper>
 
-      {/* Table */}
-      <Paper elevation={3} style={{ padding: '16px', backgroundColor: '#ffffff' }}>
+      {/* Table Box */}
+      <Paper elevation={3} sx={{ mt: 4, p: 3, borderRadius: 2 }}>
+        <Typography
+          variant="h6"
+          fontWeight="bold"
+          sx={{
+            backgroundColor: '#6D2323',
+            color: '#FEF9E1',
+            p: 2,
+            borderRadius: 1,
+            textAlign: 'center',
+            mb: 2,
+          }}
+        >
+          Other Information Records
+        </Typography>
+
         <Table>
-          <TableHead>
+          <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
             <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Special Skills</TableCell>
-              <TableCell>Non-Academic Distinctions</TableCell>
-              <TableCell>Membership in Association</TableCell>
-              <TableCell>Person ID</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell><strong>ID</strong></TableCell>
+              <TableCell><strong>Special Skills</strong></TableCell>
+              <TableCell><strong>Non-Academic Distinctions</strong></TableCell>
+              <TableCell><strong>Membership in Association</strong></TableCell>
+              <TableCell><strong>Person ID</strong></TableCell>
+              <TableCell><strong>Actions</strong></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((information) => (
-              <TableRow key={information.id}>
-                <TableCell>{information.id}</TableCell>
-                {Object.keys(information).slice(1, -1).map((key) => (
+            {data.map((info) => (
+              <TableRow key={info.id}>
+                <TableCell>{info.id}</TableCell>
+                {Object.keys(info).slice(1, -1).map((key) => (
                   <TableCell key={key}>
-                    {editInformation && editInformation.id === information.id ? (
+                    {editInformation && editInformation.id === info.id ? (
                       <TextField
                         value={editInformation[key]}
-                        onChange={(e) => setEditInformation({ ...editInformation, [key]: e.target.value })}
-                        type={key.includes('Date') ? 'date' : 'text'}
-                        InputLabelProps={key.includes('Date') ? { shrink: true } : {}}
+                        onChange={(e) =>
+                          setEditInformation({ ...editInformation, [key]: e.target.value })
+                        }
                         fullWidth
                       />
                     ) : (
-                      information[key]
+                      info[key]
                     )}
                   </TableCell>
                 ))}
                 <TableCell>
-                  {editInformation && editInformation.id === information.id ? (
+                  {editInformation && editInformation.id === info.id ? (
                     <>
                       <Button
                         onClick={updateInformation}
                         variant="contained"
-                        style={{
+                        sx={{
                           backgroundColor: '#6D2323',
                           color: '#FEF9E1',
-                          width: '100px',
-                          height: '40px',
-                          marginBottom: '5px',
+                          mr: 1,
+                          mb: 1,
+                          '&:hover': {
+                            backgroundColor: '#5A1E1E',
+                          },
                         }}
                         startIcon={<SaveIcon />}
                       >
@@ -182,13 +200,13 @@ const OtherInformation = () => {
                       <Button
                         onClick={() => setEditInformation(null)}
                         variant="contained"
-                        style={{
+                        sx={{
                           backgroundColor: 'black',
                           color: 'white',
-                          width: '100px',
-                          height: '40px',
-                          marginBottom: '5px',
-                          marginLeft: '5px',
+                          mb: 1,
+                          '&:hover': {
+                            backgroundColor: '#333',
+                          },
                         }}
                         startIcon={<CancelIcon />}
                       >
@@ -198,29 +216,31 @@ const OtherInformation = () => {
                   ) : (
                     <>
                       <Button
-                        onClick={() => setEditInformation(information)}
+                        onClick={() => setEditInformation(info)}
                         variant="contained"
-                        style={{
+                        sx={{
                           backgroundColor: '#6D2323',
                           color: '#FEF9E1',
-                          width: '100px',
-                          height: '40px',
-                          marginBottom: '5px',
+                          mr: 1,
+                          mb: 1,
+                          '&:hover': {
+                            backgroundColor: '#5A1E1E',
+                          },
                         }}
                         startIcon={<EditIcon />}
                       >
                         Edit
                       </Button>
                       <Button
-                        onClick={() => deleteInformation(information.id)}
+                        onClick={() => deleteInformation(info.id)}
                         variant="contained"
-                        style={{
+                        sx={{
                           backgroundColor: 'black',
                           color: 'white',
-                          width: '100px',
-                          height: '40px',
-                          marginBottom: '5px',
-                          marginLeft: '5px',
+                          mb: 1,
+                          '&:hover': {
+                            backgroundColor: '#333',
+                          },
                         }}
                         startIcon={<DeleteIcon />}
                       >

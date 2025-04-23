@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
+  Container,
+  Typography,
+  TextField,
   Button,
   Table,
-  TableBody,
-  TableCell,
   TableHead,
   TableRow,
-  TextField,
-  Container,
-  Typography
+  TableCell,
+  TableBody,
 } from '@mui/material';
 import {
   Add as AddIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
   Save as SaveIcon,
-  Cancel as CancelIcon
+  Cancel as CancelIcon,
 } from '@mui/icons-material';
 
 const College = () => {
@@ -29,7 +29,7 @@ const College = () => {
     collegeHighestAttained: '',
     collegeYearGraduated: '',
     collegeScholarshipAcademicHonorsReceived: '',
-    person_id: ''
+    person_id: '',
   });
   const [editCollege, setEditCollege] = useState(null);
 
@@ -39,160 +39,205 @@ const College = () => {
 
   const fetchColleges = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/college/college-table');
-      setData(response.data);
-    } catch (error) {
-      console.error('Error fetching colleges:', error);
+      const res = await axios.get('http://localhost:5000/college/college-table');
+      setData(res.data);
+    } catch (err) {
+      console.error('Error fetching data:', err);
     }
   };
 
-  const addCollege = async () => {
-    if (!newCollege.collegeNameOfSchool) return;
-    await axios.post('http://localhost:5000/college/college-table', newCollege);
-    setNewCollege({
-      collegeNameOfSchool: '',
-      collegeDegree: '',
-      collegePeriodFrom: '',
-      collegePeriodTo: '',
-      collegeHighestAttained: '',
-      collegeYearGraduated: '',
-      collegeScholarshipAcademicHonorsReceived: '',
-      person_id: ''
-    });
-    fetchColleges();
+  const handleAdd = async () => {
+    try {
+      await axios.post('http://localhost:5000/college/college-table', newCollege);
+      setNewCollege({
+        collegeNameOfSchool: '',
+        collegeDegree: '',
+        collegePeriodFrom: '',
+        collegePeriodTo: '',
+        collegeHighestAttained: '',
+        collegeYearGraduated: '',
+        collegeScholarshipAcademicHonorsReceived: '',
+        person_id: '',
+      });
+      fetchColleges();
+    } catch (err) {
+      console.error('Error adding data:', err);
+    }
   };
 
-  const updateCollege = async () => {
-    if (!editCollege || !editCollege.collegeNameOfSchool) return;
-    await axios.put(`http://localhost:5000/college/college-table/${editCollege.id}`, editCollege);
-    setEditCollege(null);
-    fetchColleges();
+  const handleUpdate = async () => {
+    try {
+      await axios.put(`http://localhost:5000/college/college-table/${editCollege.id}`, editCollege);
+      setEditCollege(null);
+      fetchColleges();
+    } catch (err) {
+      console.error('Error updating data:', err);
+    }
   };
 
-  const deleteCollege = async (id) => {
-    await axios.delete(`http://localhost:5000/college/college-table/${id}`);
-    fetchColleges();
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/college/college-table/${id}`);
+      fetchColleges();
+    } catch (err) {
+      console.error('Error deleting data:', err);
+    }
   };
+
+  const handleChange = (field, value, isEdit = false) => {
+    if (isEdit) {
+      setEditCollege({ ...editCollege, [field]: value });
+    } else {
+      setNewCollege({ ...newCollege, [field]: value });
+    }
+  };
+
+  const inputStyle = { marginRight: 10, marginBottom: 10, width: 324.25 };
 
   return (
-    <Container style={{ marginTop: '20px' }}>
-      {/* Styled Header */}
-      <div
-        style={{
-          backgroundColor: '#6D2323',
-          color: '#FEF9E1',
-          padding: '20px 30px',
-          borderRadius: '12px',
-          boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',
-          marginBottom: '30px',
-          fontFamily: 'Segoe UI, sans-serif',
-          fontWeight: 'bold',
-          fontSize: '28px',
-          letterSpacing: '1px',
-          textAlign: 'left'
+    <Container sx={{ mt: 4 }}>
+      <Container
+        sx={{
+          backgroundColor: '#fff',
+          p: 3,
+          borderRadius: 2,
+          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+          mb: 4,
         }}
       >
-        College Dashboard
-      </div>
+        <Typography
+          variant="h4"
+          sx={{
+            backgroundColor: '#6D2323',
+            color: '#FFFFFF',
+            p: 3,
+            borderRadius: 2,
+            mb: 3,
+            fontWeight: 'bold',
+            fontFamily: 'Poppins',
+            letterSpacing: 1,
+            textAlign: 'left',
+          }}
+        >
+          College Dashboard
+        </Typography>
+       
 
-      {/* Add New College Entry */}
-      <div style={{ backgroundColor: 'white', padding: '10px', borderRadius: '8px', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', marginBottom: '0px' }}>
-        <Typography variant="h6">Add New College Entry</Typography>
-        <TextField label="College Name" value={newCollege.collegeNameOfSchool} onChange={(e) => setNewCollege({ ...newCollege, collegeNameOfSchool: e.target.value })} style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }} />
-        <TextField label="Degree" value={newCollege.collegeDegree} onChange={(e) => setNewCollege({ ...newCollege, collegeDegree: e.target.value })} style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }} />
-        <TextField label="Period From" value={newCollege.collegePeriodFrom} onChange={(e) => setNewCollege({ ...newCollege, collegePeriodFrom: e.target.value })} style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }} />
-        <TextField label="Period To" value={newCollege.collegePeriodTo} onChange={(e) => setNewCollege({ ...newCollege, collegePeriodTo: e.target.value })} style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }} />
-        <TextField label="Highest Attained" value={newCollege.collegeHighestAttained} onChange={(e) => setNewCollege({ ...newCollege, collegeHighestAttained: e.target.value })} style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }} />
-        <TextField label="Year Graduated" value={newCollege.collegeYearGraduated} onChange={(e) => setNewCollege({ ...newCollege, collegeYearGraduated: e.target.value })} style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }} />
-        <TextField label="Honors Received" value={newCollege.collegeScholarshipAcademicHonorsReceived} onChange={(e) => setNewCollege({ ...newCollege, collegeScholarshipAcademicHonorsReceived: e.target.value })} style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }} />
-        <TextField label="Person ID" value={newCollege.person_id} onChange={(e) => setNewCollege({ ...newCollege, person_id: e.target.value })} style={{ marginRight: '10px', marginBottom: '10px', width: '324.25px' }} />
-        <Button onClick={addCollege} variant="contained" color="primary"
-          style={{ backgroundColor: '#6D2323', color: '#FEF9E1', width: '1020px', marginTop: '35px', marginLeft: '-10px' }}
-          startIcon={<AddIcon />}>
+        <TextField label="College Name" value={newCollege.collegeNameOfSchool} onChange={(e) => handleChange('collegeNameOfSchool', e.target.value)} style={inputStyle} />
+        <TextField label="Degree" value={newCollege.collegeDegree} onChange={(e) => handleChange('collegeDegree', e.target.value)} style={inputStyle} />
+        <TextField label="Period From" value={newCollege.collegePeriodFrom} onChange={(e) => handleChange('collegePeriodFrom', e.target.value)} style={inputStyle} />
+        <TextField label="Period To" value={newCollege.collegePeriodTo} onChange={(e) => handleChange('collegePeriodTo', e.target.value)} style={inputStyle} />
+        <TextField label="Highest Attained" value={newCollege.collegeHighestAttained} onChange={(e) => handleChange('collegeHighestAttained', e.target.value)} style={inputStyle} />
+        <TextField label="Year Graduated" value={newCollege.collegeYearGraduated} onChange={(e) => handleChange('collegeYearGraduated', e.target.value)} style={inputStyle} />
+        <TextField label="Honors Received" value={newCollege.collegeScholarshipAcademicHonorsReceived} onChange={(e) => handleChange('collegeScholarshipAcademicHonorsReceived', e.target.value)} style={inputStyle} />
+        <TextField label="Person ID" value={newCollege.person_id} onChange={(e) => handleChange('person_id', e.target.value)} style={inputStyle} />
+        <Button
+          onClick={handleAdd}
+          variant="contained"
+          startIcon={<AddIcon />}
+          sx={{
+            mt: 3,
+            width: '100%',
+            backgroundColor: '#6D2323',
+            color: '#FEF9E1',
+            '&:hover': { backgroundColor: '#5a1d1d' },
+          }}
+        >
           Add
         </Button>
-      </div>
+      </Container>
 
-      {/* Colleges Table */}
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>College Name</TableCell>
-            <TableCell>Degree</TableCell>
-            <TableCell>Period From</TableCell>
-            <TableCell>Period To</TableCell>
-            <TableCell>Highest Attained</TableCell>
-            <TableCell>Year Graduated</TableCell>
-            <TableCell>Honors Received</TableCell>
-            <TableCell>Person ID</TableCell>
-            <TableCell>Actions</TableCell>
+            <TableCell sx={{ fontWeight: 'bold' }}>ID</TableCell>
+            <TableCell sx={{ fontWeight: 'bold' }}>College Name</TableCell>
+            <TableCell sx={{ fontWeight: 'bold' }}>Degree</TableCell>
+            <TableCell sx={{ fontWeight: 'bold' }}>Period From</TableCell>
+            <TableCell sx={{ fontWeight: 'bold' }}>Period To</TableCell>
+            <TableCell sx={{ fontWeight: 'bold' }}>Highest Attained</TableCell>
+            <TableCell sx={{ fontWeight: 'bold' }}>Year Graduated</TableCell>
+            <TableCell sx={{ fontWeight: 'bold' }}>Honors Received</TableCell>
+            <TableCell sx={{ fontWeight: 'bold' }}>Person ID</TableCell>
+            <TableCell sx={{ fontWeight: 'bold' }}>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((college) => (
             <TableRow key={college.id}>
               <TableCell>{college.id}</TableCell>
-              <TableCell>{editCollege?.id === college.id
-                ? <TextField value={editCollege.collegeNameOfSchool} onChange={(e) => setEditCollege({ ...editCollege, collegeNameOfSchool: e.target.value })} />
-                : college.collegeNameOfSchool}</TableCell>
-              <TableCell>{editCollege?.id === college.id
-                ? <TextField value={editCollege.collegeDegree} onChange={(e) => setEditCollege({ ...editCollege, collegeDegree: e.target.value })} />
-                : college.collegeDegree}</TableCell>
-              <TableCell>{editCollege?.id === college.id
-                ? <TextField value={editCollege.collegePeriodFrom} onChange={(e) => setEditCollege({ ...editCollege, collegePeriodFrom: e.target.value })} />
-                : college.collegePeriodFrom}</TableCell>
-              <TableCell>{editCollege?.id === college.id
-                ? <TextField value={editCollege.collegePeriodTo} onChange={(e) => setEditCollege({ ...editCollege, collegePeriodTo: e.target.value })} />
-                : college.collegePeriodTo}</TableCell>
-              <TableCell>{editCollege?.id === college.id
-                ? <TextField value={editCollege.collegeHighestAttained} onChange={(e) => setEditCollege({ ...editCollege, collegeHighestAttained: e.target.value })} />
-                : college.collegeHighestAttained}</TableCell>
-              <TableCell>{editCollege?.id === college.id
-                ? <TextField value={editCollege.collegeYearGraduated} onChange={(e) => setEditCollege({ ...editCollege, collegeYearGraduated: e.target.value })} />
-                : college.collegeYearGraduated}</TableCell>
-              <TableCell>{editCollege?.id === college.id
-                ? <TextField value={editCollege.collegeScholarshipAcademicHonorsReceived} onChange={(e) => setEditCollege({ ...editCollege, collegeScholarshipAcademicHonorsReceived: e.target.value })} />
-                : college.collegeScholarshipAcademicHonorsReceived}</TableCell>
-              <TableCell>{editCollege?.id === college.id
-                ? <TextField value={editCollege.person_id} onChange={(e) => setEditCollege({ ...editCollege, person_id: e.target.value })} />
-                : college.person_id}</TableCell>
+              <TableCell>
+                {editCollege?.id === college.id ? (
+                  <TextField value={editCollege.collegeNameOfSchool} onChange={(e) => handleChange('collegeNameOfSchool', e.target.value, true)} />
+                ) : (
+                  college.collegeNameOfSchool
+                )}
+              </TableCell>
+              <TableCell>
+                {editCollege?.id === college.id ? (
+                  <TextField value={editCollege.collegeDegree} onChange={(e) => handleChange('collegeDegree', e.target.value, true)} />
+                ) : (
+                  college.collegeDegree
+                )}
+              </TableCell>
+              <TableCell>
+                {editCollege?.id === college.id ? (
+                  <TextField value={editCollege.collegePeriodFrom} onChange={(e) => handleChange('collegePeriodFrom', e.target.value, true)} />
+                ) : (
+                  college.collegePeriodFrom
+                )}
+              </TableCell>
+              <TableCell>
+                {editCollege?.id === college.id ? (
+                  <TextField value={editCollege.collegePeriodTo} onChange={(e) => handleChange('collegePeriodTo', e.target.value, true)} />
+                ) : (
+                  college.collegePeriodTo
+                )}
+              </TableCell>
+              <TableCell>
+                {editCollege?.id === college.id ? (
+                  <TextField value={editCollege.collegeHighestAttained} onChange={(e) => handleChange('collegeHighestAttained', e.target.value, true)} />
+                ) : (
+                  college.collegeHighestAttained
+                )}
+              </TableCell>
+              <TableCell>
+                {editCollege?.id === college.id ? (
+                  <TextField value={editCollege.collegeYearGraduated} onChange={(e) => handleChange('collegeYearGraduated', e.target.value, true)} />
+                ) : (
+                  college.collegeYearGraduated
+                )}
+              </TableCell>
+              <TableCell>
+                {editCollege?.id === college.id ? (
+                  <TextField value={editCollege.collegeScholarshipAcademicHonorsReceived} onChange={(e) => handleChange('collegeScholarshipAcademicHonorsReceived', e.target.value, true)} />
+                ) : (
+                  college.collegeScholarshipAcademicHonorsReceived
+                )}
+              </TableCell>
+              <TableCell>
+                {editCollege?.id === college.id ? (
+                  <TextField value={editCollege.person_id} onChange={(e) => handleChange('person_id', e.target.value, true)} />
+                ) : (
+                  college.person_id
+                )}
+              </TableCell>
               <TableCell>
                 {editCollege?.id === college.id ? (
                   <>
-                    <Button
-                      onClick={updateCollege}
-                      variant="contained"
-                      style={{ backgroundColor: '#6D2323', color: '#FEF9E1', width: '100px', height: '40px', marginBottom: '5px' }}
-                      startIcon={<SaveIcon />}
-                    >
+                    <Button onClick={handleUpdate} variant="contained" startIcon={<SaveIcon />} sx={{ backgroundColor: '#6D2323', color: '#FEF9E1', width: 100, mr: 1, mb: 1 }}>
                       Update
                     </Button>
-                    <Button
-                      onClick={() => setEditCollege(null)}
-                      variant="outlined"
-                      style={{ backgroundColor: 'black', color: 'white', width: '100px', height: '40px', marginBottom: '5px' }}
-                      startIcon={<CancelIcon />}
-                    >
+                    <Button onClick={() => setEditCollege(null)} variant="outlined" startIcon={<CancelIcon />} sx={{ backgroundColor: 'black', color: 'white', width: 100, mb: 1 }}>
                       Cancel
                     </Button>
                   </>
                 ) : (
                   <>
-                    <Button
-                      onClick={() => setEditCollege(college)}
-                      variant="outlined"
-                      style={{ backgroundColor: '#6D2323', color: '#FEF9E1', width: '100px', height: '40px', marginBottom: '5px' }}
-                      startIcon={<EditIcon />}
-                    >
+                    <Button onClick={() => setEditCollege(college)} variant="outlined" startIcon={<EditIcon />} sx={{ backgroundColor: '#6D2323', color: '#FEF9E1', width: 100, mr: 1, mb: 1 }}>
                       Edit
                     </Button>
-                    <Button
-                      onClick={() => deleteCollege(college.id)}
-                      variant="outlined"
-                      style={{ backgroundColor: 'black', color: 'white', width: '100px', height: '40px', marginBottom: '5px' }}
-                      startIcon={<DeleteIcon />}
-                    >
+                    <Button onClick={() => handleDelete(college.id)} variant="outlined" startIcon={<DeleteIcon />} sx={{ backgroundColor: 'black', color: 'white', width: 100, mb: 1 }}>
                       Delete
                     </Button>
                   </>
